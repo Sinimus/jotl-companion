@@ -77,7 +77,7 @@ src/
 
 ### Phase 1: Foundation
 - [x] Task 1: Project scaffolding
-- [ ] Task 2: Static game data
+- [x] Task 2: Static game data
 - [ ] Task 3: Data layer (schemas + DB)
 - [ ] Task 4: Campaign CRUD
 - [ ] Task 5: Character creation

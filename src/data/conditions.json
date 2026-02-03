@@ -1,0 +1,65 @@
+[
+  {
+    "id": "poison",
+    "name": "Poison",
+    "type": "negative",
+    "removal": "on_heal",
+    "description": "All attacks against this figure gain +1 Attack. A heal removes poison but does not restore HP."
+  },
+  {
+    "id": "wound",
+    "name": "Wound",
+    "type": "negative",
+    "removal": "on_heal",
+    "description": "This figure suffers 1 damage at the start of each turn. A heal removes wound but does not restore HP."
+  },
+  {
+    "id": "stun",
+    "name": "Stun",
+    "type": "negative",
+    "removal": "end_of_turn",
+    "description": "Cannot perform any abilities. Removed at end of next turn."
+  },
+  {
+    "id": "disarm",
+    "name": "Disarm",
+    "type": "negative",
+    "removal": "end_of_turn",
+    "description": "Cannot perform Attack abilities. Removed at end of next turn."
+  },
+  {
+    "id": "immobilize",
+    "name": "Immobilize",
+    "type": "negative",
+    "removal": "end_of_turn",
+    "description": "Cannot perform Move abilities. Removed at end of next turn."
+  },
+  {
+    "id": "muddle",
+    "name": "Muddle",
+    "type": "negative",
+    "removal": "end_of_turn",
+    "description": "Disadvantage on all attacks. Removed at end of next turn."
+  },
+  {
+    "id": "curse",
+    "name": "Curse",
+    "type": "negative",
+    "removal": "on_reveal",
+    "description": "A Curse card (null) is shuffled into the attack modifier deck. Removed when revealed, or at end of scenario."
+  },
+  {
+    "id": "strengthen",
+    "name": "Strengthen",
+    "type": "positive",
+    "removal": "end_of_turn",
+    "description": "Advantage on all attacks. Removed at end of next turn."
+  },
+  {
+    "id": "bless",
+    "name": "Bless",
+    "type": "positive",
+    "removal": "on_reveal",
+    "description": "A Bless card (2x) is shuffled into the attack modifier deck. Removed when revealed, or at end of scenario."
+  }
+]

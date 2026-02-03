@@ -1,0 +1,284 @@
+[
+  {
+    "id": "demolitionist_1",
+    "characterId": "demolitionist",
+    "description": "Remove four +0 cards",
+    "count": 1
+  },
+  {
+    "id": "demolitionist_2",
+    "characterId": "demolitionist",
+    "description": "Remove two -1 cards",
+    "count": 1
+  },
+  {
+    "id": "demolitionist_3",
+    "characterId": "demolitionist",
+    "description": "Remove one -1 card and one +0 card",
+    "count": 1
+  },
+  {
+    "id": "demolitionist_4a",
+    "characterId": "demolitionist",
+    "description": "Replace one +0 card with one +2 MUDDLE card",
+    "count": 1
+  },
+  {
+    "id": "demolitionist_4b",
+    "characterId": "demolitionist",
+    "description": "Replace one +0 card with one +2 MUDDLE card",
+    "count": 1
+  },
+  {
+    "id": "demolitionist_5",
+    "characterId": "demolitionist",
+    "description": "Replace one -1 card with one +0 POISON card",
+    "count": 1
+  },
+  {
+    "id": "demolitionist_6a",
+    "characterId": "demolitionist",
+    "description": "Add one +2 card",
+    "count": 1
+  },
+  {
+    "id": "demolitionist_6b",
+    "characterId": "demolitionist",
+    "description": "Add one +2 card",
+    "count": 1
+  },
+  {
+    "id": "demolitionist_7",
+    "characterId": "demolitionist",
+    "description": "Replace one -2 card with one +0 card",
+    "count": 1
+  },
+  {
+    "id": "demolitionist_8a",
+    "characterId": "demolitionist",
+    "description": "Replace one +1 card with one +2 card",
+    "count": 1
+  },
+  {
+    "id": "demolitionist_8b",
+    "characterId": "demolitionist",
+    "description": "Replace one +1 card with one +2 card",
+    "count": 1
+  },
+  {
+    "id": "demolitionist_9a",
+    "characterId": "demolitionist",
+    "description": "Add one +1 \"All adjacent enemies suffer 1 damage\" card",
+    "count": 1
+  },
+  {
+    "id": "demolitionist_9b",
+    "characterId": "demolitionist",
+    "description": "Add one +1 \"All adjacent enemies suffer 1 damage\" card",
+    "count": 1
+  },
+  {
+    "id": "red_guard_1",
+    "characterId": "red_guard",
+    "description": "Remove four +0 cards",
+    "count": 1
+  },
+  {
+    "id": "red_guard_2",
+    "characterId": "red_guard",
+    "description": "Remove two -1 cards",
+    "count": 1
+  },
+  {
+    "id": "red_guard_3",
+    "characterId": "red_guard",
+    "description": "Remove one -1 card and one +0 card",
+    "count": 1
+  },
+  {
+    "id": "red_guard_4a",
+    "characterId": "red_guard",
+    "description": "Replace one -1 card with one +1 card",
+    "count": 1
+  },
+  {
+    "id": "red_guard_4b",
+    "characterId": "red_guard",
+    "description": "Replace one -1 card with one +1 card",
+    "count": 1
+  },
+  {
+    "id": "red_guard_5",
+    "characterId": "red_guard",
+    "description": "Replace one +0 card with one +2 card",
+    "count": 1
+  },
+  {
+    "id": "red_guard_6",
+    "characterId": "red_guard",
+    "description": "Replace one +1 card with one +2 card",
+    "count": 1
+  },
+  {
+    "id": "red_guard_7a",
+    "characterId": "red_guard",
+    "description": "Add one +1 Shield 1 card",
+    "count": 1
+  },
+  {
+    "id": "red_guard_7b",
+    "characterId": "red_guard",
+    "description": "Add one +1 Shield 1 card",
+    "count": 1
+  },
+  {
+    "id": "red_guard_8",
+    "characterId": "red_guard",
+    "description": "Add one +2 card",
+    "count": 1
+  },
+  {
+    "id": "red_guard_9",
+    "characterId": "red_guard",
+    "description": "Replace one +0 card with one +1 IMMOBILIZE card",
+    "count": 1
+  },
+  {
+    "id": "red_guard_10",
+    "characterId": "red_guard",
+    "description": "Replace one +0 card with one +1 WOUND card",
+    "count": 1
+  },
+  {
+    "id": "hatchet_1",
+    "characterId": "hatchet",
+    "description": "Remove two -1 cards",
+    "count": 1
+  },
+  {
+    "id": "hatchet_2",
+    "characterId": "hatchet",
+    "description": "Replace one +0 card with one +2 MUDDLE card",
+    "count": 1
+  },
+  {
+    "id": "hatchet_3",
+    "characterId": "hatchet",
+    "description": "Replace one +0 card with one +1 POISON card",
+    "count": 1
+  },
+  {
+    "id": "hatchet_4",
+    "characterId": "hatchet",
+    "description": "Replace one +0 card with one +1 WOUND card",
+    "count": 1
+  },
+  {
+    "id": "hatchet_5",
+    "characterId": "hatchet",
+    "description": "Replace one +0 card with one +1 IMMOBILIZE card",
+    "count": 1
+  },
+  {
+    "id": "hatchet_6",
+    "characterId": "hatchet",
+    "description": "Replace one +0 card with one +0 PUSH 2 card",
+    "count": 1
+  },
+  {
+    "id": "hatchet_7a",
+    "characterId": "hatchet",
+    "description": "Replace one +0 card with one +0 STUN card",
+    "count": 1
+  },
+  {
+    "id": "hatchet_7b",
+    "characterId": "hatchet",
+    "description": "Replace one +0 card with one +0 STUN card",
+    "count": 1
+  },
+  {
+    "id": "hatchet_8",
+    "characterId": "hatchet",
+    "description": "Add one +2 +2 card",
+    "count": 1
+  },
+  {
+    "id": "hatchet_9",
+    "characterId": "hatchet",
+    "description": "Replace one +1 card with one +1 STUN card",
+    "count": 1
+  },
+  {
+    "id": "voidwarden_1",
+    "characterId": "voidwarden",
+    "description": "Remove two -1 cards",
+    "count": 1
+  },
+  {
+    "id": "voidwarden_2",
+    "characterId": "voidwarden",
+    "description": "Remove one -2 card",
+    "count": 1
+  },
+  {
+    "id": "voidwarden_3a",
+    "characterId": "voidwarden",
+    "description": "Replace one +0 card with one +1 Dark card",
+    "count": 1
+  },
+  {
+    "id": "voidwarden_3b",
+    "characterId": "voidwarden",
+    "description": "Replace one +0 card with one +1 Dark card",
+    "count": 1
+  },
+  {
+    "id": "voidwarden_4a",
+    "characterId": "voidwarden",
+    "description": "Replace one +0 card with one +1 Ice card",
+    "count": 1
+  },
+  {
+    "id": "voidwarden_4b",
+    "characterId": "voidwarden",
+    "description": "Replace one +0 card with one +1 Ice card",
+    "count": 1
+  },
+  {
+    "id": "voidwarden_5",
+    "characterId": "voidwarden",
+    "description": "Replace one -1 card with one +0 Heal 1 (Ally) card",
+    "count": 1
+  },
+  {
+    "id": "voidwarden_6",
+    "characterId": "voidwarden",
+    "description": "Add one +1 Heal 1 (Ally) card",
+    "count": 1
+  },
+  {
+    "id": "voidwarden_7",
+    "characterId": "voidwarden",
+    "description": "Add one +1 POISON card",
+    "count": 1
+  },
+  {
+    "id": "voidwarden_8",
+    "characterId": "voidwarden",
+    "description": "Add one +3 card",
+    "count": 1
+  },
+  {
+    "id": "voidwarden_9a",
+    "characterId": "voidwarden",
+    "description": "Add one +1 CURSE card",
+    "count": 1
+  },
+  {
+    "id": "voidwarden_9b",
+    "characterId": "voidwarden",
+    "description": "Add one +1 CURSE card",
+    "count": 1
+  }
+]
