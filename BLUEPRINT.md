@@ -213,7 +213,7 @@ const Campaign = z.object({
 ## 6. Implementation Roadmap
 
 ### Phase 1: Foundation (Tasks 1-5)
-1. **[Task 1]** Project scaffolding (Vite + React + TS + Tailwind + shadcn)
+1. **[Task 1]** Project scaffolding (Vite + React + TS + Tailwind + shadcn) `DONE`
 2. **[Task 2]** Static game data (characters, perks, items, scenarios)
 3. **[Task 3]** Data layer (Zod schemas + Dexie DB)
 4. **[Task 4]** Campaign CRUD + persistence
@@ -278,12 +278,17 @@ const Campaign = z.object({
 
 ## 8. Architect's Log
 
-### 2026-02-03 - Initial Planning
+### 2026-02-03 - Task 1 Complete
 - Studied game documentation (Learn to Play, Glossary, Character Sheets)
-- Defined core domain model
-- Planned feature modules and data structures
+- Defined core domain model and planned feature modules
 - Created implementation roadmap
-- **Next:** Task 1 - Project scaffolding
+- Scaffolded Vite + React 19 + TS strict + Tailwind v4 + shadcn/ui
+- Installed: zustand, dexie, zod, react-router-dom (basic "/" route live)
+- `pnpm build` passes clean — zero TS errors
+- **Note:** React 19 (latest stable) used instead of React 18 per "latest stable" rule
+- **Note:** Zod v4 installed (latest stable); API differs from v3 — schemas in Task 3 will use v4
+- **Note:** esbuild postinstall warning is cosmetic; binary works, pnpm 10 security gate
+- **Next:** Task 2 - Static game data (JSON fixtures)
 
 ---
 

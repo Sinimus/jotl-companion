@@ -65,7 +65,8 @@ src/
 - Planned implementation roadmap (18 tasks across 4 phases)
 
 ### Technical Debt
-- None yet
+- esbuild postinstall warning (pnpm 10 security gate) — cosmetic, binary works
+- Zod v4 installed (latest stable); Zod API differs from v3 — note for Task 3
 
 ### Unresolved Edge Cases
 - None yet
@@ -75,7 +76,7 @@ src/
 ## Roadmap
 
 ### Phase 1: Foundation
-- [ ] Task 1: Project scaffolding
+- [x] Task 1: Project scaffolding
 - [ ] Task 2: Static game data
 - [ ] Task 3: Data layer (schemas + DB)
 - [ ] Task 4: Campaign CRUD
