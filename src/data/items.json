@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "name": "Boots of Striding",
+    "slot": "feet",
+    "cost": 20,
+    "usageType": "spent",
+    "effect": "+2 Move during a Move action.",
+    "copies": 2
+  },
+  {
+    "id": 2,
+    "name": "Winged Shoes",
+    "slot": "feet",
+    "cost": 20,
+    "usageType": "spent",
+    "effect": "Add Jump to a Move action.",
+    "copies": 2
+  },
+  {
+    "id": 3,
+    "name": "Hide Armor",
+    "slot": "body",
+    "cost": 20,
+    "usageType": "spent",
+    "effect": "Negate next 2 damage from a single source.",
+    "copies": 2
+  },
+  {
+    "id": 4,
+    "name": "Leather Armor",
+    "slot": "body",
+    "cost": 10,
+    "usageType": "spent",
+    "effect": "Negate next 1 damage from a single source.",
+    "copies": 2
+  },
+  {
+    "id": 5,
+    "name": "Eagle-Eye Goggles",
+    "slot": "head",
+    "cost": 30,
+    "usageType": "spent",
+    "effect": "Gain Advantage for the entire Attack action.",
+    "copies": 1
+  },
+  {
+    "id": 6,
+    "name": "Iron Helmet",
+    "slot": "head",
+    "cost": 10,
+    "usageType": "spent",
+    "effect": "Negate next 1 damage from a single source.",
+    "copies": 2
+  },
+  {
+    "id": 7,
+    "name": "Minor Healing Potion",
+    "slot": "small",
+    "cost": 10,
+    "usageType": "consumed",
+    "effect": "Heal 3, Self.",
+    "copies": 2
+  }
+]

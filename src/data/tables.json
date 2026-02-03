@@ -1,0 +1,30 @@
+{
+  "levelThresholds": {
+    "1": 0,
+    "2": 45,
+    "3": 95,
+    "4": 150,
+    "5": 210,
+    "6": 275,
+    "7": 345,
+    "8": 420,
+    "9": 500
+  },
+  "scenarioLevelTable": [
+    { "level": 0, "trapDamage": 2, "goldConversion": 2, "bonusXp": 4 },
+    { "level": 1, "trapDamage": 3, "goldConversion": 2, "bonusXp": 6 },
+    { "level": 2, "trapDamage": 4, "goldConversion": 3, "bonusXp": 8 },
+    { "level": 3, "trapDamage": 5, "goldConversion": 3, "bonusXp": 10 },
+    { "level": 4, "trapDamage": 6, "goldConversion": 4, "bonusXp": 12 },
+    { "level": 5, "trapDamage": 7, "goldConversion": 4, "bonusXp": 14 },
+    { "level": 6, "trapDamage": 8, "goldConversion": 5, "bonusXp": 16 },
+    { "level": 7, "trapDamage": 9, "goldConversion": 6, "bonusXp": 18 }
+  ],
+  "itemSlotLimits": {
+    "head": 1,
+    "body": 1,
+    "feet": 1,
+    "hand": 2,
+    "small": "half_level"
+  }
+}
