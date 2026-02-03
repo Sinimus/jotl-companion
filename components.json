@@ -1,0 +1,10 @@
+{
+  "$schema": "https://shadcn.dev/schema.json",
+  "style": "default",
+  "tailwindVersion": "4",
+  "rsPaths": {
+    "@/": "./src/"
+  },
+  "components": "./src/shared/components/ui",
+  "utils": "./src/shared/lib/utils"
+}
