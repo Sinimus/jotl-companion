@@ -1,9 +1,60 @@
 # Gloomhaven: Jaws of the Lion - Companion App Blueprint
 
 > **Codename:** JotL Companion
-> **Version:** 0.1.0
+> **Version:** 0.2.0
 > **Last Updated:** 2026-02-03
-> **Status:** Planning Phase
+> **Status:** Implementation Phase (Tasks 1-3 complete)
+
+---
+
+## 0. Cold Start Context (READ THIS FIRST)
+
+> **Purpose:** Quick orientation for the Architect AI when resuming after context loss.
+
+### What Is This Project?
+A **companion app** for the board game "Gloomhaven: Jaws of the Lion". It helps players track campaigns, characters, and look up rules — but does NOT simulate or replace the physical game.
+
+### Current State (2026-02-03)
+```
+Phase 1: Foundation
+  [x] Task 1 — Scaffolding (Vite 7, React 19, TS strict, Tailwind v4, shadcn/ui)
+  [x] Task 2 — Static game data (7 JSON fixtures in src/data/)
+  [x] Task 3 — Data layer (Zod v4 schemas + Dexie DB)
+  [ ] Task 4 — Campaign CRUD + Zustand store  ← NEXT
+  [ ] Task 5 — Character creation flow
+```
+
+### Key Files to Read
+| File | Purpose |
+|------|---------|
+| `BLUEPRINT.md` | You are here — architecture, roadmap, decisions |
+| `README.md` | Dev log, tech stack, git history |
+| `docs/tasks/TASK-00*.md` | Completed task specs |
+| `src/data/index.ts` | Static game data barrel (characters, perks, items, scenarios) |
+| `src/shared/schemas/index.ts` | Zod v4 schemas for Campaign, CharacterProgress |
+| `src/shared/db/index.ts` | Dexie database singleton (`db.campaigns`) |
+| `src/app/routes.tsx` | Current routes (only "/" placeholder exists) |
+
+### Tech Stack Summary
+- **React 19** + TypeScript 5.9 (strict) + Vite 7
+- **Tailwind CSS v4** (via `@tailwindcss/vite`, no PostCSS config)
+- **Zod v4** — `import * as z from 'zod'` (not v3!)
+- **Dexie 4** — IndexedDB wrapper, `db.campaigns` table
+- **Zustand 5** — installed but not yet configured (Task 4)
+- **pnpm** only (no npm/yarn)
+
+### Game Domain Quick Reference
+- **4 Characters:** Demolitionist, Red Guard, Hatchet, Voidwarden
+- **17 Scenarios:** Linear unlock chain (1 → 2 → ... → 17)
+- **9 Conditions:** Poison, Wound, Stun, Disarm, Immobilize, Muddle, Curse, Strengthen, Bless
+- **6 Elements:** Fire, Ice, Air, Earth, Light, Dark
+- **Character Progression:** Level 1-9, XP thresholds, perks (every level + every 3 checkmarks)
+
+### Workflow Protocol
+1. Read `docs/AI Development Handbook v2.0.md` for Architect/Constructor role separation
+2. Architect writes task specs in `docs/tasks/TASK-NNN-*.md`
+3. Constructor (or self) executes task, commits with descriptive message
+4. Update BLUEPRINT.md Architect's Log + README.md Dev Log after each task
 
 ---
 
@@ -34,7 +85,6 @@ erDiagram
 
     CHARACTER ||--o{ ITEM : owns
     CHARACTER ||--o{ PERK : has
-    CHARACTER ||--o{ ABILITY_CARD : pool
 
     CHARACTER {
         string id PK
@@ -44,8 +94,6 @@ erDiagram
         int experience
         int gold
         int checkmarks
-        int maxHitPoints
-        int handLimit
     }
 
     SCENARIO {
@@ -59,28 +107,28 @@ erDiagram
     PERK {
         string id PK
         string description
-        bool applied
+        int count
     }
 
     ITEM {
         int id PK
         string name
         enum slot "head|body|feet|hand|small"
-        int goldValue
-        enum usageType "consumed|spent|persistent"
+        int cost
+        enum usageType "consumed|spent|passive"
     }
 ```
 
 ### 2.1 Characters (4 Total)
-| Character | Race | Role | Hand Limit |
-|-----------|------|------|------------|
-| Demolitionist | Quatryl | Melee Damage, Obstacle Destruction | 9 |
-| Red Guard | Valrath | Protection, Monster Manipulation | 10 |
-| Hatchet | Inox | Ranged Damage, Looting | 11 |
-| Voidwarden | Human | Healing, Support | 11 |
+| Character | Race | Role | Hand Limit | HP at L1 |
+|-----------|------|------|------------|----------|
+| Demolitionist | Quatryl | Melee Damage, Obstacle Destruction | 9 | 8 |
+| Red Guard | Valrath | Protection, Monster Manipulation | 10 | 10 |
+| Hatchet | Inox | Ranged Damage, Looting | 11 | 8 |
+| Voidwarden | Human | Healing, Support | 11 | 6 |
 
-### 2.2 Conditions (11 Total)
-**Negative (6):** Poison, Wound, Stun, Disarm, Immobilize, Muddle, Curse
+### 2.2 Conditions (9 Total)
+**Negative (7):** Poison, Wound, Stun, Disarm, Immobilize, Muddle, Curse
 **Positive (2):** Strengthen, Bless
 
 ### 2.3 Elements (6)
@@ -92,39 +140,61 @@ States: Inert → Waning → Strong
 ## 3. Application Architecture
 
 ### 3.1 Tech Stack
-- **Framework:** React + TypeScript + Vite
-- **Styling:** Tailwind CSS v4 + shadcn/ui
-- **State:** TanStack Query + Zustand (local persistence)
-- **Validation:** Zod
-- **Storage:** IndexedDB (via Dexie.js) for offline-first
+| Layer | Choice | Notes |
+|-------|--------|-------|
+| Framework | React 19 + Vite 7 | Latest stable |
+| Language | TypeScript 5.9 | Strict mode |
+| Styling | Tailwind CSS v4 | `@tailwindcss/vite` plugin |
+| UI | shadcn/ui | Configured in `components.json` |
+| State | Zustand 5 | To be configured in Task 4 |
+| Validation | Zod v4 | Runtime schemas in `src/shared/schemas/` |
+| Storage | Dexie 4 (IndexedDB) | Offline-first, `src/shared/db/` |
+| Routing | React Router 7 | Basic setup in `src/app/routes.tsx` |
 
 ### 3.2 Project Structure
 ```
 src/
-├── app/                    # App entry, routing
+├── app/
+│   ├── main.tsx              # Entry point
+│   ├── App.tsx               # BrowserRouter wrapper
+│   └── routes.tsx            # Route definitions
 ├── features/
-│   ├── campaign/           # Campaign management
-│   ├── characters/         # Character CRUD, leveling
-│   ├── scenarios/          # Scenario tracking
-│   ├── rules/              # Rules reference
-│   └── calculators/        # Game calculators
+│   ├── campaign/             # [Task 4+] Campaign CRUD
+│   ├── characters/           # [Task 5+] Character management
+│   ├── scenarios/            # [Task 8+] Scenario tracking
+│   ├── rules/                # [Task 11+] Rules reference
+│   └── calculators/          # [Task 10] Game calculators
 ├── shared/
-│   ├── components/         # Reusable UI components
-│   ├── hooks/              # Custom hooks
-│   ├── lib/                # Utilities
-│   └── types/              # TypeScript types & Zod schemas
-├── data/                   # Static game data (JSON)
-└── styles/                 # Global styles
+│   ├── schemas/              # Zod v4 schemas (Campaign, CharacterProgress)
+│   ├── db/                   # Dexie database (campaigns table)
+│   ├── components/ui/        # shadcn/ui components
+│   ├── hooks/                # Custom hooks
+│   ├── lib/utils.ts          # cn() utility
+│   └── types/index.ts        # Shared TS types
+├── data/                     # Static JSON (7 fixtures + barrel)
+│   ├── characters.json
+│   ├── perks.json
+│   ├── conditions.json
+│   ├── elements.json
+│   ├── scenarios.json
+│   ├── tables.json
+│   ├── items.json
+│   ├── types.ts
+│   └── index.ts
+└── styles/
+    └── globals.css           # Tailwind v4 + theme
 ```
 
 ### 3.3 Data Flow
 ```mermaid
 flowchart TD
-    A["UI Components"] --> B["Feature Stores (Zustand)"]
-    B --> C["IndexedDB (Dexie)"]
+    A["UI Components"] --> B["Zustand Store"]
+    B --> C["Dexie (IndexedDB)"]
     B --> D["Static Game Data"]
-    D --> E["JSON Files"]
+    D --> E["src/data/*.json"]
     C --> F["Offline Persistence"]
+    G["Zod Schemas"] --> B
+    G --> C
 ```
 
 ---
@@ -160,7 +230,7 @@ flowchart TD
   - Monster focus algorithm
 
 ### 4.5 Calculators (`features/calculators/`)
-- **Scenario Level:** `floor(avgCharLevel / 2) + difficultyModifier`
+- **Scenario Level:** `ceil(avgCharLevel / 2) + difficultyModifier`
 - **Trap Damage:** `scenarioLevel + 2`
 - **Gold Conversion:** Based on scenario level table
 - **Bonus XP:** Based on scenario level table
@@ -172,40 +242,51 @@ Interactive checklist for:
 
 ---
 
-## 5. Data Models (Zod Schemas)
+## 5. Data Models
+
+### 5.1 Static Game Data (`src/data/`)
+Immutable JSON fixtures loaded at build time:
+- `characters.json` — 4 characters, HP tables L1-9
+- `perks.json` — 47 perks across characters
+- `conditions.json` — 9 status effects
+- `elements.json` — 6 elements with colours
+- `scenarios.json` — 17 scenarios with unlock chain
+- `tables.json` — XP thresholds, scenario level lookup
+- `items.json` — 7 starter items
+
+### 5.2 Player State (`src/shared/schemas/`)
+Zod v4 schemas for mutable campaign/character data:
 
 ```typescript
-// Character Types
-const CharacterType = z.enum([
-  'demolitionist', 'hatchet', 'voidwarden', 'red_guard'
-]);
-
-// Character Schema
-const Character = z.object({
+// CharacterProgress — embedded in Campaign
+CharacterProgressSchema = z.object({
   id: z.string().uuid(),
-  type: CharacterType,
+  type: z.enum(['demolitionist', 'red_guard', 'hatchet', 'voidwarden']),
   name: z.string().min(1).max(50),
   level: z.number().int().min(1).max(9),
   experience: z.number().int().min(0),
   gold: z.number().int().min(0),
   checkmarks: z.number().int().min(0).max(18),
-  perks: z.array(z.string()), // perk IDs
-  items: z.array(z.number()), // item IDs
-});
+  perkIds: z.array(z.string()),
+  itemIds: z.array(z.number().int()),
+})
 
-// Scenario Status
-const ScenarioStatus = z.enum(['locked', 'unlocked', 'completed']);
-
-// Campaign Schema
-const Campaign = z.object({
+// Campaign — top-level persisted entity
+CampaignSchema = z.object({
   id: z.string().uuid(),
-  name: z.string(),
-  characters: z.array(Character),
-  scenarios: z.record(z.number(), ScenarioStatus),
-  cityEventsDeck: z.array(z.number()),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
-});
+  name: z.string().min(1).max(100),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
+  characters: z.array(CharacterProgressSchema).max(4),
+  scenarioStatus: z.record(z.coerce.number(), ScenarioStatusSchema),
+  cityEventsDrawn: z.array(z.number().int()),
+})
+```
+
+### 5.3 Database (`src/shared/db/`)
+Dexie v1 schema:
+```typescript
+campaigns: 'id, name, updatedAt'  // Primary key: id
 ```
 
 ---
@@ -213,10 +294,10 @@ const Campaign = z.object({
 ## 6. Implementation Roadmap
 
 ### Phase 1: Foundation (Tasks 1-5)
-1. **[Task 1]** Project scaffolding (Vite + React + TS + Tailwind + shadcn) `DONE`
-2. **[Task 2]** Static game data (characters, perks, items, scenarios) `DONE`
-3. **[Task 3]** Data layer (Zod schemas + Dexie DB) `DONE`
-4. **[Task 4]** Campaign CRUD + persistence
+1. **[Task 1]** Project scaffolding `DONE`
+2. **[Task 2]** Static game data `DONE`
+3. **[Task 3]** Data layer (Zod + Dexie) `DONE`
+4. **[Task 4]** Campaign CRUD + Zustand store
 5. **[Task 5]** Character creation flow
 
 ### Phase 2: Core Features (Tasks 6-10)
@@ -243,66 +324,79 @@ const Campaign = z.object({
 ## 7. Lookup Tables (Static Data)
 
 ### 7.1 Scenario Level Table
-| Scenario Level | Monster Level | Trap Damage | Gold Conversion | Bonus XP |
-|----------------|---------------|-------------|-----------------|----------|
-| 0 | 0 | 2 | 2 | 4 |
-| 1 | 1 | 3 | 2 | 6 |
-| 2 | 2 | 4 | 3 | 8 |
-| 3 | 3 | 5 | 3 | 10 |
-| 4 | 4 | 6 | 4 | 12 |
-| 5 | 5 | 7 | 4 | 14 |
-| 6 | 6 | 8 | 5 | 16 |
-| 7 | 7 | 9 | 6 | 18 |
+| Level | Trap Damage | Gold/Token | Bonus XP |
+|-------|-------------|------------|----------|
+| 0 | 2 | 2 | 4 |
+| 1 | 3 | 2 | 6 |
+| 2 | 4 | 3 | 8 |
+| 3 | 5 | 3 | 10 |
+| 4 | 6 | 4 | 12 |
+| 5 | 7 | 4 | 14 |
+| 6 | 8 | 5 | 16 |
+| 7 | 9 | 6 | 18 |
 
 ### 7.2 Character Level Thresholds
-| Level | XP Required | Perks from Levels |
-|-------|-------------|-------------------|
-| 1 | 0 | 0 |
-| 2 | 45 | 1 |
-| 3 | 95 | 2 |
-| 4 | 150 | 3 |
-| 5 | 210 | 4 |
-| 6 | 275 | 5 |
-| 7 | 345 | 6 |
-| 8 | 420 | 7 |
-| 9 | 500 | 8 |
+| Level | XP Required |
+|-------|-------------|
+| 1 | 0 |
+| 2 | 45 |
+| 3 | 95 |
+| 4 | 150 |
+| 5 | 210 |
+| 6 | 275 |
+| 7 | 345 |
+| 8 | 420 |
+| 9 | 500 |
 
 ### 7.3 Item Slot Limits
-- Head: 1
-- Body: 1
-- Feet: 1
-- Hand: 2
+- Head: 1, Body: 1, Feet: 1, Hand: 2
 - Small: `ceil(characterLevel / 2)`
 
 ---
 
 ## 8. Architect's Log
 
-### 2026-02-03 - Task 1 Complete
-- Studied game documentation (Learn to Play, Glossary, Character Sheets)
-- Defined core domain model and planned feature modules
-- Created implementation roadmap
-- Scaffolded Vite + React 19 + TS strict + Tailwind v4 + shadcn/ui
-- Installed: zustand, dexie, zod, react-router-dom (basic "/" route live)
-- `pnpm build` passes clean — zero TS errors
-- **Note:** React 19 (latest stable) used instead of React 18 per "latest stable" rule
-- **Note:** Zod v4 installed (latest stable); API differs from v3 — schemas in Task 3 will use v4
-- **Note:** esbuild postinstall warning is cosmetic; binary works, pnpm 10 security gate
-- Task 2 complete: 7 JSON fixtures + typed barrel export, all AC pass
-- Task 3 complete: Zod v4 schemas (19 validation checks pass), Dexie v1 DB
-- **Next:** Task 4 - Campaign CRUD + Zustand store
+### 2026-02-03 — Foundation Phase Complete
+
+**Task 1: Project Scaffolding**
+- Vite 7 + React 19 + TypeScript 5.9 strict
+- Tailwind CSS v4 via `@tailwindcss/vite` (no PostCSS config needed)
+- shadcn/ui configured: `components.json`, path aliases, `cn()` utility
+- React Router 7 with "/" placeholder route
+- Installed (not configured): Zustand 5, Dexie 4, Zod v4
+
+**Task 2: Static Game Data**
+- Created 7 JSON fixtures with full game data
+- 4 characters with HP tables (L1-9), 47 perks, 9 conditions, 6 elements
+- 17 scenarios with complete unlock chain, 7 starter items
+- Typed barrel export via `src/data/index.ts`
+
+**Task 3: Data Layer**
+- Zod v4 schemas: `Campaign`, `CharacterProgress`, enums, primitives
+- 19/19 validation tests pass (valid accept, invalid reject, coercion)
+- Dexie database: `campaigns` table with indices
+- Singleton `db` export ready for CRUD operations
+
+**Notes:**
+- React 19 used (latest stable) instead of originally planned React 18
+- Zod v4 API: use `import * as z from 'zod'`
+- esbuild warning is cosmetic (pnpm 10 security gate)
+
+**Next:** Task 4 — Campaign CRUD + Zustand store
 
 ---
 
-## 9. Technical Decisions Log (ADR Summary)
+## 9. Technical Decisions (ADR Summary)
 
 | ID | Decision | Rationale |
 |----|----------|-----------|
-| ADR-001 | React + Vite over Next.js | No SSR needed, simpler setup for PWA |
-| ADR-002 | IndexedDB via Dexie | Offline-first, complex queries, good TS support |
-| ADR-003 | Zustand over Redux | Simpler API, built-in persistence middleware |
-| ADR-004 | Static JSON for game data | Immutable, easy to version, no API needed |
+| ADR-001 | React + Vite over Next.js | No SSR needed, simpler PWA setup |
+| ADR-002 | IndexedDB via Dexie | Offline-first, typed queries, good TS support |
+| ADR-003 | Zustand over Redux | Simpler API, persistence middleware |
+| ADR-004 | Static JSON for game data | Immutable rules, no API, easy versioning |
+| ADR-005 | Zod v4 (not v3) | Latest stable, better tree-shaking |
+| ADR-006 | Embedded characters in Campaign | Avoids relational complexity for small dataset |
 
 ---
 
-*End of Blueprint v0.1.0*
+*End of Blueprint v0.2.0*
