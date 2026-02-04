@@ -3,14 +3,34 @@
 //   import { characters, scenarios } from '@/data'
 // ---------------------------------------------------------------------------
 
-import characters from './characters.json'
-import perks from './perks.json'
-import conditions from './conditions.json'
-import elements from './elements.json'
-import scenarios from './scenarios.json'
-import tables from './tables.json'
-import items from './items.json'
-import rules from './rules.json'
+import charactersRaw from './characters.json'
+import perksRaw from './perks.json'
+import conditionsRaw from './conditions.json'
+import elementsRaw from './elements.json'
+import scenariosRaw from './scenarios.json'
+import tablesRaw from './tables.json'
+import itemsRaw from './items.json'
+import rulesRaw from './rules.json'
+
+import type {
+  Character,
+  Perk,
+  Condition,
+  Element,
+  Scenario,
+  Tables,
+  Item,
+  RulesData,
+} from './types.ts'
+
+const characters = charactersRaw as Character[]
+const perks = perksRaw as Perk[]
+const conditions = conditionsRaw as Condition[]
+const elements = elementsRaw as Element[]
+const scenarios = scenariosRaw as Scenario[]
+const tables = tablesRaw as Tables
+const items = itemsRaw as Item[]
+const rules = rulesRaw as RulesData
 
 export { characters, perks, conditions, elements, scenarios, tables, items, rules }
 

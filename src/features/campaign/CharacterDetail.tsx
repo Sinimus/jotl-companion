@@ -217,7 +217,11 @@ export function CharacterDetail() {
         )}
 
         {activeTab === 'items' && (
-          <ItemManager character={character} onUpdateItems={handleUpdateItems} />
+          <ItemManager
+            character={character}
+            scenarioStatus={campaign.scenarioStatus}
+            onUpdateItems={handleUpdateItems}
+          />
         )}
       </div>
     </div>

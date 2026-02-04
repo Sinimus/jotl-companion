@@ -68,6 +68,8 @@ export interface Item {
   effect: string
   /** Total physical copies of this item in the game box. */
   copies: number
+  /** Key identifying when the item is added to the shop. */
+  unlockedBy?: 'start' | 'scenario_2' | 'scenario_9' | 'scenario_15' | 'solo'
 }
 
 // ---------------------------------------------------------------------------

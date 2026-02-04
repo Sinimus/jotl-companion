@@ -1,20 +1,21 @@
 import { useState } from 'react'
-import { type CharacterProgress } from '@/shared/schemas'
+import { type CharacterProgress, type ScenarioStatus } from '@/shared/schemas'
 import { items, type Item, type ItemSlot } from '@/data'
 import { ItemShop } from './ItemShop'
 
 interface ItemManagerProps {
   character: CharacterProgress
+  scenarioStatus: Record<number, ScenarioStatus>
   /** Called with updated item IDs and new gold balance after equip / remove. */
   onUpdateItems: (updates: { itemIds: number[]; gold: number }) => void
 }
 
-export function ItemManager({ character, onUpdateItems }: ItemManagerProps) {
+export function ItemManager({ character, scenarioStatus, onUpdateItems }: ItemManagerProps) {
   const [isShopOpen, setIsShopOpen] = useState(false)
 
   const ownedItems = character.itemIds
     .map((id) => items.find((i) => i.id === id))
-    .filter((i): i is Item => !!i)
+    .filter((i): i is Item => i !== undefined)
 
   const itemsBySlot: Record<ItemSlot, Item[]> = {
     head: ownedItems.filter((i) => i.slot === 'head'),
@@ -137,6 +138,7 @@ export function ItemManager({ character, onUpdateItems }: ItemManagerProps) {
       {isShopOpen && (
         <ItemShop
           ownedItemIds={character.itemIds}
+          scenarioStatus={scenarioStatus}
           onEquip={handleEquip}
           onClose={() => setIsShopOpen(false)}
         />

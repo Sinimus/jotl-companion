@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useCampaignStore } from './store'
 import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
+import { cn } from '@/shared/lib/utils'
 import { CharacterCard } from './CharacterCard'
 import { CharacterForm } from './CharacterForm'
 import { ScenarioTracker } from './ScenarioTracker'
@@ -119,10 +120,27 @@ export function CampaignDetail() {
             </section>
 
             {/* "What's Next" card */}
-            <section className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-4">
-              <h3 className="mb-2 text-sm font-semibold text-amber-500">What's Next</h3>
+            <section className={cn(
+              "rounded-lg border p-4 transition-all",
+              allCompleted 
+                ? "border-emerald-500/50 bg-emerald-500/5 shadow-lg shadow-emerald-500/10" 
+                : "border-amber-500/40 bg-amber-500/5"
+            )}>
+              <h3 className={cn(
+                "mb-2 text-sm font-semibold",
+                allCompleted ? "text-emerald-500" : "text-amber-500"
+              )}>
+                {allCompleted ? "🏆 Campaign Complete!" : "What's Next"}
+              </h3>
               {allCompleted ? (
-                <p className="text-sm text-zinc-300">Campaign complete! All {scenarios.length} scenarios finished.</p>
+                <div className="space-y-2">
+                  <p className="text-sm text-zinc-200 font-medium">
+                    Congratulations! You have conquered the streets of Gloomhaven.
+                  </p>
+                  <p className="text-xs text-zinc-400">
+                    All {scenarios.length} scenarios have been finished. Your legend will live on in the Lion's den.
+                  </p>
+                </div>
               ) : nextScenario ? (
                 <div>
                   <p className="text-sm font-medium text-zinc-200">
