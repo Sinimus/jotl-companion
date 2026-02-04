@@ -6,8 +6,6 @@ export const CharacterProgressSchema = z.object({
   type: CharacterTypeSchema,
   /** Player-given display name (1-50 chars). */
   name: z.string().min(1).max(50),
-  /** Current character level (1-9). */
-  level: z.number().int().min(1).max(9),
   /** Cumulative experience; never resets. */
   experience: z.number().int().min(0),
   /** Current gold balance. */

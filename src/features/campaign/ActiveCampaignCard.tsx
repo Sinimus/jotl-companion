@@ -1,5 +1,6 @@
 import { type Campaign } from '@/shared/schemas'
 import { TOTAL_SCENARIOS } from '@/data'
+import { computeLevelFromXp } from './rules'
 
 interface ActiveCampaignCardProps {
   campaign: Campaign
@@ -15,7 +16,7 @@ export function ActiveCampaignCard({ campaign, label, onContinue }: ActiveCampai
   const avgLevel =
     campaign.characters.length > 0
       ? (
-          campaign.characters.reduce((sum, c) => sum + c.level, 0) /
+          campaign.characters.reduce((sum, c) => sum + computeLevelFromXp(c.experience), 0) /
           campaign.characters.length
         ).toFixed(1)
       : '1.0'

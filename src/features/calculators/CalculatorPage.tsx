@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { tables, characters } from '@/data'
+import { computeLevelFromXp } from '@/features/campaign/rules'
 
 export function CalculatorPage() {
   const { campaignId } = useParams<{ campaignId: string }>()
@@ -24,7 +25,7 @@ export function CalculatorPage() {
   // Calculate average party level
   const avgLevel =
     campaign?.characters.length && campaign.characters.length > 0
-      ? campaign.characters.reduce((sum, char) => sum + char.level, 0) / campaign.characters.length
+      ? campaign.characters.reduce((sum, char) => sum + computeLevelFromXp(char.experience), 0) / campaign.characters.length
       : 1
 
   // Base scenario level: ceil(average / 2)
@@ -81,13 +82,14 @@ export function CalculatorPage() {
             <div className="space-y-2">
               {campaign.characters.map((char) => {
                 const charDef = characters.find((c) => c.id === char.type)
+                const computedLevel = computeLevelFromXp(char.experience)
                 return (
                   <div key={char.id} className="flex items-center justify-between rounded-md bg-zinc-900 px-3 py-2">
                     <div>
                       <span className="text-sm font-medium text-zinc-200">{char.name}</span>
                       <span className="ml-2 text-xs text-zinc-500">({charDef?.name ?? char.type})</span>
                     </div>
-                    <span className="text-sm font-semibold text-amber-400">Lv {char.level}</span>
+                    <span className="text-sm font-semibold text-amber-400">Lv {computedLevel}</span>
                   </div>
                 )
               })}

@@ -1,6 +1,7 @@
 import { perks } from '@/data'
 import type { CharacterProgress } from '@/shared/schemas'
 import { cn } from '@/shared/lib/utils'
+import { computeLevelFromXp } from './rules'
 
 interface PerkListProps {
   character: CharacterProgress
@@ -12,7 +13,7 @@ export function PerkList({ character, onToggle }: PerkListProps) {
   const characterPerks = perks.filter((p) => p.characterId === character.type)
 
   // Calculate available perk points
-  const levelPerks = character.level - 1
+  const levelPerks = computeLevelFromXp(character.experience) - 1
   const checkmarkPerks = Math.floor(character.checkmarks / 3)
   const totalEarned = levelPerks + checkmarkPerks
   const spent = character.perkIds.length

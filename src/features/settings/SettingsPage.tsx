@@ -6,6 +6,8 @@ export function SettingsPage() {
   const [status, setStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null)
   
   const campaigns = useCampaignStore((s) => s.campaigns)
+  const corruptedCampaigns = useCampaignStore((s) => s.corruptedCampaigns)
+  const dismissCorrupted = useCampaignStore((s) => s.dismissCorrupted)
   const exportData = useCampaignStore((s) => s.exportData)
   const importData = useCampaignStore((s) => s.importData)
   const clearAllCampaigns = useCampaignStore((s) => s.clearAllCampaigns)
@@ -26,6 +28,19 @@ export function SettingsPage() {
     } catch (e) {
       setStatus({ type: 'error', message: e instanceof Error ? e.message : 'Export failed' })
     }
+  }
+
+  const handleExportCorrupted = (rawData: unknown, name: string | null) => {
+    const data = JSON.stringify(rawData, null, 2)
+    const blob = new Blob([data], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `corrupted-campaign-${name || 'unknown'}.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
   }
 
   const handleImport = async (file: File) => {
@@ -50,8 +65,40 @@ export function SettingsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-lg px-4 py-8">
+    <div className="mx-auto max-w-lg px-4 py-8 pb-24">
       <h1 className="mb-6 text-2xl font-bold text-amber-500">Settings</h1>
+
+      {/* Corrupted Data Warning */}
+      {corruptedCampaigns.length > 0 && (
+        <section className="mb-8 rounded-lg border border-red-500/50 bg-red-500/10 p-4">
+          <h2 className="mb-2 text-lg font-bold text-red-400">⚠️ Data Corruption Warning</h2>
+          <p className="mb-4 text-sm text-zinc-300">
+            Some campaign records failed validation and were not loaded. This usually happens after an app update if your data is malformed.
+          </p>
+          <div className="space-y-3">
+            {corruptedCampaigns.map((c) => (
+              <div key={c.localId} className="rounded border border-red-500/30 bg-black/20 p-3">
+                <div className="flex items-center justify-between">
+                  <p className="font-semibold text-zinc-200">{c.name || 'Unnamed Campaign'}</p>
+                  <button
+                    onClick={() => dismissCorrupted(c.localId)}
+                    className="text-xs text-zinc-500 hover:text-zinc-300"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+                <p className="mt-1 text-xs text-red-400/80 line-clamp-2">{c.error}</p>
+                <button
+                  onClick={() => handleExportCorrupted(c.rawData, c.name)}
+                  className="mt-2 text-xs font-medium text-amber-500 hover:underline"
+                >
+                  Download Raw JSON (Recover Data)
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Support & Documentation */}
       <section className="mb-8 rounded-lg border border-zinc-700 bg-zinc-800 p-4">

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useCampaignStore } from './store'
 import { CampaignCard } from './CampaignCard'
 import { ActiveCampaignCard } from './ActiveCampaignCard'
@@ -8,6 +8,7 @@ import { TOTAL_SCENARIOS } from '@/data'
 
 export function CampaignList() {
   const campaigns = useCampaignStore((s) => s.campaigns)
+  const corruptedCampaigns = useCampaignStore((s) => s.corruptedCampaigns)
   const activeCampaignId = useCampaignStore((s) => s.activeCampaignId)
   const isLoaded = useCampaignStore((s) => s.isLoaded)
   const createCampaign = useCampaignStore((s) => s.createCampaign)
@@ -48,6 +49,15 @@ export function CampaignList() {
         <h1 className="text-4xl font-bold text-amber-500">Gloomhaven: Jaws of the Lion</h1>
         <p className="mt-1 text-zinc-400">Unofficial Companion App</p>
 
+        {corruptedCampaigns.length > 0 && (
+          <div className="mt-4 rounded-lg border border-red-500/50 bg-red-500/10 p-3 text-left">
+            <p className="text-xs text-zinc-200">
+              <span className="font-bold text-red-400">⚠️ {corruptedCampaigns.length} corrupted records</span> were found. 
+              Go to <Link to="/settings" className="text-amber-500 underline">Settings</Link> to recover your data.
+            </p>
+          </div>
+        )}
+
         <div className="mt-8 rounded-lg border border-zinc-700 bg-zinc-800 p-6 text-left">
           <p className="text-zinc-300">
             Track your party through all {TOTAL_SCENARIOS} scenarios, manage character progression,
@@ -65,7 +75,14 @@ export function CampaignList() {
   // Branch B — campaigns.length > 0
   return (
     <div className="mx-auto max-w-lg px-4 py-6 pb-24">
-      <h1 className="text-xl font-bold text-amber-500">Gloomhaven: Jaws of the Lion</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-bold text-amber-500">Gloomhaven: Jaws of the Lion</h1>
+        {corruptedCampaigns.length > 0 && (
+          <Link to="/settings" className="text-[10px] font-bold uppercase tracking-tighter text-red-400 hover:text-red-300">
+            ⚠️ Data Error
+          </Link>
+        )}
+      </div>
 
       {/* Featured card */}
       <div className="mt-4">

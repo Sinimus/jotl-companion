@@ -1,7 +1,8 @@
 import { create } from 'zustand'
 import { toast } from 'sonner'
 import { db } from '@/shared/db'
-import { tables, scenarios } from '@/data'
+import { scenarios } from '@/data'
+import { getUnlockedScenarios } from './rules'
 import {
   CampaignSchema,
   CreateCampaignSchema,
@@ -21,6 +22,14 @@ const ACTIVE_KEY = 'jotl:activeCampaignId'
 // ---------------------------------------------------------------------------
 interface CampaignState {
   campaigns: Campaign[]
+  /** Campaigns that failed Zod validation during load. */
+  corruptedCampaigns: Array<{
+    localId: string
+    id: string | null
+    name: string | null
+    error: string
+    rawData: unknown
+  }>
   activeCampaignId: string | null
   /** false until the first Dexie hydration resolves */
   isLoaded: boolean
@@ -33,6 +42,8 @@ interface CampaignActions {
   createCampaign: (input: CreateCampaign) => Promise<void>
   /** Remove from Dexie + state.  Clears active selection when it matches. */
   deleteCampaign: (id: string) => Promise<void>
+  /** Remove a corrupted entry from the store (UI only). */
+  dismissCorrupted: (localId: string) => void
   /** Persist choice to localStorage, update state. */
   setActiveCampaign: (id: string) => void
   /** Add a character to a campaign (max 4).  Updates Dexie + state. */
@@ -72,21 +83,6 @@ export interface UpdateCharacterInput {
 }
 
 // ---------------------------------------------------------------------------
-// Domain helpers
-// ---------------------------------------------------------------------------
-
-/** Derive level from cumulative XP using the level-threshold table. */
-export function computeLevelFromXp(experience: number): number {
-  const thresholds = tables.levelThresholds as Record<string, number>
-  for (let level = 9; level >= 1; level--) {
-    if (experience >= thresholds[String(level)]) {
-      return level
-    }
-  }
-  return 1
-}
-
-// ---------------------------------------------------------------------------
 // Domain helper — initial scenarioStatus for a brand-new campaign.
 // Scenario 1 (unlockedBy === null) is always the entry point.
 // ---------------------------------------------------------------------------
@@ -104,27 +100,31 @@ function buildInitialScenarioStatus(): Record<number, 'locked' | 'unlocked' | 'c
 // ---------------------------------------------------------------------------
 export const useCampaignStore = create<CampaignStore>((set, get) => ({
   campaigns: [],
+  corruptedCampaigns: [],
   activeCampaignId: null,
   isLoaded: false,
 
   async initStore() {
     try {
       const rows = await db.campaigns.toArray()
-      // Re-parse through Zod; skip any row that fails validation (e.g. after a schema change)
+      // Re-parse through Zod; capture any row that fails validation
       const campaigns: Campaign[] = []
+      const corruptedCampaigns: CampaignState['corruptedCampaigns'] = []
+
       for (const row of rows) {
         // Data Migration: Ensure new fields exist for legacy campaigns
         // We perform defensive checks instead of blind casting
         const rawRow = row as Record<string, unknown>
         
-        const charactersArray = Array.isArray(rawRow.characters) ? rawRow.characters : []
+        const rawCharacters = Array.isArray(rawRow.characters) ? rawRow.characters : []
         const lootedTreasuresArray = Array.isArray(rawRow.lootedTreasureIds) ? rawRow.lootedTreasureIds : []
 
         const migrated = {
           ...rawRow,
           lootedTreasureIds: lootedTreasuresArray,
-          characters: charactersArray.reduce<any[]>((acc, c) => {
-            if (c && typeof c === 'object') {
+          characters: rawCharacters.reduce<Record<string, unknown>[]>((acc, c) => {
+            // Explicit type guard for the character record
+            if (c !== null && typeof c === 'object') {
               const charObj = c as Record<string, unknown>
               acc.push({
                 ...charObj,
@@ -139,11 +139,18 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
         if (result.success) {
           campaigns.push(result.data)
         } else {
-          console.warn('Skipping corrupted campaign in IndexedDB:', result.error)
+          console.error('Validation failed for campaign record:', result.error)
+          corruptedCampaigns.push({
+            localId: crypto.randomUUID(),
+            id: typeof rawRow.id === 'string' ? rawRow.id : null,
+            name: typeof rawRow.name === 'string' ? rawRow.name : 'Unknown',
+            error: result.error.message,
+            rawData: row,
+          })
         }
       }
       const activeCampaignId = localStorage.getItem(ACTIVE_KEY)
-      set({ campaigns, activeCampaignId, isLoaded: true })
+      set({ campaigns, corruptedCampaigns, activeCampaignId, isLoaded: true })
     } catch (error) {
       console.error('Failed to load campaigns from IndexedDB:', error)
       toast.error('Failed to load campaign data. Please refresh the page.')
@@ -184,6 +191,12 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
     })
   },
 
+  dismissCorrupted(localId: string) {
+    set((state) => ({
+      corruptedCampaigns: state.corruptedCampaigns.filter((c) => c.localId !== localId),
+    }))
+  },
+
   setActiveCampaign(id: string) {
     localStorage.setItem(ACTIVE_KEY, id)
     set({ activeCampaignId: id })
@@ -200,7 +213,6 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
       id: crypto.randomUUID(),
       type: input.type,
       name: input.name.trim(),
-      level: 1,
       experience: 0,
       gold: 0,
       checkmarks: 0,
@@ -257,11 +269,6 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
     if (updates.itemIds !== undefined) merged.itemIds = updates.itemIds
     if (updates.selectedAbilityIds !== undefined) merged.selectedAbilityIds = updates.selectedAbilityIds
 
-    // Auto-recompute level when XP changes
-    if (updates.experience !== undefined) {
-      merged.level = computeLevelFromXp(updates.experience)
-    }
-
     // Full Zod safety check before persisting
     const validated = CharacterProgressSchema.parse(merged)
 
@@ -288,13 +295,9 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
 
     // Auto-unlock logic
     if (status === 'completed') {
-      const scenarioDef = scenarios.find((s) => s.id === scenarioId)
-      if (scenarioDef && scenarioDef.unlocks) {
-        for (const childId of scenarioDef.unlocks) {
-          if (newStatusMap[childId] === 'locked') {
-            newStatusMap[childId] = 'unlocked'
-          }
-        }
+      const unlockIds = getUnlockedScenarios(newStatusMap, scenarioId)
+      for (const childId of unlockIds) {
+        newStatusMap[childId] = 'unlocked'
       }
     }
 
