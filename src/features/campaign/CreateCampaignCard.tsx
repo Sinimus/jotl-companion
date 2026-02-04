@@ -1,11 +1,12 @@
 import { useState } from 'react'
 
 interface CreateCampaignCardProps {
+  initiallyExpanded?: boolean
   onCreate: (name: string) => void
 }
 
-export function CreateCampaignCard({ onCreate }: CreateCampaignCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
+export function CreateCampaignCard({ initiallyExpanded, onCreate }: CreateCampaignCardProps) {
+  const [isExpanded, setIsExpanded] = useState(initiallyExpanded ?? false)
   const [name, setName] = useState('')
 
   const handleSubmit = () => {
@@ -20,10 +21,9 @@ export function CreateCampaignCard({ onCreate }: CreateCampaignCardProps) {
     return (
       <button
         onClick={() => setIsExpanded(true)}
-        className="flex h-full min-h-[140px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-zinc-700 bg-zinc-900/30 p-6 text-zinc-500 transition-colors hover:border-zinc-500 hover:bg-zinc-900/50 hover:text-zinc-300"
+        className="w-full rounded-lg border border-dashed border-zinc-700 px-4 py-3 text-left text-sm text-zinc-500 transition-colors hover:border-zinc-500 hover:text-zinc-300"
       >
-        <span className="text-2xl">+</span>
-        <span className="font-medium">New Campaign</span>
+        + New Campaign
       </button>
     )
   }

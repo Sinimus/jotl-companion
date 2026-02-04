@@ -2,10 +2,11 @@ import { type Campaign } from '@/shared/schemas'
 
 interface ActiveCampaignCardProps {
   campaign: Campaign
+  label?: string
   onContinue: () => void
 }
 
-export function ActiveCampaignCard({ campaign, onContinue }: ActiveCampaignCardProps) {
+export function ActiveCampaignCard({ campaign, label, onContinue }: ActiveCampaignCardProps) {
   const completedScenarios = Object.values(campaign.scenarioStatus).filter(
     (status) => status === 'completed'
   ).length
@@ -26,7 +27,7 @@ export function ActiveCampaignCard({ campaign, onContinue }: ActiveCampaignCardP
       <div className="relative z-10">
         <div className="mb-4">
           <span className="text-xs font-medium uppercase tracking-wider text-amber-500">
-            Active Campaign
+            {label ?? 'Active Campaign'}
           </span>
           <h2 className="text-3xl font-bold text-white">{campaign.name}</h2>
           <p className="text-sm text-zinc-400">
@@ -34,30 +35,31 @@ export function ActiveCampaignCard({ campaign, onContinue }: ActiveCampaignCardP
           </p>
         </div>
 
-        <div className="mb-6 grid grid-cols-2 gap-4">
-          <div className="rounded-lg bg-zinc-800/50 p-3">
-            <span className="block text-xs text-zinc-500">Party Size</span>
-            <span className="text-lg font-semibold text-zinc-200">
-              {campaign.characters.length}/4 Heroes
+        {/* Progress bar */}
+        <div className="mb-4">
+          <div className="mb-1 flex items-center justify-between">
+            <span className="text-xs text-zinc-500">{completedScenarios}/17 Scenarios</span>
+            <span className="text-xs font-medium text-amber-500">
+              {Math.round((completedScenarios / 17) * 100)}%
             </span>
           </div>
-          <div className="rounded-lg bg-zinc-800/50 p-3">
-            <span className="block text-xs text-zinc-500">Progress</span>
-            <span className="text-lg font-semibold text-zinc-200">
-              {completedScenarios}/17 Scenarios
-            </span>
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
+            <div
+              className="h-full bg-amber-600 transition-all duration-500"
+              style={{ width: `${(completedScenarios / 17) * 100}%` }}
+            />
           </div>
-          <div className="rounded-lg bg-zinc-800/50 p-3">
+        </div>
+
+        {/* Inline stats — Party + Avg Level only. Drop City Events. */}
+        <div className="mb-6 flex gap-6">
+          <div>
+            <span className="block text-xs text-zinc-500">Party</span>
+            <span className="text-sm font-semibold text-zinc-200">{campaign.characters.length}/4</span>
+          </div>
+          <div>
             <span className="block text-xs text-zinc-500">Avg Level</span>
-            <span className="text-lg font-semibold text-zinc-200">
-              Lv {avgLevel}
-            </span>
-          </div>
-          <div className="rounded-lg bg-zinc-800/50 p-3">
-            <span className="block text-xs text-zinc-500">City Events</span>
-            <span className="text-lg font-semibold text-zinc-200">
-              {campaign.cityEventsDrawn.length} Drawn
-            </span>
+            <span className="text-sm font-semibold text-zinc-200">Lv {avgLevel}</span>
           </div>
         </div>
 

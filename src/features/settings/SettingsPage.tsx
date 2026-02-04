@@ -101,9 +101,15 @@ export function SettingsPage() {
       <section className="rounded-lg border border-zinc-700 bg-zinc-800 p-4">
         <h2 className="mb-2 text-lg font-semibold text-zinc-100">About</h2>
         <p className="text-sm text-zinc-400">
-          JotL Companion v0.4.0
+          <span className="font-semibold text-zinc-300">Version:</span> 1.0.0
         </p>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-1 text-sm text-zinc-400">
+          <span className="font-semibold text-zinc-300">Author:</span> Lukas Walek
+        </p>
+        <p className="mt-1 text-sm text-zinc-400">
+          <span className="font-semibold text-zinc-300">License:</span> GNU GPLv3
+        </p>
+        <p className="mt-4 text-xs text-zinc-500">
           A fan-made companion app for Gloomhaven: Jaws of the Lion.
           Not affiliated with Cephalofair Games.
         </p>

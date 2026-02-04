@@ -60,9 +60,13 @@ export function CharacterCard({ character, onSelect, onDelete }: CharacterCardPr
         </div>
       </div>
 
+      <p className="mt-1 text-sm text-zinc-500">
+        {charDef?.race} &bull; {charDef?.role}
+      </p>
+
       {/* Stats row */}
-      <p className="mt-2 text-sm text-zinc-400">
-        Level {character.level} &bull; HP {maxHp}
+      <p className="mt-1.5 text-sm text-zinc-400">
+        Lv {character.level} &bull; HP {maxHp} &bull; {character.gold}g &bull; {character.itemIds.length} items
       </p>
     </div>
   )
