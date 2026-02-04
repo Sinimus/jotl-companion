@@ -107,39 +107,45 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
   isLoaded: false,
 
   async initStore() {
-    const rows = await db.campaigns.toArray()
-    // Re-parse through Zod; skip any row that fails validation (e.g. after a schema change)
-    const campaigns: Campaign[] = []
-    for (const row of rows) {
-      // Data Migration: Ensure new fields exist for legacy campaigns
-      // We perform defensive checks instead of blind casting
-      const rawRow = row as Record<string, unknown>
-      
-      const charactersArray = Array.isArray(rawRow.characters) ? rawRow.characters : []
-      const lootedTreasuresArray = Array.isArray(rawRow.lootedTreasureIds) ? rawRow.lootedTreasureIds : []
+    try {
+      const rows = await db.campaigns.toArray()
+      // Re-parse through Zod; skip any row that fails validation (e.g. after a schema change)
+      const campaigns: Campaign[] = []
+      for (const row of rows) {
+        // Data Migration: Ensure new fields exist for legacy campaigns
+        // We perform defensive checks instead of blind casting
+        const rawRow = row as Record<string, unknown>
+        
+        const charactersArray = Array.isArray(rawRow.characters) ? rawRow.characters : []
+        const lootedTreasuresArray = Array.isArray(rawRow.lootedTreasureIds) ? rawRow.lootedTreasureIds : []
 
-      const migrated = {
-        ...rawRow,
-        lootedTreasureIds: lootedTreasuresArray,
-        characters: charactersArray.map((c) => {
-          if (!c || typeof c !== 'object') return c
-          const charObj = c as Record<string, unknown>
-          return {
-            ...charObj,
-            selectedAbilityIds: Array.isArray(charObj.selectedAbilityIds) ? charObj.selectedAbilityIds : [],
-          }
-        }),
-      }
+        const migrated = {
+          ...rawRow,
+          lootedTreasureIds: lootedTreasuresArray,
+          characters: charactersArray
+            .filter((c): c is Record<string, unknown> => !!c && typeof c === 'object')
+            .map((charObj) => {
+              return {
+                ...charObj,
+                selectedAbilityIds: Array.isArray(charObj.selectedAbilityIds) ? charObj.selectedAbilityIds : [],
+              }
+            }),
+        }
 
-      const result = CampaignSchema.safeParse(migrated)
-      if (result.success) {
-        campaigns.push(result.data)
-      } else {
-        console.warn('Skipping corrupted campaign in IndexedDB:', result.error)
+        const result = CampaignSchema.safeParse(migrated)
+        if (result.success) {
+          campaigns.push(result.data)
+        } else {
+          console.warn('Skipping corrupted campaign in IndexedDB:', result.error)
+        }
       }
+      const activeCampaignId = localStorage.getItem(ACTIVE_KEY)
+      set({ campaigns, activeCampaignId, isLoaded: true })
+    } catch (error) {
+      console.error('Failed to load campaigns from IndexedDB:', error)
+      // Ensure app marks as loaded even on failure to avoid infinite spinner
+      set({ isLoaded: true })
     }
-    const activeCampaignId = localStorage.getItem(ACTIVE_KEY)
-    set({ campaigns, activeCampaignId, isLoaded: true })
   },
 
   async createCampaign(input: CreateCampaign) {
