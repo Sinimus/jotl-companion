@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useCampaignStore } from './store'
 import { CharacterCard } from './CharacterCard'
 import { CharacterForm } from './CharacterForm'
@@ -10,6 +10,8 @@ export function CampaignDetail() {
   const campaigns = useCampaignStore((s) => s.campaigns)
   const addCharacter = useCampaignStore((s) => s.addCharacter)
   const removeCharacter = useCampaignStore((s) => s.removeCharacter)
+
+  const navigate = useNavigate()
 
   // ---------------------------------------------------------------------------
   // Loading gate — Dexie hydration may not have finished on a deep-link entry
@@ -68,6 +70,7 @@ export function CampaignDetail() {
               <CharacterCard
                 key={char.id}
                 character={char}
+                onSelect={() => navigate(`/campaign/${campaign.id}/character/${char.id}`)}
                 onDelete={() => removeCharacter(campaign.id, char.id)}
               />
             ))}

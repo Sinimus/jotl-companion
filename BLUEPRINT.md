@@ -1,9 +1,9 @@
 # Gloomhaven: Jaws of the Lion - Companion App Blueprint
 
 > **Codename:** JotL Companion
-> **Version:** 0.2.0
-> **Last Updated:** 2026-02-03
-> **Status:** Implementation Phase (Tasks 1-3 complete)
+> **Version:** 0.3.0
+> **Last Updated:** 2026-02-04
+> **Status:** Implementation Phase (Tasks 1-6 complete)
 
 ---
 
@@ -14,7 +14,7 @@
 ### What Is This Project?
 A **companion app** for the board game "Gloomhaven: Jaws of the Lion". It helps players track campaigns, characters, and look up rules — but does NOT simulate or replace the physical game.
 
-### Current State (2026-02-03)
+### Current State (2026-02-04)
 ```
 Phase 1: Foundation
   [x] Task 1 — Scaffolding (Vite 7, React 19, TS strict, Tailwind v4, shadcn/ui)
@@ -22,6 +22,10 @@ Phase 1: Foundation
   [x] Task 3 — Data layer (Zod v4 schemas + Dexie DB)
   [x] Task 4 — Campaign CRUD + Zustand store
   [x] Task 5 — Character creation flow
+
+Phase 2: Core Features (in progress)
+  [x] Task 6 — Character detail view + stat editing (XP/gold/checkmarks, auto-level)
+  [ ] Task 7 — Level-up workflow  ← NEXT
 ```
 
 ### Key Files to Read
@@ -29,18 +33,21 @@ Phase 1: Foundation
 |------|---------|
 | `BLUEPRINT.md` | You are here — architecture, roadmap, decisions |
 | `README.md` | Dev log, tech stack, git history |
-| `docs/tasks/TASK-00*.md` | Completed task specs |
-| `src/data/index.ts` | Static game data barrel (characters, perks, items, scenarios) |
+| `docs/tasks/TASK-00*.md` | Completed task specs (001-006) |
+| `src/features/campaign/store.ts` | Zustand store — single runtime authority for all campaign + character state |
+| `src/features/campaign/*.tsx` | UI: CampaignList, CampaignDetail, CharacterCard, CharacterForm, CharacterDetail |
+| `src/data/index.ts` | Static game data barrel (characters, perks, items, scenarios, tables) |
 | `src/shared/schemas/index.ts` | Zod v4 schemas for Campaign, CharacterProgress |
 | `src/shared/db/index.ts` | Dexie database singleton (`db.campaigns`) |
-| `src/app/routes.tsx` | Current routes (only "/" placeholder exists) |
+| `src/app/routes.tsx` | Routes: `/`, `/campaign/:id`, `/campaign/:campaignId/character/:characterId` |
 
 ### Tech Stack Summary
 - **React 19** + TypeScript 5.9 (strict) + Vite 7
 - **Tailwind CSS v4** (via `@tailwindcss/vite`, no PostCSS config)
 - **Zod v4** — `import * as z from 'zod'` (not v3!)
-- **Dexie 4** — IndexedDB wrapper, `db.campaigns` table
-- **Zustand 5** — installed but not yet configured (Task 4)
+- **Dexie 4** — IndexedDB wrapper, `db.campaigns` table; write-through from Zustand
+- **Zustand 5** — campaign store at `src/features/campaign/store.ts`; manual Dexie sync (no persist middleware)
+- **React Router 7** — 3 routes; param names: `:id` (campaign list→detail), `:campaignId` + `:characterId` (character detail)
 - **pnpm** only (no npm/yarn)
 
 ### Game Domain Quick Reference
@@ -301,7 +308,7 @@ campaigns: 'id, name, updatedAt'  // Primary key: id
 5. **[Task 5]** Character creation flow `DONE`
 
 ### Phase 2: Core Features (Tasks 6-10)
-6. **[Task 6]** Character detail view + editing
+6. **[Task 6]** Character detail view + editing `DONE`
 7. **[Task 7]** Level up workflow
 8. **[Task 8]** Scenario tracker + status management
 9. **[Task 9]** Post-scenario checklist (interactive)
@@ -403,6 +410,16 @@ campaigns: 'id, name, updatedAt'  // Primary key: id
   - New character: level=1, experience=0, gold=0, empty perkIds/itemIds.
   - HP derived from static `characters.json` hitPoints table.
   - Form disabled when party is full (4/4).
+
+### 2026-02-04 — Task 6 Spec Published
+
+- Architect spec: `docs/tasks/TASK-006-character-detail.md`
+- Scope: `updateCharacter` store action, `CharacterDetail` page with stat editors, CharacterCard click-to-navigate.
+- Key decisions:
+  - Level is auto-computed from XP thresholds (`computeLevelFromXp` helper).
+  - Editable: XP, gold, checkmarks. Read-only: level, HP, perks count, items count.
+  - Route: `/campaign/:campaignId/character/:characterId`.
+  - Checkmarks capped at 18; shows "X perks earned" (floor(checkmarks/3)).
 
 ---
 

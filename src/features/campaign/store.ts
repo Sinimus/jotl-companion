@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { db } from '@/shared/db'
+import { tables } from '@/data'
 import {
   CampaignSchema,
   CreateCampaignSchema,
@@ -36,6 +37,8 @@ interface CampaignActions {
   addCharacter: (campaignId: string, input: CreateCharacter) => Promise<void>
   /** Remove a character from a campaign.  Updates Dexie + state. */
   removeCharacter: (campaignId: string, characterId: string) => Promise<void>
+  /** Update character stats.  Auto-recomputes level when XP changes. */
+  updateCharacter: (campaignId: string, characterId: string, updates: UpdateCharacterInput) => Promise<void>
 }
 
 export type CampaignStore = CampaignState & CampaignActions
@@ -44,6 +47,28 @@ export type CampaignStore = CampaignState & CampaignActions
 export interface CreateCharacter {
   type: 'demolitionist' | 'red_guard' | 'hatchet' | 'voidwarden'
   name: string
+}
+
+/** Payload for updateCharacter — only the fields being changed. */
+export interface UpdateCharacterInput {
+  experience?: number
+  gold?: number
+  checkmarks?: number
+}
+
+// ---------------------------------------------------------------------------
+// Domain helpers
+// ---------------------------------------------------------------------------
+
+/** Derive level from cumulative XP using the level-threshold table. */
+export function computeLevelFromXp(experience: number): number {
+  const thresholds = tables.levelThresholds as Record<string, number>
+  for (let level = 9; level >= 1; level--) {
+    if (experience >= thresholds[String(level)]) {
+      return level
+    }
+  }
+  return 1
 }
 
 // ---------------------------------------------------------------------------
@@ -150,6 +175,41 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
     const updated = {
       ...campaign,
       characters: campaign.characters.filter((c) => c.id !== characterId),
+      updatedAt: new Date(),
+    }
+
+    await db.campaigns.put(updated)
+
+    set((state) => ({
+      campaigns: state.campaigns.map((c) => (c.id === campaignId ? updated : c)),
+    }))
+  },
+
+  async updateCharacter(campaignId: string, characterId: string, updates: UpdateCharacterInput) {
+    const { campaigns } = get()
+    const campaign = campaigns.find((c) => c.id === campaignId)
+    if (!campaign) throw new Error('Campaign not found')
+
+    const character = campaign.characters.find((c) => c.id === characterId)
+    if (!character) throw new Error('Character not found')
+
+    // Apply only the defined fields
+    const merged = { ...character }
+    if (updates.experience !== undefined) merged.experience = updates.experience
+    if (updates.gold !== undefined) merged.gold = updates.gold
+    if (updates.checkmarks !== undefined) merged.checkmarks = updates.checkmarks
+
+    // Auto-recompute level when XP changes
+    if (updates.experience !== undefined) {
+      merged.level = computeLevelFromXp(updates.experience)
+    }
+
+    // Full Zod safety check before persisting
+    const validated = CharacterProgressSchema.parse(merged)
+
+    const updated = {
+      ...campaign,
+      characters: campaign.characters.map((c) => (c.id === characterId ? validated : c)),
       updatedAt: new Date(),
     }
 
