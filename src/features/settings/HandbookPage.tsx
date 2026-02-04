@@ -12,7 +12,7 @@ export function HandbookPage() {
         ← Back to settings
       </Link>
 
-      <div className="prose prose-zinc prose-invert max-w-none">
+      <div>
         <h1 className="mb-2 text-3xl font-bold text-amber-500">User Handbook</h1>
         <p className="mb-8 font-semibold text-zinc-300">
           Gloomhaven: Jaws of the Lion - Unofficial Companion App
