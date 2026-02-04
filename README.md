@@ -68,6 +68,15 @@ src/
 
 ## Dev Log
 
+### 2026-02-04 — Character Detail + Editing (Task 6)
+
+**Task 6: Character Detail View + Editing**
+- `computeLevelFromXp` helper — level auto-derived from XP thresholds (L1=0 … L9=500)
+- `updateCharacter` store action: partial updates (XP/gold/checkmarks), auto-level recompute, Zod validation, write-through to Dexie
+- `CharacterDetail` page: XP progress bar, 3-column stat editors (XP, gold, checkmarks), perks/items placeholders
+- Stat inputs use local state + onBlur persist — instant visual feedback, no stale closure
+- `CharacterCard` is now a full clickable card (stopPropagation on delete "×")
+
 ### 2026-02-04 — Character Creation (Task 5)
 
 **Task 5: Character Creation Flow**
