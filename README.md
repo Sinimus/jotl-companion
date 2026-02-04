@@ -2,14 +2,18 @@
 
 A companion app for the board game **Gloomhaven: Jaws of the Lion** that enhances the physical game experience without replacing it.
 
-## Features (Planned)
+## Features
 
 - **Campaign Tracking** - Track progress through the 17-scenario campaign
 - **Character Management** - Manage up to 4 characters with levels, XP, gold, perks, and items
-- **Scenario Tracker** - Track unlocked/completed scenarios
-- **Rules Reference** - Searchable glossary and quick reference cards
+- **Item Economy** - Buy/sell items with gold cost and half-price sell refund; slot-based inventory
+- **Scenario Tracker** - Track unlocked/completed scenarios with auto-unlock chain
+- **Rules Reference** - Searchable glossary (95 terms) and quick reference cards
 - **Calculators** - Scenario level, trap damage, gold conversion, bonus XP
-- **Post-Scenario Checklist** - Step-by-step guide for end-of-scenario procedures
+- **Post-Scenario Checklist** - Step-by-step guide for end-of-scenario procedures (success/failure)
+- **Export / Import** - JSON backup and restore for campaigns
+- **PWA** - Installable, offline-capable progressive web app
+- **Reset App** - Full data wipe with confirmation guard
 
 ## Tech Stack
 
@@ -45,13 +49,13 @@ pnpm lint
 
 ```
 src/
-├── app/                    # App entry, routing (main.tsx, App.tsx, routes.tsx)
-├── features/               # Feature modules (campaign, characters, scenarios, rules, calculators)
+├── app/                    # App entry, routing, ErrorBoundary (main.tsx, App.tsx, routes.tsx)
+├── features/               # Feature modules (campaign, characters, scenarios, rules, calculators, settings)
 ├── shared/
 │   ├── schemas/            # Zod v4 validation schemas
 │   ├── db/                 # Dexie database (IndexedDB)
-│   ├── components/ui/      # shadcn/ui components
-│   ├── hooks/              # Custom hooks
+│   ├── components/         # ErrorBoundary + layout (AppLayout, BottomNav) + shadcn/ui
+│   ├── hooks/              # useLoadedCampaign and other shared hooks
 │   ├── lib/                # Utilities (cn, etc.)
 │   └── types/              # TypeScript types
 ├── data/                   # Static game data (JSON) — 7 fixtures
@@ -67,6 +71,20 @@ src/
 ---
 
 ## Dev Log
+
+### 2026-02-04 — Stability & Security Pass (post-Task 20)
+
+**Objective-assessment pass over the full codebase — bugs fixed, dead code wired, resilience hardened.**
+
+- **Gold economy wired end-to-end:** `ItemManager` now deducts `item.cost` on buy (with half-price sell refund when replacing a single-slot item) and refunds `ceil(cost / 2)` on remove.  Gold flows atomically through `onUpdateItems → CharacterDetail → store.updateCharacter → Dexie`.
+- **Reset App button functional:** Connected the existing `clearAllCampaigns` store action (Dexie clear + localStorage wipe + Zustand zero) to the Settings confirmation dialog — was a no-op before.
+- **PWA manifest corrected:** `includeAssets` and icon `src` now reference the actual `icon.svg` in `public/`; removed stale `runtimeCaching` entries that targeted URLs never fetched at runtime.
+- **Unsafe HTML injection removed:** `PostScenarioChecklist` step rendering replaced with a safe JSX `renderBold()` helper — same pattern already used in `GlossaryPage`.
+- **Loading gates normalised:** Extracted `useLoadedCampaign` hook into `src/shared/hooks/`; applied to all four campaign-scoped routes (`CampaignDetail`, `CharacterDetail`, `CalculatorPage`, `PostScenarioChecklist`).  Prevents "not found" flash on deep-link cold start.
+- **Store resilience:** `initStore` now uses Zod `safeParse` — corrupted campaigns in IndexedDB are logged and skipped instead of crashing the app.
+- **Route-level code splitting:** 7 non-critical route modules lazy-loaded via `React.lazy`. Main bundle 503 KB → 463 KB; 7 async chunks (1–14 KB each).
+- **Error boundary at app root:** Class-component `ErrorBoundary` wraps `<AppRoutes />`; renders a reload button on unhandled error instead of a blank screen.
+- **Lint clean:** `CharacterDetail` state sync migrated from `useEffect` to the React "previous props" pattern — eliminates `react-hooks/set-state-in-effect` warning.
 
 ### 2026-02-04 — Character Sheet Polish (Task 20)
 
@@ -198,6 +216,8 @@ src/
 
 ### Technical Debt
 - esbuild postinstall warning (pnpm 10 security gate) — cosmetic, binary works
+- BottomNav uses emoji icons; SVG icon set would improve rendering consistency across platforms
+- No Dexie migration strategy yet (no schema change is imminent)
 
 ### Unresolved Edge Cases
 - None yet
@@ -233,6 +253,7 @@ src/
 - [x] Task 18: Dashboard Redesign
 - [x] Task 19: Item Management
 - [x] Task 20: Character Sheet Polish
+- [x] Stability pass: gold economy, reset wiring, PWA fix, code splitting, error boundary, loading gates
 - [ ] Task 21: Visual campaign map
 - [ ] Task 22: Dark mode toggle & accessibility refinements
 
@@ -241,10 +262,16 @@ src/
 ## Git Log
 
 ```
+(pending) Stability pass: gold economy, reset, PWA, code splitting, error boundary, loading gates
+f63279c  docs: Finalize documentation for Task 020 completion
+d54e77e  Tasks 007-020: Full Feature Set & UI/UX Overhaul
+74eb16e  Task 006: Character detail view — stat editors + XP-driven auto-level + cold-start refresh
+5594eae  Task 005: Character creation — detail page + roster CRUD
+611155c  Task 004: Campaign CRUD — Zustand store + list UI + Dexie persistence
+fe6a998  docs: Update README + BLUEPRINT with cold-start context
 8cb4661  Task 003: Data layer — Zod v4 schemas + Dexie DB
 679e1f3  Task 002: Static game data — 7 JSON fixtures + typed barrel
 7640264  Task 001: Project scaffolding — Vite + React + TS + Tailwind v4
-6db5572  Initialize project architecture and planning docs
 ```
 
 ---

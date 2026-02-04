@@ -32,6 +32,7 @@ export function FocusHelperPage() {
     if (activeCampaign && activeCampaign.characters.length > 0) {
       syncWithCampaign()
     }
+    // Mount-only: seeds target list from active party; user edits override after this.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

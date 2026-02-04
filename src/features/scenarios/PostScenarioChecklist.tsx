@@ -1,9 +1,28 @@
 import { useState, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { tables } from '@/data'
+
+// ---------------------------------------------------------------------------
+// Render markdown-style **bold** safely via JSX
+// ---------------------------------------------------------------------------
+function renderBold(text: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g)
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return (
+        <strong key={i} className="text-amber-400">
+          {part.slice(2, -2)}
+        </strong>
+      )
+    }
+    return <span key={i}>{part}</span>
+  })
+}
 
 export function PostScenarioChecklist() {
   const { campaignId } = useParams<{ campaignId: string }>()
+  const { isLoaded, campaign } = useLoadedCampaign(campaignId)
 
   // Local state - does not persist to DB
   const [outcome, setOutcome] = useState<'success' | 'failure'>('success')
@@ -46,6 +65,25 @@ export function PostScenarioChecklist() {
   ]
 
   const steps = outcome === 'success' ? successSteps : failureSteps
+
+  if (!isLoaded) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-zinc-900">
+        <p className="text-zinc-500">Loading…</p>
+      </div>
+    )
+  }
+
+  if (!campaign) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-900">
+        <p className="mb-4 text-zinc-400">Campaign not found.</p>
+        <Link to="/" className="text-sm text-amber-400 hover:text-amber-300">
+          ← Back to campaigns
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-zinc-900 px-4 py-8">
@@ -177,8 +215,9 @@ export function PostScenarioChecklist() {
                       'text-sm leading-snug',
                       isChecked ? 'text-amber-200' : 'text-zinc-300',
                     ].join(' ')}
-                    dangerouslySetInnerHTML={{ __html: step.replace(/\*\*(.+?)\*\*/g, '<strong class="text-amber-400">$1</strong>') }}
-                  />
+                  >
+                    {renderBold(step)}
+                  </span>
                 </label>
               )
             })}

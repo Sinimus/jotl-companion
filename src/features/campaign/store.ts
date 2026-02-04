@@ -46,6 +46,8 @@ interface CampaignActions {
   exportData: () => Promise<string>
   /** Import campaigns from JSON string. Validates each campaign. */
   importData: (json: string) => Promise<{ success: boolean; count: number; error?: string }>
+  /** Wipe all campaigns from Dexie + state. Clears activeCampaignId. */
+  clearAllCampaigns: () => Promise<void>
 }
 
 export type CampaignStore = CampaignState & CampaignActions
@@ -102,8 +104,16 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
 
   async initStore() {
     const rows = await db.campaigns.toArray()
-    // Re-parse through Zod so dates (and any future coercions) are correct
-    const campaigns = rows.map((row) => CampaignSchema.parse(row))
+    // Re-parse through Zod; skip any row that fails validation (e.g. after a schema change)
+    const campaigns: Campaign[] = []
+    for (const row of rows) {
+      const result = CampaignSchema.safeParse(row)
+      if (result.success) {
+        campaigns.push(result.data)
+      } else {
+        console.warn('Skipping corrupted campaign in IndexedDB:', result.error)
+      }
+    }
     const activeCampaignId = localStorage.getItem(ACTIVE_KEY)
     set({ campaigns, activeCampaignId, isLoaded: true })
   },
@@ -288,5 +298,11 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
         error: e instanceof Error ? e.message : 'Invalid data format',
       }
     }
+  },
+
+  async clearAllCampaigns() {
+    await db.campaigns.clear()
+    localStorage.removeItem(ACTIVE_KEY)
+    set({ campaigns: [], activeCampaignId: null })
   },
 }))

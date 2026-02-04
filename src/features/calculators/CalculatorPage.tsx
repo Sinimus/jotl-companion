@@ -1,13 +1,12 @@
 import { useState, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { useCampaignStore } from '@/features/campaign'
+import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { tables, characters } from '@/data'
 
 export function CalculatorPage() {
   const { campaignId } = useParams<{ campaignId: string }>()
 
-  const campaigns = useCampaignStore((s) => s.campaigns)
-  const campaign = campaigns.find((c) => c.id === campaignId)
+  const { isLoaded, campaign } = useLoadedCampaign(campaignId)
 
   // Difficulty modifier state: -1 (Easy), 0 (Normal), 1 (Hard), 2 (Very Hard)
   const [difficultyModifier, setDifficultyModifier] = useState<0 | 1 | 2 | 3>(1) // Index: 0=-1, 1=0, 2=1, 3=2
@@ -40,10 +39,21 @@ export function CalculatorPage() {
     [finalLevel]
   )
 
-  if (!campaign) {
+  if (!isLoaded) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-900">
-        <p className="text-zinc-500">Campaign not found.</p>
+        <p className="text-zinc-500">Loading…</p>
+      </div>
+    )
+  }
+
+  if (!campaign) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-900">
+        <p className="mb-4 text-zinc-400">Campaign not found.</p>
+        <Link to="/" className="text-sm text-amber-400 hover:text-amber-300">
+          ← Back to campaigns
+        </Link>
       </div>
     )
   }

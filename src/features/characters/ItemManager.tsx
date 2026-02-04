@@ -5,7 +5,8 @@ import { ItemShop } from './ItemShop'
 
 interface ItemManagerProps {
   character: CharacterProgress
-  onUpdateItems: (itemIds: number[]) => void
+  /** Called with updated item IDs and new gold balance after equip / remove. */
+  onUpdateItems: (updates: { itemIds: number[]; gold: number }) => void
 }
 
 export function ItemManager({ character, onUpdateItems }: ItemManagerProps) {
@@ -42,36 +43,41 @@ export function ItemManager({ character, onUpdateItems }: ItemManagerProps) {
     const limit = limits[slot]
 
     let newIds = [...character.itemIds]
+    let sellValue = 0
 
-    // If active loadout is full, we need to decide whether to Block or Replace.
-    // The spec said "Equip or Replace". 
-    // Since we don't have a sophisticated "Backpack" vs "Equipped" storage yet,
-    // I will simply ADD it. If it exceeds the limit, I'll visually flag it or 
-    // just let it be (player freedom) but the Shop UI in `ItemShop` handles the "Buy" click.
-    // Actually, let's implement strict "Replace" logic for single-slot items to keep it clean.
-    
     if (slot !== 'small' && slot !== 'hand') {
-       // Single slot items: Remove existing item of that slot if present
-       const existing = currentInSlot[0]
-       if (existing) {
-         if (!confirm(`Replace ${existing.name} with ${newItem.name}?`)) return
-         newIds = newIds.filter(id => id !== existing.id)
-       }
+      // Single-slot: replacing the existing item gives a sell refund
+      const existing = currentInSlot[0]
+      if (existing) {
+        sellValue = Math.ceil(existing.cost / 2)
+        if (!confirm(`Replace ${existing.name} with ${newItem.name}?`)) return
+        newIds = newIds.filter((id) => id !== existing.id)
+      }
     } else {
-      // Multi-slot (Hand/Small): Check count
       if (currentInSlot.length >= limit) {
         alert(`Slot full! Remove an item from ${slot} first.`)
         return
       }
     }
 
+    const netCost = newItem.cost - sellValue
+    if (character.gold < netCost) {
+      alert(`Not enough gold! Need ${netCost}, have ${character.gold}.`)
+      return
+    }
+
     newIds.push(itemId)
-    onUpdateItems(newIds)
+    onUpdateItems({ itemIds: newIds, gold: character.gold - netCost })
   }
 
   const handleRemove = (itemId: number) => {
-    if (confirm('Remove this item?')) {
-      onUpdateItems(character.itemIds.filter((id) => id !== itemId))
+    const removedItem = items.find((i) => i.id === itemId)
+    const sellValue = removedItem ? Math.ceil(removedItem.cost / 2) : 0
+    if (confirm(`Remove this item? Sell for ${sellValue} gold.`)) {
+      onUpdateItems({
+        itemIds: character.itemIds.filter((id) => id !== itemId),
+        gold: character.gold + sellValue,
+      })
     }
   }
 
