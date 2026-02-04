@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { toast } from 'sonner'
 import { useCampaignStore, computeLevelFromXp, type UpdateCharacterInput } from './store'
 import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { characters, tables } from '@/data'
@@ -70,28 +71,44 @@ export function CharacterDetail() {
 
   const perksFromCheckmarks = Math.floor(checkmarks / 3)
 
-  const commit = (updates: UpdateCharacterInput) => {
-    void updateCharacter(campaignId!, characterId!, updates)
+  const commit = async (updates: UpdateCharacterInput) => {
+    try {
+      await updateCharacter(campaignId!, characterId!, updates)
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Failed to update character')
+    }
   }
 
-  const handleUpdateItems = (updates: { itemIds: number[]; gold: number }) => {
-    updateCharacter(campaignId!, characterId!, { itemIds: updates.itemIds, gold: updates.gold })
+  const handleUpdateItems = async (updates: { itemIds: number[]; gold: number }) => {
+    try {
+      await updateCharacter(campaignId!, characterId!, { itemIds: updates.itemIds, gold: updates.gold })
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Failed to update items')
+    }
   }
 
-  const handleUpdateAbilities = (selectedAbilityIds: string[]) => {
-    void updateCharacter(campaignId!, characterId!, { selectedAbilityIds })
+  const handleUpdateAbilities = async (selectedAbilityIds: string[]) => {
+    try {
+      await updateCharacter(campaignId!, characterId!, { selectedAbilityIds })
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Failed to update abilities')
+    }
   }
 
-  const handleTogglePerk = (perkId: string, isSelected: boolean) => {
+  const handleTogglePerk = async (perkId: string, isSelected: boolean) => {
     const currentIds = new Set(character.perkIds)
     if (isSelected) {
       currentIds.add(perkId)
     } else {
       currentIds.delete(perkId)
     }
-    updateCharacter(campaignId!, characterId!, {
-      perkIds: Array.from(currentIds),
-    })
+    try {
+      await updateCharacter(campaignId!, characterId!, {
+        perkIds: Array.from(currentIds),
+      })
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Failed to update perk')
+    }
   }
 
   return (

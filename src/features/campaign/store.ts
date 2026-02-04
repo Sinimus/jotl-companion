@@ -112,16 +112,23 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
     const campaigns: Campaign[] = []
     for (const row of rows) {
       // Data Migration: Ensure new fields exist for legacy campaigns
+      // We perform defensive checks instead of blind casting
       const rawRow = row as Record<string, unknown>
-      const rawCharacters = (rawRow.characters as Record<string, unknown>[] | undefined) || []
       
+      const charactersArray = Array.isArray(rawRow.characters) ? rawRow.characters : []
+      const lootedTreasuresArray = Array.isArray(rawRow.lootedTreasureIds) ? rawRow.lootedTreasureIds : []
+
       const migrated = {
-        ...row,
-        lootedTreasureIds: (rawRow.lootedTreasureIds as number[]) || [],
-        characters: rawCharacters.map((c) => ({
-          ...c,
-          selectedAbilityIds: (c.selectedAbilityIds as string[]) || [],
-        })),
+        ...rawRow,
+        lootedTreasureIds: lootedTreasuresArray,
+        characters: charactersArray.map((c) => {
+          if (!c || typeof c !== 'object') return c
+          const charObj = c as Record<string, unknown>
+          return {
+            ...charObj,
+            selectedAbilityIds: Array.isArray(charObj.selectedAbilityIds) ? charObj.selectedAbilityIds : [],
+          }
+        }),
       }
 
       const result = CampaignSchema.safeParse(migrated)

@@ -34,8 +34,7 @@ A feature-rich, offline-first companion app for the board game **Gloomhaven: Jaw
 
 ## 📖 Documentation
 
-- **[In-App Handbook]**: Accessible via Settings > How to Use.
-- **[Blueprint](BLUEPRINT.md)**: Technical architecture, roadmap, and design decisions.
+- **[In-App Handbook]**: Accessible via Settings > How to Use.ß
 
 ## 📦 Getting Started
 
