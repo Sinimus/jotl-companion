@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { characters } from '@/data'
 import { type CreateCharacter } from './store'
 
@@ -11,7 +12,6 @@ interface CharacterFormProps {
 export function CharacterForm({ disabled, onAdd }: CharacterFormProps) {
   const [selectedType, setSelectedType] = useState<string | null>(null)
   const [name, setName] = useState('')
-  const [error, setError] = useState<string | null>(null)
 
   // ---------------------------------------------------------------------------
   if (disabled) {
@@ -27,9 +27,9 @@ export function CharacterForm({ disabled, onAdd }: CharacterFormProps) {
       await onAdd({ type: selectedType as CreateCharacter['type'], name: name.trim() })
       setSelectedType(null)
       setName('')
-      setError(null)
+      toast.success('Character added successfully')
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to add character')
+      toast.error(e instanceof Error ? e.message : 'Failed to add character')
     }
   }
 
@@ -82,8 +82,6 @@ export function CharacterForm({ disabled, onAdd }: CharacterFormProps) {
           Add Character
         </button>
       </div>
-
-      {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
     </div>
   )
 }
