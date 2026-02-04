@@ -68,6 +68,15 @@ src/
 
 ## Dev Log
 
+### 2026-02-04 — Character Creation (Task 5)
+
+**Task 5: Character Creation Flow**
+- Store: `addCharacter` + `removeCharacter` — Zod-validated, write-through to Dexie via `db.campaigns.put()`
+- `CampaignDetail` page replaces `/campaign/:id` placeholder: back link, party roster, add form
+- `CharacterCard`: type badge, player name, Level + HP (from static hitPoints table), delete-with-confirm
+- `CharacterForm`: 4 type-selector buttons, name input, Add button; shows "Party full" at 4
+- Deep-link safety: loading gate prevents "not found" flash before Dexie hydration
+
 ### 2026-02-04 — Campaign CRUD (Task 4)
 
 **Task 4: Campaign CRUD + Zustand Store**
@@ -113,7 +122,7 @@ src/
 - [x] Task 2: Static game data
 - [x] Task 3: Data layer (schemas + DB)
 - [x] Task 4: Campaign CRUD + persistence
-- [ ] Task 5: Character creation
+- [x] Task 5: Character creation
 
 ### Phase 2: Core Features (Tasks 6-10)
 - [ ] Character detail view, editing, level-up workflow

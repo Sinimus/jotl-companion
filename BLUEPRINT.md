@@ -21,7 +21,7 @@ Phase 1: Foundation
   [x] Task 2 — Static game data (7 JSON fixtures in src/data/)
   [x] Task 3 — Data layer (Zod v4 schemas + Dexie DB)
   [x] Task 4 — Campaign CRUD + Zustand store
-  [ ] Task 5 — Character creation flow  ← NEXT
+  [x] Task 5 — Character creation flow
 ```
 
 ### Key Files to Read
@@ -298,7 +298,7 @@ campaigns: 'id, name, updatedAt'  // Primary key: id
 2. **[Task 2]** Static game data `DONE`
 3. **[Task 3]** Data layer (Zod + Dexie) `DONE`
 4. **[Task 4]** Campaign CRUD + Zustand store `DONE`
-5. **[Task 5]** Character creation flow
+5. **[Task 5]** Character creation flow `DONE`
 
 ### Phase 2: Core Features (Tasks 6-10)
 6. **[Task 6]** Character detail view + editing
@@ -393,6 +393,16 @@ campaigns: 'id, name, updatedAt'  // Primary key: id
   - `activeCampaignId` in `localStorage` (single key; avoids DB_VERSION bump).
   - New campaign auto-unlocks Scenario 1 only.
   - Delete requires confirmation in UI.
+
+### 2026-02-04 — Task 5 Spec Published
+
+- Architect spec: `docs/tasks/TASK-005-character-creation.md`
+- Scope: `addCharacter` / `removeCharacter` store actions, `CampaignDetail` page, `CharacterCard` + `CharacterForm` UI.
+- Key decisions:
+  - No duplicate-type restriction (game allows it; flexibility).
+  - New character: level=1, experience=0, gold=0, empty perkIds/itemIds.
+  - HP derived from static `characters.json` hitPoints table.
+  - Form disabled when party is full (4/4).
 
 ---
 
