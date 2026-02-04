@@ -6,7 +6,7 @@ import { cn } from '@/shared/lib/utils'
 import { CharacterCard } from './CharacterCard'
 import { CharacterForm } from './CharacterForm'
 import { ScenarioTracker } from './ScenarioTracker'
-import { scenarios } from '@/data'
+import { scenarios, TOTAL_SCENARIOS } from '@/data'
 
 export function CampaignDetail() {
   const { id } = useParams<{ id: string }>()
@@ -47,7 +47,7 @@ export function CampaignDetail() {
   const nextScenario = scenarios
     .filter(s => campaign.scenarioStatus[s.id] === 'unlocked')
     .sort((a, b) => a.id - b.id)[0] ?? null
-  const allCompleted = !nextScenario && completedScenarios === scenarios.length
+  const allCompleted = !nextScenario && completedScenarios === TOTAL_SCENARIOS
 
   // ---------------------------------------------------------------------------
   return (
@@ -61,12 +61,12 @@ export function CampaignDetail() {
           {/* Progress bar */}
           <div className="mt-2">
             <div className="mb-1 flex justify-between text-[10px] uppercase text-zinc-500">
-              <span>{completedScenarios}/{scenarios.length} Scenarios</span>
-              <span>{Math.round((completedScenarios / scenarios.length) * 100)}%</span>
+              <span>{completedScenarios}/{TOTAL_SCENARIOS} Scenarios</span>
+              <span>{Math.round((completedScenarios / TOTAL_SCENARIOS) * 100)}%</span>
             </div>
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
               <div className="h-full bg-amber-600 transition-all duration-500"
-                style={{ width: `${(completedScenarios / scenarios.length) * 100}%` }} />
+                style={{ width: `${(completedScenarios / TOTAL_SCENARIOS) * 100}%` }} />
             </div>
           </div>
         </div>
@@ -138,7 +138,7 @@ export function CampaignDetail() {
                     Congratulations! You have conquered the streets of Gloomhaven.
                   </p>
                   <p className="text-xs text-zinc-400">
-                    All {scenarios.length} scenarios have been finished. Your legend will live on in the Lion's den.
+                    All {TOTAL_SCENARIOS} scenarios have been finished. Your legend will live on in the Lion's den.
                   </p>
                 </div>
               ) : nextScenario ? (

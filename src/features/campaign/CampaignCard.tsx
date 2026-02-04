@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { type Campaign } from '@/shared/schemas'
-import { scenarios } from '@/data'
+import { scenarios, TOTAL_SCENARIOS } from '@/data'
 
 interface CampaignCardProps {
   campaign: Campaign
@@ -56,10 +56,10 @@ export function CampaignCard({ campaign, isActive, onSelect, onDelete }: Campaig
           </button>
         </div>
 
-        {/* Middle: {completedScenarios}/25 · {N} heroes in text-xs text-zinc-400 */}
+        {/* Middle: {completedScenarios}/TOTAL_SCENARIOS · {N} heroes in text-xs text-zinc-400 */}
         <div className="shrink-0 text-right">
           <span className="text-xs text-zinc-400">
-            {completedScenarios}/{scenarios.length} &bull; {campaign.characters.length} heroes
+            {completedScenarios}/{TOTAL_SCENARIOS} &bull; {campaign.characters.length} heroes
           </span>
         </div>
 
