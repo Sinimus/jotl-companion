@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { type CharacterProgress, type ScenarioStatus } from '@/shared/schemas'
 import { items, type Item, type ItemSlot } from '@/data'
+import { computeLevelFromXp } from '@/features/campaign/rules'
 import { ItemShop } from './ItemShop'
 
 interface ItemManagerProps {
@@ -26,7 +27,7 @@ export function ItemManager({ character, scenarioStatus, onUpdateItems }: ItemMa
   }
 
   // Calculate limits
-  const smallItemLimit = Math.ceil(character.level / 2)
+  const smallItemLimit = Math.ceil(computeLevelFromXp(character.experience) / 2)
   const limits: Record<ItemSlot, number> = {
     head: 1,
     body: 1,

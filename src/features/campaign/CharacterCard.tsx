@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { type CharacterProgress } from '@/shared/schemas'
 import { characters } from '@/data'
+import { computeLevelFromXp } from './rules'
 
 interface CharacterCardProps {
   character: CharacterProgress
@@ -15,7 +16,8 @@ export function CharacterCard({ character, onSelect, onDelete }: CharacterCardPr
   // Static character definition — name, race, HP table.
   // hitPoints keys are literal "1"-"9" strings in the JSON; cast to generic Record for dynamic lookup.
   const charDef = characters.find((c) => c.id === character.type)
-  const maxHp = (charDef?.hitPoints as Record<string, number>)?.[String(character.level)] ?? 0
+  const computedLevel = computeLevelFromXp(character.experience)
+  const maxHp = (charDef?.hitPoints as Record<string, number>)?.[String(computedLevel)] ?? 0
 
   return (
     <div
@@ -66,7 +68,7 @@ export function CharacterCard({ character, onSelect, onDelete }: CharacterCardPr
 
       {/* Stats row */}
       <p className="mt-1.5 text-sm text-zinc-400">
-        Lv {character.level} &bull; HP {maxHp} &bull; {character.gold}g &bull; {character.itemIds.length} items
+        Lv {computedLevel} &bull; HP {maxHp} &bull; {character.gold}g &bull; {character.itemIds.length} items
       </p>
     </div>
   )
