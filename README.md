@@ -68,6 +68,16 @@ src/
 
 ## Dev Log
 
+### 2026-02-04 — Campaign CRUD (Task 4)
+
+**Task 4: Campaign CRUD + Zustand Store**
+- Zustand 5 store (`src/features/campaign/store.ts`): `initStore`, `createCampaign`, `deleteCampaign`, `setActiveCampaign`
+- Write-through persistence to Dexie; `activeCampaignId` in `localStorage` (`jotl:activeCampaignId`)
+- New campaigns auto-unlock Scenario 1; characters/cityEvents start empty
+- `CampaignList` + `CampaignCard` UI: create, list, select, delete-with-confirm
+- Routes: `/` → campaign list, `/campaign/:id` → detail stub (Task 5)
+- `App.tsx` hydrates store on mount via single `useEffect`
+
 ### 2026-02-03 — Foundation Complete (Tasks 1-3)
 
 **Task 1: Project Scaffolding**
@@ -102,7 +112,7 @@ src/
 - [x] Task 1: Project scaffolding
 - [x] Task 2: Static game data
 - [x] Task 3: Data layer (schemas + DB)
-- [ ] Task 4: Campaign CRUD + persistence
+- [x] Task 4: Campaign CRUD + persistence
 - [ ] Task 5: Character creation
 
 ### Phase 2: Core Features (Tasks 6-10)

@@ -20,8 +20,8 @@ Phase 1: Foundation
   [x] Task 1 — Scaffolding (Vite 7, React 19, TS strict, Tailwind v4, shadcn/ui)
   [x] Task 2 — Static game data (7 JSON fixtures in src/data/)
   [x] Task 3 — Data layer (Zod v4 schemas + Dexie DB)
-  [ ] Task 4 — Campaign CRUD + Zustand store  ← NEXT
-  [ ] Task 5 — Character creation flow
+  [x] Task 4 — Campaign CRUD + Zustand store
+  [ ] Task 5 — Character creation flow  ← NEXT
 ```
 
 ### Key Files to Read
@@ -297,7 +297,7 @@ campaigns: 'id, name, updatedAt'  // Primary key: id
 1. **[Task 1]** Project scaffolding `DONE`
 2. **[Task 2]** Static game data `DONE`
 3. **[Task 3]** Data layer (Zod + Dexie) `DONE`
-4. **[Task 4]** Campaign CRUD + Zustand store
+4. **[Task 4]** Campaign CRUD + Zustand store `DONE`
 5. **[Task 5]** Character creation flow
 
 ### Phase 2: Core Features (Tasks 6-10)
@@ -382,7 +382,17 @@ campaigns: 'id, name, updatedAt'  // Primary key: id
 - Zod v4 API: use `import * as z from 'zod'`
 - esbuild warning is cosmetic (pnpm 10 security gate)
 
-**Next:** Task 4 — Campaign CRUD + Zustand store
+**Next:** Task 4 — Campaign CRUD + Zustand store  →  spec written at `docs/tasks/TASK-004-campaign-crud.md`
+
+### 2026-02-04 — Task 4 Spec Published
+
+- Architect spec: `docs/tasks/TASK-004-campaign-crud.md`
+- Scope: Zustand store (manual Dexie sync), CampaignList + CampaignCard UI, route wiring, localStorage for `activeCampaignId`.
+- Key decisions encoded in the task:
+  - No Zustand `persist` middleware (Dexie is async → explicit write-through).
+  - `activeCampaignId` in `localStorage` (single key; avoids DB_VERSION bump).
+  - New campaign auto-unlocks Scenario 1 only.
+  - Delete requires confirmation in UI.
 
 ---
 
