@@ -29,7 +29,7 @@ Phase 4: Polish (COMPLETE)
   [x] Tasks 15-20: PWA, Export/Import, UI Overhaul, Dashboard, Items, Polish
   [x] Task 21: UI Redesign (Home & Campaign Detail)
   [x] Stability Pass: Gold economy, resets, lazy loading, error boundaries
-  [x] 1.0.0 Release: Licensing (GPLv3), User Handbook, Branding
+  [x] 1.0.0 Release: Licensing (GPLv3), In-app User Handbook, Branding
 ```
 
 ### Key Files to Read
@@ -37,7 +37,7 @@ Phase 4: Polish (COMPLETE)
 |------|---------|
 | `BLUEPRINT.md` | You are here — architecture, roadmap, decisions |
 | `README.md` | General project overview & setup |
-| `USER_HANDBOOK.md` | User guide & manual |
+| `src/features/settings/HandbookPage.tsx` | In-app user guide & manual |
 | `src/features/campaign/store.ts` | Zustand store — single runtime authority |
 | `src/data/index.ts` | Static game data barrel |
 | `src/app/routes.tsx` | App routing structure |
