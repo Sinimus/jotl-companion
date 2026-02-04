@@ -39,7 +39,7 @@ export function HandbookPage() {
 
           <h3 className="mb-2 text-lg font-semibold text-zinc-200">Your First Campaign</h3>
           <ol className="list-decimal space-y-2 pl-5 text-zinc-400">
-            <li>On the home screen, you will see a welcome message.</li>
+            <li>On the home screen, you will see the app introduction and feature overview.</li>
             <li>Tap <strong className="font-semibold text-zinc-200 block mt-1 text-amber-400/80">"+ New Campaign"</strong> (or use the open creation form if it's your first time).</li>
             <li>Enter a name for your campaign and press Enter or click Create.</li>
           </ol>
