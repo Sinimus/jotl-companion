@@ -18,6 +18,8 @@ export const CharacterProgressSchema = z.object({
   perkIds: z.array(z.string()),
   /** IDs of owned items — references items.json. */
   itemIds: z.array(z.number().int()),
+  /** IDs of selected ability cards (for optional tracking). */
+  selectedAbilityIds: z.array(z.string()),
 })
 
 export type CharacterProgress = z.infer<typeof CharacterProgressSchema>

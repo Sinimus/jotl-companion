@@ -6,11 +6,12 @@ import { cn } from '@/shared/lib/utils'
 import { CharacterCard } from './CharacterCard'
 import { CharacterForm } from './CharacterForm'
 import { ScenarioTracker } from './ScenarioTracker'
+import { TreasureTracker } from './TreasureTracker'
 import { scenarios, TOTAL_SCENARIOS } from '@/data'
 
 export function CampaignDetail() {
   const { id } = useParams<{ id: string }>()
-  const [activeTab, setActiveTab] = useState<'party' | 'scenarios'>('party')
+  const [activeTab, setActiveTab] = useState<'party' | 'scenarios' | 'treasures'>('party')
 
   const { isLoaded, campaign } = useLoadedCampaign(id)
   const addCharacter = useCampaignStore((s) => s.addCharacter)
@@ -73,12 +74,12 @@ export function CampaignDetail() {
 
         {/* Tab row */}
         <div className="flex border-t border-zinc-800">
-          {(['party', 'scenarios'] as const).map((tab) => (
+          {(['party', 'scenarios', 'treasures'] as const).map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-3 text-sm font-medium transition-colors ${
+              className={`flex-1 py-3 text-sm font-medium transition-colors capitalize ${
                 activeTab === tab ? 'border-b-2 border-amber-500 text-amber-500' : 'text-zinc-500 hover:text-zinc-300'
               }`}>
-              {tab === 'party' ? 'Party' : 'Scenarios'}
+              {tab}
             </button>
           ))}
         </div>
@@ -170,10 +171,15 @@ export function CampaignDetail() {
               </div>
             </section>
           </div>
-        ) : (
+        ) : activeTab === 'scenarios' ? (
           <ScenarioTracker
             campaignId={campaign.id}
             scenarioStatus={campaign.scenarioStatus}
+          />
+        ) : (
+          <TreasureTracker
+            campaignId={campaign.id}
+            lootedTreasureIds={campaign.lootedTreasureIds}
           />
         )}
       </div>

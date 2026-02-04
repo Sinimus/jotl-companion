@@ -42,6 +42,8 @@ interface CampaignActions {
   updateCharacter: (campaignId: string, characterId: string, updates: UpdateCharacterInput) => Promise<void>
   /** Update status of a scenario. If 'completed', auto-unlocks child scenarios. */
   setScenarioStatus: (campaignId: string, scenarioId: number, status: 'unlocked' | 'completed') => Promise<void>
+  /** Mark a treasure chest as looted or not. */
+  setTreasureLooted: (campaignId: string, treasureId: number, isLooted: boolean) => Promise<void>
   /** Export all campaigns as JSON string. */
   exportData: () => Promise<string>
   /** Import campaigns from JSON string. Validates each campaign. */
@@ -65,6 +67,7 @@ export interface UpdateCharacterInput {
   checkmarks?: number
   perkIds?: string[]
   itemIds?: number[]
+  selectedAbilityIds?: string[]
 }
 
 // ---------------------------------------------------------------------------
@@ -108,7 +111,20 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
     // Re-parse through Zod; skip any row that fails validation (e.g. after a schema change)
     const campaigns: Campaign[] = []
     for (const row of rows) {
-      const result = CampaignSchema.safeParse(row)
+      // Data Migration: Ensure new fields exist for legacy campaigns
+      const rawRow = row as Record<string, unknown>
+      const rawCharacters = (rawRow.characters as Record<string, unknown>[] | undefined) || []
+      
+      const migrated = {
+        ...row,
+        lootedTreasureIds: (rawRow.lootedTreasureIds as number[]) || [],
+        characters: rawCharacters.map((c) => ({
+          ...c,
+          selectedAbilityIds: (c.selectedAbilityIds as string[]) || [],
+        })),
+      }
+
+      const result = CampaignSchema.safeParse(migrated)
       if (result.success) {
         campaigns.push(result.data)
       } else {
@@ -131,6 +147,7 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
       characters: [],
       scenarioStatus: buildInitialScenarioStatus(),
       cityEventsDrawn: [],
+      lootedTreasureIds: [],
     })
 
     await db.campaigns.add(campaign)
@@ -172,6 +189,7 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
       checkmarks: 0,
       perkIds: [],
       itemIds: [],
+      selectedAbilityIds: [],
     })
 
     const updated = {
@@ -220,6 +238,7 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
     if (updates.checkmarks !== undefined) merged.checkmarks = updates.checkmarks
     if (updates.perkIds !== undefined) merged.perkIds = updates.perkIds
     if (updates.itemIds !== undefined) merged.itemIds = updates.itemIds
+    if (updates.selectedAbilityIds !== undefined) merged.selectedAbilityIds = updates.selectedAbilityIds
 
     // Auto-recompute level when XP changes
     if (updates.experience !== undefined) {
@@ -265,6 +284,31 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
     const updated = {
       ...campaign,
       scenarioStatus: newStatusMap,
+      updatedAt: new Date(),
+    }
+
+    await db.campaigns.put(updated)
+
+    set((state) => ({
+      campaigns: state.campaigns.map((c) => (c.id === campaignId ? updated : c)),
+    }))
+  },
+
+  async setTreasureLooted(campaignId: string, treasureId: number, isLooted: boolean) {
+    const { campaigns } = get()
+    const campaign = campaigns.find((c) => c.id === campaignId)
+    if (!campaign) throw new Error('Campaign not found')
+
+    let newLooted = [...campaign.lootedTreasureIds]
+    if (isLooted) {
+      if (!newLooted.includes(treasureId)) newLooted.push(treasureId)
+    } else {
+      newLooted = newLooted.filter((id) => id !== treasureId)
+    }
+
+    const updated = {
+      ...campaign,
+      lootedTreasureIds: newLooted,
       updatedAt: new Date(),
     }
 
