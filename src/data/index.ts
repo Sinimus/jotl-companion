@@ -11,6 +11,7 @@ import scenariosRaw from './scenarios.json'
 import tablesRaw from './tables.json'
 import itemsRaw from './items.json'
 import rulesRaw from './rules.json'
+import abilities from './abilities.json'
 
 import type {
   Character,
@@ -34,7 +35,7 @@ const rules = rulesRaw as RulesData
 
 export const TOTAL_SCENARIOS = scenarios.length
 
-export { characters, perks, conditions, elements, scenarios, tables, items, rules }
+export { characters, perks, conditions, elements, scenarios, tables, items, rules, abilities }
 
 export type {
   Character,

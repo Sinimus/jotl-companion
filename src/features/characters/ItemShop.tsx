@@ -143,10 +143,10 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
                       </span>
                     ) : (
                       <button
-                        disabled={isLocked}
+                        disabled={isLocked && !showHidden}
                         onClick={() => onEquip(item.id)}
                         className={`rounded px-3 py-1 text-xs font-medium transition-colors ${
-                          isLocked
+                          isLocked && !showHidden
                             ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
                             : 'bg-zinc-700 text-zinc-200 hover:bg-amber-600 hover:text-white'
                         }`}

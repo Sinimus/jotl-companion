@@ -1,0 +1,50 @@
+{
+  "demolitionist": {
+    "1": ["Crushing Weight", "Explode", "Explosive Blitz", "Implode", "Knock Out the Support", "One-Two Punch", "Piston Punch", "The Big One", "Windup"],
+    "X": ["Level", "Lobbed Charge", "Rubble"],
+    "2": ["Crash Protocol", "Robotic Enhancement"],
+    "3": ["Fire Bombs", "Nowhere To Run"],
+    "4": ["Extra Fuel", "Remote Detonation"],
+    "5": ["Mech Suit", "Drill Fist"],
+    "6": ["Dust Cloud", "Insult To Injury"],
+    "7": ["Micro Missiles", "Gut Punch"],
+    "8": ["The Bigger One", "Collateral Damage"],
+    "9": ["Wholesale Destruction"]
+  },
+  "hatchet": {
+    "1": ["Center Mass", "Close Cuts", "Disorienting Barrage", "Double Throw", "Follow Through", "Power Pitch", "Retrieval", "Second Wind", "Stopping Power", "The Favorite"],
+    "X": ["Care Package", "Extra Lift", "Fancy Hat"],
+    "2": ["Ricochet", "Repeat Shot"],
+    "3": ["Sharpened Blades", "Fearsome Efficiency"],
+    "4": ["Ripped From The Flesh", "Overwatch"],
+    "5": ["The New Favorite", "Brutalize"],
+    "6": ["Quick Turnaround", "Camaraderie"],
+    "7": ["Heart Seeker", "Repeat Shot"],
+    "8": ["Shrapnel", "Excessive Force"],
+    "9": ["The Ultimate Favorite"]
+  },
+  "red_guard": {
+    "1": ["Blinding Sickle", "Desert Night", "Flame Shroud", "Flaming Sickle", "Healing Sands", "Shield of the Desert", "Shield Spikes", "Shocking Advance", "Swift Strength", "Twirling Stabs", "Blade Dance"],
+    "X": ["Precision Strike", "Warmth of the Sun", "Warrior of the Sun"],
+    "2": ["Harvest Sickle", "Strangling Chain"],
+    "3": ["Barbaric Instincts", "Burn Away the Dark"],
+    "4": ["Bulwark", "Radiant Sickle"],
+    "5": ["Sand Devil", "Fierce Brilliance"],
+    "6": ["Flying Sickle", "Vicious Ballet"],
+    "7": ["Horns of the Beast", "Honorable Fury"],
+    "8": ["No Fear", "Soaring Shield"],
+    "9": ["Prismatic Sickle", "Radiant Sickle"]
+  },
+  "voidwarden": {
+    "1": ["Black Boon", "Close To the Abyss", "Cold Embrace", "Freeze the Soul", "Gift of the Void", "Grasp of Doom", "Lure of the Void", "Master Influence", "Resigned Frenzy", "Signs of the Void", "Suggestion", "Turn Out the Lights", "Wicked Scratch"],
+    "X": ["Sap Warmth", "Crushing Cold", "Give and Take"],
+    "2": ["Commanding Presence", "Taunting Fate"],
+    "3": ["Savage Instinct", "Stand Fast"],
+    "4": ["The Last Journey", "Surge of Power"],
+    "5": ["Withering Conviction", "Hateful Blast"],
+    "6": ["Spirit Hunger", "Empowered Link"],
+    "7": ["Lull Into Oblivion", "Eye of the Void"],
+    "8": ["Possessed By Fate", "No Escape"],
+    "9": ["Void Walk", "Master of Puppets"]
+  }
+}

@@ -18,6 +18,8 @@ export const CampaignSchema = z.object({
   ),
   /** Ordered list of city-event IDs already drawn this campaign. */
   cityEventsDrawn: z.array(z.number().int()),
+  /** IDs of treasure chests looted (1-16). */
+  lootedTreasureIds: z.array(z.number().int()),
 })
 
 export type Campaign = z.infer<typeof CampaignSchema>

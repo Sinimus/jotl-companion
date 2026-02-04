@@ -4,7 +4,7 @@ import { useCampaignStore, computeLevelFromXp, type UpdateCharacterInput } from 
 import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { characters, tables } from '@/data'
 import { PerkList } from './PerkList'
-import { ItemManager } from '@/features/characters'
+import { ItemManager, AbilityManager } from '@/features/characters'
 
 export function CharacterDetail() {
   const { campaignId, characterId } = useParams<{ campaignId: string; characterId: string }>()
@@ -76,6 +76,10 @@ export function CharacterDetail() {
 
   const handleUpdateItems = (updates: { itemIds: number[]; gold: number }) => {
     updateCharacter(campaignId!, characterId!, { itemIds: updates.itemIds, gold: updates.gold })
+  }
+
+  const handleUpdateAbilities = (selectedAbilityIds: string[]) => {
+    void updateCharacter(campaignId!, characterId!, { selectedAbilityIds })
   }
 
   const handleTogglePerk = (perkId: string, isSelected: boolean) => {
@@ -209,6 +213,8 @@ export function CharacterDetail() {
               </div>
               <p className="mt-2 text-center text-xs text-zinc-600">Max 18 checkmarks</p>
             </div>
+
+            <AbilityManager character={character} onUpdateAbilities={handleUpdateAbilities} />
           </div>
         )}
 

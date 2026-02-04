@@ -34,5 +34,21 @@
   { "id": 33, "name": "Steel Ring", "slot": "small", "cost": 20, "usageType": "consumed", "effect": "When damaged by an attack, gain Shield 4 for the attack.", "copies": 1, "unlockedBy": "scenario_15" },
   { "id": 34, "name": "Barbed Axe", "slot": "hand", "cost": 40, "usageType": "consumed", "effect": "During your melee attack, add WOUND to the entire Attack action.", "copies": 1, "unlockedBy": "solo" },
   { "id": 35, "name": "Robes of Command", "slot": "body", "cost": 40, "usageType": "spent", "effect": "During your turn, one adjacent ally may perform a 'Move 2' action.", "copies": 1, "unlockedBy": "solo" },
-  { "id": 36, "name": "Jet Boots", "slot": "feet", "cost": 50, "usageType": "spent", "effect": "During your movement, add +1 Move and Jump to the movement.", "copies": 1, "unlockedBy": "solo" }
+  { "id": 36, "name": "Jet Boots", "slot": "feet", "cost": 50, "usageType": "spent", "effect": "During your movement, add +1 Move and Jump to the movement.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 37, "name": "Cloak of Invisibility", "slot": "body", "cost": 20, "usageType": "consumed", "effect": "During your turn, gain INVISIBLE.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 38, "name": "Piercing Bow", "slot": "hand", "cost": 30, "usageType": "consumed", "effect": "During your ranged attack, ignore all Shield values for the entire Attack action.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 39, "name": "War Hammer", "slot": "hand", "cost": 30, "usageType": "consumed", "effect": "During your melee attack, add STUN to the entire Attack action.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 40, "name": "Minor Antidote", "slot": "small", "cost": 10, "usageType": "consumed", "effect": "During your turn, remove POISON from yourself.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 41, "name": "Major Healing Potion", "slot": "small", "cost": 30, "usageType": "consumed", "effect": "During your turn, perform a 'Heal 5, self' action.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 42, "name": "Major Stamina Potion", "slot": "small", "cost": 30, "usageType": "consumed", "effect": "During your turn, Recover up to three of your discarded cards.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 43, "name": "Major Power Potion", "slot": "small", "cost": 40, "usageType": "consumed", "effect": "During your attack, add +2 Attack to your entire Attack action.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 44, "name": "Major Mana Potion", "slot": "small", "cost": 30, "usageType": "consumed", "effect": "During your turn, infuse any two elements.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 45, "name": "Super Healing Potion", "slot": "small", "cost": 50, "usageType": "consumed", "effect": "During your turn, perform a 'Heal 7, self' action.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 46, "name": "Super Stamina Potion", "slot": "small", "cost": 50, "usageType": "consumed", "effect": "During your turn, Recover up to four of your discarded cards.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 47, "name": "Super Power Potion", "slot": "small", "cost": 60, "usageType": "consumed", "effect": "During your attack, add +3 Attack to your entire Attack action.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 48, "name": "Ring of Skulls", "slot": "small", "cost": 50, "usageType": "consumed", "effect": "Summon Skeleton.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 49, "name": "Second Skin", "slot": "body", "cost": 30, "usageType": "passive", "effect": "Remove two -1 cards from your attack modifier deck.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 50, "name": "Pendant of Dark Pacts", "slot": "head", "cost": 50, "usageType": "consumed", "effect": "During your turn, Recover two of your consumed small items.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 51, "name": "Drakescale Helm", "slot": "head", "cost": 50, "usageType": "passive", "effect": "You are immune to MUDDLE.", "copies": 1, "unlockedBy": "solo" },
+  { "id": 52, "name": "Steel Ring", "slot": "small", "cost": 30, "usageType": "consumed", "effect": "When damaged by an attack, gain Shield 4 for the attack.", "copies": 1, "unlockedBy": "solo" }
 ]
