@@ -32,6 +32,8 @@ const tables = tablesRaw as Tables
 const items = itemsRaw as Item[]
 const rules = rulesRaw as RulesData
 
+export const TOTAL_SCENARIOS = scenarios.length
+
 export { characters, perks, conditions, elements, scenarios, tables, items, rules }
 
 export type {

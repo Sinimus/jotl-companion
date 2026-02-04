@@ -1,6 +1,7 @@
 import * as z from 'zod'
 import { UuidSchema, ScenarioStatusSchema, TimestampSchema } from './common.schema.ts'
 import { CharacterProgressSchema } from './character.schema.ts'
+import { TOTAL_SCENARIOS } from '@/data'
 
 export const CampaignSchema = z.object({
   id: UuidSchema,
@@ -10,9 +11,9 @@ export const CampaignSchema = z.object({
   updatedAt: TimestampSchema,
   /** Active party — at most 4 characters. */
   characters: z.array(CharacterProgressSchema).max(4),
-  /** Scenario ID (1-25) → current status.  Keys are coerced from strings. */
+  /** Scenario ID (1-TOTAL_SCENARIOS) → current status.  Keys are coerced from strings. */
   scenarioStatus: z.record(
-    z.coerce.number().int().min(1).max(25),
+    z.coerce.number().int().min(1).max(TOTAL_SCENARIOS),
     ScenarioStatusSchema,
   ),
   /** Ordered list of city-event IDs already drawn this campaign. */
