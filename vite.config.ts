@@ -10,7 +10,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['icon.svg'],
       manifest: {
         name: 'JotL Companion',
         short_name: 'JotL',
@@ -22,7 +22,7 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: '/vite.svg',
+            src: '/icon.svg',
             sizes: '512x512',
             type: 'image/svg+xml',
             purpose: 'any maskable'
@@ -31,19 +31,6 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,json}'],
-        runtimeCaching: [
-          {
-            urlPattern: /^https\/\/.*\.json$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'static-data-cache',
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 * 30
-              }
-            }
-          }
-        ]
       }
     })
   ],

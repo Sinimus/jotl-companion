@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useCampaignStore, computeLevelFromXp, type UpdateCharacterInput } from './store'
+import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { characters, tables } from '@/data'
 import { PerkList } from './PerkList'
 import { ItemManager } from '@/features/characters'
@@ -8,11 +9,9 @@ import { ItemManager } from '@/features/characters'
 export function CharacterDetail() {
   const { campaignId, characterId } = useParams<{ campaignId: string; characterId: string }>()
 
-  const isLoaded = useCampaignStore((s) => s.isLoaded)
-  const campaigns = useCampaignStore((s) => s.campaigns)
+  const { isLoaded, campaign } = useLoadedCampaign(campaignId)
   const updateCharacter = useCampaignStore((s) => s.updateCharacter)
 
-  const campaign = isLoaded ? campaigns.find((c) => c.id === campaignId) : undefined
   const character = campaign?.characters.find((c) => c.id === characterId)
 
   // Local state for stats editing
@@ -21,14 +20,20 @@ export function CharacterDetail() {
   const [checkmarks, setCheckmarks] = useState(0)
   const [activeTab, setActiveTab] = useState<'stats' | 'perks' | 'items'>('stats')
 
-  useEffect(() => {
+  // ---------------------------------------------------------------------------
+  // Sync local input state when the store-backed character changes externally
+  // (e.g. after import).  "Previous props" pattern — avoids an effect and the
+  // cascading-render warning that comes with setState inside useEffect.
+  // ---------------------------------------------------------------------------
+  const [syncedCharacter, setSyncedCharacter] = useState(character)
+  if (character !== syncedCharacter) {
+    setSyncedCharacter(character)
     if (character) {
       setXp(character.experience)
       setGold(character.gold)
       setCheckmarks(character.checkmarks)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [characterId])
+  }
 
   if (!isLoaded) {
     return (
@@ -69,8 +74,8 @@ export function CharacterDetail() {
     void updateCharacter(campaignId!, characterId!, updates)
   }
 
-  const handleUpdateItems = (itemIds: number[]) => {
-    updateCharacter(campaignId!, characterId!, { itemIds })
+  const handleUpdateItems = (updates: { itemIds: number[]; gold: number }) => {
+    updateCharacter(campaignId!, characterId!, { itemIds: updates.itemIds, gold: updates.gold })
   }
 
   const handleTogglePerk = (perkId: string, isSelected: boolean) => {

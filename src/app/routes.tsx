@@ -1,10 +1,33 @@
+import { lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { CampaignList, CampaignDetail, CharacterDetail } from '@/features/campaign'
-import { PostScenarioChecklist } from '@/features/scenarios'
-import { CalculatorPage } from '@/features/calculators'
-import { GlossaryPage, ReferencePage, RulesLayout, FocusHelperPage } from '@/features/rules'
-import { SettingsPage } from '@/features/settings'
 import { AppLayout } from '@/shared/components/layout/AppLayout'
+
+// ---------------------------------------------------------------------------
+// Lazy-loaded route modules — split from the critical campaign path so the
+// initial paint only ships CampaignList + CampaignDetail + CharacterDetail.
+// ---------------------------------------------------------------------------
+const PostScenarioChecklist = lazy(() =>
+  import('@/features/scenarios/PostScenarioChecklist').then((m) => ({ default: m.PostScenarioChecklist })),
+)
+const CalculatorPage = lazy(() =>
+  import('@/features/calculators/CalculatorPage').then((m) => ({ default: m.CalculatorPage })),
+)
+const RulesLayout = lazy(() =>
+  import('@/features/rules/RulesLayout').then((m) => ({ default: m.RulesLayout })),
+)
+const GlossaryPage = lazy(() =>
+  import('@/features/rules/GlossaryPage').then((m) => ({ default: m.GlossaryPage })),
+)
+const ReferencePage = lazy(() =>
+  import('@/features/rules/ReferencePage').then((m) => ({ default: m.ReferencePage })),
+)
+const FocusHelperPage = lazy(() =>
+  import('@/features/rules/FocusHelperPage').then((m) => ({ default: m.FocusHelperPage })),
+)
+const SettingsPage = lazy(() =>
+  import('@/features/settings/SettingsPage').then((m) => ({ default: m.SettingsPage })),
+)
 
 export function AppRoutes() {
   return (

@@ -1,9 +1,9 @@
 # Gloomhaven: Jaws of the Lion - Companion App Blueprint
 
 > **Codename:** JotL Companion
-> **Version:** 0.4.0
+> **Version:** 0.5.0
 > **Last Updated:** 2026-02-04
-> **Status:** Implementation Phase (Tasks 1-20 complete)
+> **Status:** Tasks 1-20 complete + stability / security pass applied
 
 ---
 
@@ -35,6 +35,16 @@ Phase 3: Rules Reference (complete)
   [x] Task 12 — Searchable glossary UI
   [x] Task 13 — Quick reference cards
   [x] Task 14 — Monster focus algorithm helper
+
+Phase 4: Polish (complete)
+  [x] Task 15 — PWA support (offline, installable)
+  [x] Task 16 — Export / import campaigns
+  [x] Task 17 — UI/UX Overhaul (Layout & Navigation)
+  [x] Task 18 — Dashboard Redesign
+  [x] Task 19 — Item Management
+  [x] Task 20 — Character Sheet Polish
+  [x] Stability pass — gold economy, reset wiring, PWA manifest, code splitting,
+                        error boundary, loading gates, store resilience, lint fix
 ```
 
 ### Key Files to Read
@@ -48,15 +58,19 @@ Phase 3: Rules Reference (complete)
 | `src/data/index.ts` | Static game data barrel (characters, perks, items, scenarios, tables) |
 | `src/shared/schemas/index.ts` | Zod v4 schemas for Campaign, CharacterProgress |
 | `src/shared/db/index.ts` | Dexie database singleton (`db.campaigns`) |
-| `src/app/routes.tsx` | Routes: `/`, `/campaign/:id`, `/campaign/:campaignId/character/:characterId` |
+| `src/shared/hooks/useLoadedCampaign.ts` | Shared hook: waits for Dexie hydration + finds campaign by ID |
+| `src/shared/components/ErrorBoundary.tsx` | App-root error boundary (class component, reload on crash) |
+| `src/app/routes.tsx` | Routes: `/`, `/campaign/:id`, `/campaign/:campaignId/character/:characterId`; 7 lazy chunks |
 
 ### Tech Stack Summary
 - **React 19** + TypeScript 5.9 (strict) + Vite 7
 - **Tailwind CSS v4** (via `@tailwindcss/vite`, no PostCSS config)
 - **Zod v4** — `import * as z from 'zod'` (not v3!)
 - **Dexie 4** — IndexedDB wrapper, `db.campaigns` table; write-through from Zustand
-- **Zustand 5** — campaign store at `src/features/campaign/store.ts`; manual Dexie sync (no persist middleware)
-- **React Router 7** — 3 routes; param names: `:id` (campaign list→detail), `:campaignId` + `:characterId` (character detail)
+- **Zustand 5** — campaign store at `src/features/campaign/store.ts`; manual Dexie sync (no persist middleware); `initStore` uses `safeParse` to skip corrupted rows
+- **React Router 7** — nested layout routes via `<Outlet />`; 7 non-critical routes are `React.lazy`; core campaign path is eager
+- **Error Boundary** — `src/shared/components/ErrorBoundary.tsx` wraps `<AppRoutes />`
+- **useLoadedCampaign** — `src/shared/hooks/useLoadedCampaign.ts` centralises the "wait for hydration + find campaign" guard used by 4 routes
 - **pnpm** only (no npm/yarn)
 
 ### Game Domain Quick Reference
@@ -162,7 +176,7 @@ States: Inert → Waning → Strong
 | Language | TypeScript 5.9 | Strict mode |
 | Styling | Tailwind CSS v4 | `@tailwindcss/vite` plugin |
 | UI | shadcn/ui | Configured in `components.json` |
-| State | Zustand 5 | To be configured in Task 4 |
+| State | Zustand 5 | Single store; manual Dexie write-through |
 | Validation | Zod v4 | Runtime schemas in `src/shared/schemas/` |
 | Storage | Dexie 4 (IndexedDB) | Offline-first, `src/shared/db/` |
 | Routing | React Router 7 | Basic setup in `src/app/routes.tsx` |
@@ -172,19 +186,20 @@ States: Inert → Waning → Strong
 src/
 ├── app/
 │   ├── main.tsx              # Entry point
-│   ├── App.tsx               # BrowserRouter wrapper
-│   └── routes.tsx            # Route definitions
+│   ├── App.tsx               # BrowserRouter + ErrorBoundary wrapper
+│   └── routes.tsx            # Route definitions (7 lazy, 3 eager)
 ├── features/
-│   ├── campaign/             # [Task 4+] Campaign CRUD
-│   ├── characters/           # [Task 5+] Character management
-│   ├── scenarios/            # [Task 8+] Scenario tracking
-│   ├── rules/                # [Task 11+] Rules reference
-│   └── calculators/          # [Task 10] Game calculators
+│   ├── campaign/             # Campaign CRUD, CharacterDetail, store
+│   ├── characters/           # ItemManager, ItemShop, PerkList
+│   ├── scenarios/            # ScenarioTracker, PostScenarioChecklist
+│   ├── rules/                # GlossaryPage, ReferencePage, FocusHelperPage
+│   ├── calculators/          # CalculatorPage
+│   └── settings/             # SettingsPage (export/import/reset)
 ├── shared/
 │   ├── schemas/              # Zod v4 schemas (Campaign, CharacterProgress)
 │   ├── db/                   # Dexie database (campaigns table)
-│   ├── components/ui/        # shadcn/ui components
-│   ├── hooks/                # Custom hooks
+│   ├── components/           # ErrorBoundary, layout (AppLayout, BottomNav), shadcn/ui
+│   ├── hooks/                # useLoadedCampaign + other shared hooks
 │   ├── lib/utils.ts          # cn() utility
 │   └── types/index.ts        # Shared TS types
 ├── data/                     # Static JSON (7 fixtures + barrel)
@@ -226,7 +241,8 @@ flowchart TD
 - Create characters (select from 4 types)
 - Track: level, XP, gold, checkmarks
 - Manage perks (attack modifier deck changes)
-- Manage items (slot restrictions)
+- Manage items with full gold economy: buy at `cost`, sell at `ceil(cost / 2)`; single-slot replacement gives sell refund before deducting buy cost
+- Slot limits enforced: Head 1, Body 1, Feet 1, Hand 2, Small `ceil(level / 2)`
 - Calculate max HP by level
 
 ### 4.3 Scenario Tracker (`features/scenarios/`)
@@ -321,7 +337,7 @@ campaigns: 'id, name, updatedAt'  // Primary key: id
 7. **[Task 7]** Character perks (selection UI) `DONE`
 8. **[Task 8]** Scenario tracker + status management `DONE`
 9. **[Task 9]** Post-scenario checklist (interactive) `DONE`
-10. **[Task 10]** Calculators (scenario level, gold, XP)
+10. **[Task 10]** Calculators (scenario level, gold, XP) `DONE`
 
 ### Phase 3: Rules Reference (Tasks 11-14)
 11. **[Task 11]** Rules data structure + content `DONE`
@@ -336,6 +352,7 @@ campaigns: 'id, name, updatedAt'  // Primary key: id
 18. **[Task 18]** Dashboard Redesign `DONE`
 19. **[Task 19]** Item Management `DONE`
 20. **[Task 20]** Character Sheet Polish `DONE`
+21. **[Stability Pass]** Gold economy, reset wiring, PWA manifest, code splitting, error boundary, loading gates, store resilience, lint fix `DONE`
 
 ---
 
@@ -516,6 +533,24 @@ campaigns: 'id, name, updatedAt'  // Primary key: id
 - Scope: Unified character sheet UI.
 - Implemented: Tabbed `CharacterDetail` view (Stats, Perks, Items) with sticky header and mobile optimizations.
 
+### 2026-02-04 — Stability & Security Pass
+
+Full-codebase assessment and repair pass after Tasks 1-20.  No new task spec; scope driven by objective bug/debt audit.
+
+**Bugs fixed:**
+- `SettingsPage` "Reset App" button was a no-op — wired to `clearAllCampaigns` store action.
+- `ItemManager` had no gold cost on buy and no refund on sell — full economy implemented (`cost` on buy, `ceil(cost/2)` sell refund, net-cost when replacing single-slot items).
+- PWA manifest referenced non-existent files (`apple-touch-icon.png`, `masked-icon.svg`) and useless `runtimeCaching` entries — corrected to `icon.svg`.
+- `PostScenarioChecklist` used raw HTML injection for bold rendering — replaced with safe JSX `renderBold()` helper.
+- `CalculatorPage` and `PostScenarioChecklist` lacked `isLoaded` guards — would flash "not found" on deep-link cold start.
+
+**Resilience & architecture:**
+- `initStore` uses Zod `safeParse` — corrupted IndexedDB rows are logged and skipped instead of crashing the app.
+- Extracted `useLoadedCampaign` hook; applied uniformly to all 4 campaign-scoped routes.
+- `ErrorBoundary` class component added at app root — catches unhandled render errors, offers reload.
+- 7 non-critical routes lazy-loaded via `React.lazy` + `Suspense`; main bundle 503 KB → 463 KB.
+- `CharacterDetail` state-sync migrated from `useEffect` to "previous props" pattern — eliminates lint warning, avoids cascading render.
+
 ---
 
 ## 9. Technical Decisions (ADR Summary)
@@ -528,7 +563,11 @@ campaigns: 'id, name, updatedAt'  // Primary key: id
 | ADR-004 | Static JSON for game data | Immutable rules, no API, easy versioning |
 | ADR-005 | Zod v4 (not v3) | Latest stable, better tree-shaking |
 | ADR-006 | Embedded characters in Campaign | Avoids relational complexity for small dataset |
+| ADR-007 | Route-level code splitting via React.lazy | Core campaign path stays eager; 7 secondary routes lazy-loaded — reduces initial parse time |
+| ADR-008 | useLoadedCampaign shared hook | Single place for "wait for hydration + find campaign" — eliminates 4 copies of the same guard pattern |
+| ADR-009 | "Previous props" pattern over useEffect for state sync | React-idiomatic; avoids `set-state-in-effect` lint rule and extra render cycle |
+| ADR-010 | safeParse in initStore | Corrupted IndexedDB rows are skipped with a warning rather than crashing the entire app on load |
 
 ---
 
-*End of Blueprint v0.2.0*
+*End of Blueprint v0.5.0*

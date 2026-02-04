@@ -7,6 +7,7 @@ export function SettingsPage() {
   const campaigns = useCampaignStore((s) => s.campaigns)
   const exportData = useCampaignStore((s) => s.exportData)
   const importData = useCampaignStore((s) => s.importData)
+  const clearAllCampaigns = useCampaignStore((s) => s.clearAllCampaigns)
 
   const handleExport = async () => {
     try {
@@ -42,30 +43,7 @@ export function SettingsPage() {
 
   const handleReset = async () => {
     if (confirm('Are you sure? This will delete ALL campaigns. This action cannot be undone.')) {
-        // We'll rely on Dexie directly or add a clearAll to store later.
-        // For now, let's just delete campaigns one by one or warn.
-        // Actually, let's implement a quick store action or just skip for MVP 
-        // as per instructions to move existing logic first. 
-        // The instruction said: "Add a 'Reset App' (Delete All) button".
-        // I will implement a basic version that clears local storage and reloads for now as a nuclear option,
-        // or better, ask the store to clear.
-        // Since store doesn't have clearAll, I'll skip implementation details for safety 
-        // or just use indexedDB delete directly if really needed.
-        // Let's stick to the prompt: "guarded by a confirmation".
-        
-        // Simulating reset by clearing DB manually for now since store update wasn't requested for this specific action yet
-        // but let's be safe and just show an alert that it's implemented in future or add it to store.
-        // Wait, I can iterate and delete.
-        // Better: I will leave it as a placeholder or implementing it if simple.
-        
-        // Actually, let's just do the Export/Import first as strictly required.
-        // I'll add the UI for reset but maybe wire it up later or simply:
-        /*
-        await db.delete()
-        window.location.reload()
-        */
-       // Safe choice: just alert for now.
-       alert("Reset functionality coming in a future update.")
+      await clearAllCampaigns()
     }
   }
 
@@ -123,7 +101,7 @@ export function SettingsPage() {
       <section className="rounded-lg border border-zinc-700 bg-zinc-800 p-4">
         <h2 className="mb-2 text-lg font-semibold text-zinc-100">About</h2>
         <p className="text-sm text-zinc-400">
-          JotL Companion v0.3.0
+          JotL Companion v0.4.0
         </p>
         <p className="mt-2 text-xs text-zinc-500">
           A fan-made companion app for Gloomhaven: Jaws of the Lion.

@@ -1,5 +1,6 @@
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useCampaignStore } from './store'
+import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { CharacterCard } from './CharacterCard'
 import { CharacterForm } from './CharacterForm'
 import { ScenarioTracker } from './ScenarioTracker'
@@ -7,8 +8,7 @@ import { ScenarioTracker } from './ScenarioTracker'
 export function CampaignDetail() {
   const { id } = useParams<{ id: string }>()
 
-  const isLoaded = useCampaignStore((s) => s.isLoaded)
-  const campaigns = useCampaignStore((s) => s.campaigns)
+  const { isLoaded, campaign } = useLoadedCampaign(id)
   const addCharacter = useCampaignStore((s) => s.addCharacter)
   const removeCharacter = useCampaignStore((s) => s.removeCharacter)
 
@@ -24,8 +24,6 @@ export function CampaignDetail() {
       </div>
     )
   }
-
-  const campaign = campaigns.find((c) => c.id === id)
 
   // ---------------------------------------------------------------------------
   // 404 — invalid or deleted campaign ID
