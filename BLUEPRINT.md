@@ -1,9 +1,9 @@
 # Gloomhaven: Jaws of the Lion - Companion App Blueprint
 
 > **Codename:** JotL Companion
-> **Version:** 0.3.0
+> **Version:** 0.4.0
 > **Last Updated:** 2026-02-04
-> **Status:** Implementation Phase (Tasks 1-14 complete)
+> **Status:** Implementation Phase (Tasks 1-20 complete)
 
 ---
 

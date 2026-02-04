@@ -213,17 +213,28 @@ src/
 - [x] Task 4: Campaign CRUD + persistence
 - [x] Task 5: Character creation
 
-### Phase 2: Core Features (Tasks 6-10)
-- [ ] Character detail view, editing, level-up workflow
-- [ ] Scenario tracker + post-scenario checklist
-- [ ] Calculators (scenario level, gold, XP)
+### Phase 2: Core Features
+- [x] Task 6: Character detail view, editing, level-up workflow
+- [x] Task 7: Character perks (selection UI)
+- [x] Task 8: Scenario tracker + status management
+- [x] Task 9: Post-scenario checklist (interactive)
+- [x] Task 10: Calculators (scenario level, gold, XP)
 
-### Phase 3: Rules Reference (Tasks 11-14)
-- [ ] Searchable glossary, quick reference cards
-- [ ] Monster focus algorithm helper
+### Phase 3: Rules Reference
+- [x] Task 11: Rules data structure + content
+- [x] Task 12: Searchable glossary UI
+- [x] Task 13: Quick reference cards
+- [x] Task 14: Monster focus algorithm helper
 
-### Phase 4: Polish (Tasks 15-18)
-- [ ] PWA, export/import, dark mode, visual campaign map
+### Phase 4: Polish
+- [x] Task 15: PWA support (offline, installable)
+- [x] Task 16: Export/import campaigns
+- [x] Task 17: UI/UX Overhaul (Layout & Navigation)
+- [x] Task 18: Dashboard Redesign
+- [x] Task 19: Item Management
+- [x] Task 20: Character Sheet Polish
+- [ ] Task 21: Visual campaign map
+- [ ] Task 22: Dark mode toggle & accessibility refinements
 
 ---
 
