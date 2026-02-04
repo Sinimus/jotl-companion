@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { toast } from 'sonner'
 import { db } from '@/shared/db'
 import { tables, scenarios } from '@/data'
 import {
@@ -122,14 +123,16 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
         const migrated = {
           ...rawRow,
           lootedTreasureIds: lootedTreasuresArray,
-          characters: charactersArray
-            .filter((c): c is Record<string, unknown> => !!c && typeof c === 'object')
-            .map((charObj) => {
-              return {
+          characters: charactersArray.reduce<any[]>((acc, c) => {
+            if (c && typeof c === 'object') {
+              const charObj = c as Record<string, unknown>
+              acc.push({
                 ...charObj,
                 selectedAbilityIds: Array.isArray(charObj.selectedAbilityIds) ? charObj.selectedAbilityIds : [],
-              }
-            }),
+              })
+            }
+            return acc
+          }, []),
         }
 
         const result = CampaignSchema.safeParse(migrated)
@@ -143,6 +146,7 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
       set({ campaigns, activeCampaignId, isLoaded: true })
     } catch (error) {
       console.error('Failed to load campaigns from IndexedDB:', error)
+      toast.error('Failed to load campaign data. Please refresh the page.')
       // Ensure app marks as loaded even on failure to avoid infinite spinner
       set({ isLoaded: true })
     }
