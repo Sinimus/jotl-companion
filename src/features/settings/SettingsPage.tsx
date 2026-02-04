@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useCampaignStore } from '@/features/campaign/store'
 
 export function SettingsPage() {
-  const [error, setError] = useState<string | null>(null)
+  const [status, setStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null)
   
   const campaigns = useCampaignStore((s) => s.campaigns)
   const exportData = useCampaignStore((s) => s.exportData)
@@ -22,8 +22,9 @@ export function SettingsPage() {
       a.click()
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
+      setStatus({ type: 'success', message: 'Campaign data exported successfully.' })
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Export failed')
+      setStatus({ type: 'error', message: e instanceof Error ? e.message : 'Export failed' })
     }
   }
 
@@ -32,19 +33,19 @@ export function SettingsPage() {
       const content = await file.text()
       const result = await importData(content)
       if (result.success) {
-        alert(`Import successful! ${result.count} campaign(s) imported.`)
-        setError(null)
+        setStatus({ type: 'success', message: `Import successful! ${result.count} campaign(s) imported.` })
       } else {
-        setError(result.error || 'Import failed')
+        setStatus({ type: 'error', message: result.error || 'Import failed' })
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Import failed')
+      setStatus({ type: 'error', message: e instanceof Error ? e.message : 'Import failed' })
     }
   }
 
   const handleReset = async () => {
     if (confirm('Are you sure? This will delete ALL campaigns. This action cannot be undone.')) {
       await clearAllCampaigns()
+      setStatus({ type: 'success', message: 'All data has been reset.' })
     }
   }
 
@@ -76,7 +77,11 @@ export function SettingsPage() {
           Backup your campaigns or transfer them to another device.
         </p>
 
-        {error && <p className="mb-4 text-sm text-red-400">{error}</p>}
+        {status && (
+          <p className={`mb-4 text-sm ${status.type === 'success' ? 'text-emerald-400' : 'text-red-400'}`}>
+            {status.type === 'success' ? '✓ ' : '⚠ '}{status.message}
+          </p>
+        )}
 
         <div className="flex flex-col gap-3">
           <button
