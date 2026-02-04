@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "description": "Unofficial Companion App for Gloomhaven: Jaws of the Lion",
-  "author": "Sinimus <sinimus@noreply>",
+  "author": "Sinimus",
   "license": "GPL-3.0",
   "type": "module",
   "scripts": {
