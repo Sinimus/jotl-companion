@@ -56,10 +56,10 @@ export function CampaignCard({ campaign, isActive, onSelect, onDelete }: Campaig
           </button>
         </div>
 
-        {/* Middle: {completedScenarios}/17 · {N} heroes in text-xs text-zinc-400 */}
+        {/* Middle: {completedScenarios}/25 · {N} heroes in text-xs text-zinc-400 */}
         <div className="shrink-0 text-right">
           <span className="text-xs text-zinc-400">
-            {completedScenarios}/17 &bull; {campaign.characters.length} heroes
+            {completedScenarios}/{scenarios.length} &bull; {campaign.characters.length} heroes
           </span>
         </div>
 

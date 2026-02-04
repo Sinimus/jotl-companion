@@ -18,121 +18,185 @@
   {
     "id": 3,
     "name": "The Black Ship",
-    "location": "C2",
+    "location": "D5",
     "goal": "Kill all enemies",
     "unlockedBy": 2,
     "unlocks": [4]
   },
   {
     "id": 4,
-    "name": "A Verification",
-    "location": "C3",
-    "goal": "Kill all enemies",
+    "name": "A Ritual in Stone",
+    "location": "C2",
+    "goal": "Destroy all summoning stones and kill all enemies",
     "unlockedBy": 3,
     "unlocks": [5]
   },
   {
     "id": 5,
-    "name": "Seeking Answers",
-    "location": "D2",
-    "goal": "Kill the boss",
+    "name": "A Deeper Understanding",
+    "location": "C2",
+    "goal": "Kill the Blood Tumor",
     "unlockedBy": 4,
     "unlocks": [6]
   },
   {
     "id": 6,
     "name": "Corrupted Research",
-    "location": "D3",
+    "location": "B4",
     "goal": "Kill all enemies",
     "unlockedBy": 5,
-    "unlocks": [7]
+    "unlocks": [7, 8]
   },
   {
     "id": 7,
-    "name": "Completion of a Contract",
-    "location": "D1",
-    "goal": "Kill all enemies",
+    "name": "Sunken Tumor",
+    "location": "D2",
+    "goal": "Kill the Blood Tumor",
     "unlockedBy": 6,
-    "unlocks": [8]
+    "unlocks": [9]
   },
   {
     "id": 8,
     "name": "Hidden Tumor",
-    "location": "D2",
-    "goal": "Destroy the objective",
-    "unlockedBy": 7,
+    "location": "C4",
+    "goal": "Kill the Blood Tumor",
+    "unlockedBy": 6,
     "unlocks": [9]
   },
   {
     "id": 9,
-    "name": "The Sewers",
-    "location": "E1",
-    "goal": "Kill all enemies",
-    "unlockedBy": 8,
+    "name": "Explosive Evolution",
+    "location": "D2 / C4",
+    "goal": "Kill the Blood Horror",
+    "unlockedBy": 7,
     "unlocks": [10]
   },
   {
     "id": 10,
-    "name": "Beguiling Sewers",
+    "name": "The Gauntlet",
     "location": "E2",
-    "goal": "Kill the boss",
+    "goal": "Kill all enemies",
     "unlockedBy": 9,
-    "unlocks": [11]
+    "unlocks": [11, 12]
   },
   {
     "id": 11,
-    "name": "Defiled Sanctuary",
-    "location": "F1",
-    "goal": "Kill all enemies",
+    "name": "Defiled Sewers",
+    "location": "D2",
+    "goal": "All characters escape",
     "unlockedBy": 10,
-    "unlocks": [12]
+    "unlocks": [13, 19]
   },
   {
     "id": 12,
-    "name": "Stirring the Nest",
-    "location": "F2",
-    "goal": "Kill the boss",
-    "unlockedBy": 11,
-    "unlocks": [13]
+    "name": "Beguiling Sewers",
+    "location": "B5",
+    "goal": "Destroy all pillars",
+    "unlockedBy": 10,
+    "unlocks": [14, 18]
   },
   {
     "id": 13,
-    "name": "Completion of the Trial",
-    "location": "F3",
-    "goal": "Survive",
-    "unlockedBy": 12,
-    "unlocks": [14]
+    "name": "Vile Harvest",
+    "location": "D3",
+    "goal": "Destroy all alchemy tables",
+    "unlockedBy": 11,
+    "unlocks": [15]
   },
   {
     "id": 14,
-    "name": "Alchemy Outpost",
-    "location": "G1",
+    "name": "Toxic Harvest",
+    "location": "B4",
     "goal": "Kill all enemies",
-    "unlockedBy": 13,
+    "unlockedBy": 12,
     "unlocks": [15]
   },
   {
     "id": 15,
-    "name": "Prepped for the Worst",
-    "location": "G2",
-    "goal": "Kill the boss",
-    "unlockedBy": 14,
+    "name": "Tainted Blood",
+    "location": "C4",
+    "goal": "Destroy all alchemy tables",
+    "unlockedBy": 13,
     "unlocks": [16]
   },
   {
     "id": 16,
-    "name": "Pointed Threat",
-    "location": "G3",
-    "goal": "Destroy objectives",
+    "name": "Mixed Results",
+    "location": "B4",
+    "goal": "Kill all enemies",
     "unlockedBy": 15,
     "unlocks": [17]
   },
   {
     "id": 17,
-    "name": "Safe Crossing",
-    "location": "H1",
-    "goal": "Kill the boss",
+    "name": "Red Twilight",
+    "location": "C6",
+    "goal": "Kill the First of the Order",
     "unlockedBy": 16,
+    "unlocks": []
+  },
+  {
+    "id": 18,
+    "name": "The Heist",
+    "location": "A5",
+    "goal": "Loot two treasure tiles and escape",
+    "unlockedBy": 12,
+    "unlocks": []
+  },
+  {
+    "id": 19,
+    "name": "Den of Thieves",
+    "location": "A5",
+    "goal": "Destroy all nests and loot all treasure tiles",
+    "unlockedBy": 11,
+    "unlocks": []
+  },
+  {
+    "id": 20,
+    "name": "Misplaced Goods",
+    "location": "C5",
+    "goal": "Find all goods and kill all revealed enemies",
+    "unlockedBy": null,
+    "unlocks": []
+  },
+  {
+    "id": 21,
+    "name": "Agents of Chaos",
+    "location": "C9",
+    "goal": "Kill four Chaos Demons",
+    "unlockedBy": null,
+    "unlocks": []
+  },
+  {
+    "id": 22,
+    "name": "Unfriendly Message",
+    "location": "D1",
+    "goal": "Kill the Stone Golem",
+    "unlockedBy": null,
+    "unlocks": []
+  },
+  {
+    "id": 23,
+    "name": "Best of the Best",
+    "location": "B5",
+    "goal": "Kill all enemies",
+    "unlockedBy": null,
+    "unlocks": []
+  },
+  {
+    "id": 24,
+    "name": "Warding the Void",
+    "location": "A3",
+    "goal": "Kill all enemies and protect all wards",
+    "unlockedBy": null,
+    "unlocks": []
+  },
+  {
+    "id": 25,
+    "name": "The Greatest Job in the World",
+    "location": "C7",
+    "goal": "Destroy all pillars",
+    "unlockedBy": null,
     "unlocks": []
   }
 ]

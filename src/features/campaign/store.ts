@@ -88,8 +88,9 @@ export function computeLevelFromXp(experience: number): number {
 // ---------------------------------------------------------------------------
 function buildInitialScenarioStatus(): Record<number, 'locked' | 'unlocked' | 'completed'> {
   const status: Record<number, 'locked' | 'unlocked' | 'completed'> = {}
-  for (let i = 1; i <= 17; i++) {
-    status[i] = i === 1 ? 'unlocked' : 'locked'
+  for (const scenario of scenarios) {
+    // Scenario 1 is always unlocked by default. Side scenarios start locked.
+    status[scenario.id] = scenario.id === 1 ? 'unlocked' : 'locked'
   }
   return status
 }

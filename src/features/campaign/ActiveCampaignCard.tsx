@@ -1,4 +1,5 @@
 import { type Campaign } from '@/shared/schemas'
+import { scenarios } from '@/data'
 
 interface ActiveCampaignCardProps {
   campaign: Campaign
@@ -38,15 +39,15 @@ export function ActiveCampaignCard({ campaign, label, onContinue }: ActiveCampai
         {/* Progress bar */}
         <div className="mb-4">
           <div className="mb-1 flex items-center justify-between">
-            <span className="text-xs text-zinc-500">{completedScenarios}/17 Scenarios</span>
+            <span className="text-xs text-zinc-500">{completedScenarios}/{scenarios.length} Scenarios</span>
             <span className="text-xs font-medium text-amber-500">
-              {Math.round((completedScenarios / 17) * 100)}%
+              {Math.round((completedScenarios / scenarios.length) * 100)}%
             </span>
           </div>
           <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
             <div
               className="h-full bg-amber-600 transition-all duration-500"
-              style={{ width: `${(completedScenarios / 17) * 100}%` }}
+              style={{ width: `${(completedScenarios / scenarios.length) * 100}%` }}
             />
           </div>
         </div>

@@ -12,8 +12,11 @@ export function ScenarioTracker({ campaignId, scenarioStatus }: ScenarioTrackerP
   const setScenarioStatus = useCampaignStore((s) => s.setScenarioStatus)
 
   const handleToggle = (scenarioId: number, currentStatus: ScenarioStatus) => {
-    // If locked, do nothing (should be handled by disabled UI, but safety check)
-    if (currentStatus === 'locked') return
+    // If locked, toggle to unlocked.
+    if (currentStatus === 'locked') {
+      void setScenarioStatus(campaignId, scenarioId, 'unlocked')
+      return
+    }
 
     // If completed, toggle back to unlocked.
     // If unlocked, toggle to completed.
@@ -33,10 +36,10 @@ export function ScenarioTracker({ campaignId, scenarioStatus }: ScenarioTrackerP
           <div
             key={scenario.id}
             className={cn(
-              'relative flex items-center justify-between overflow-hidden rounded-lg border px-4 py-3 transition-all',
-              isLocked && 'border-zinc-800 bg-zinc-900/50 opacity-60',
-              isUnlocked && 'cursor-pointer border-zinc-600 bg-zinc-800 hover:border-amber-500/50',
-              isCompleted && 'cursor-pointer border-emerald-900/50 bg-emerald-950/30'
+              'relative flex items-center justify-between overflow-hidden rounded-lg border px-4 py-3 transition-all cursor-pointer',
+              isLocked && 'border-zinc-800 bg-zinc-900/50 opacity-60 hover:border-zinc-700',
+              isUnlocked && 'border-zinc-600 bg-zinc-800 hover:border-amber-500/50',
+              isCompleted && 'border-emerald-900/50 bg-emerald-950/30'
             )}
             onClick={() => handleToggle(scenario.id, status)}
           >
