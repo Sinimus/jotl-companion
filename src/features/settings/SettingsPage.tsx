@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useCampaignStore } from '@/features/campaign/store'
 
 export function SettingsPage() {
@@ -50,6 +51,22 @@ export function SettingsPage() {
   return (
     <div className="mx-auto max-w-lg px-4 py-8">
       <h1 className="mb-6 text-2xl font-bold text-amber-500">Settings</h1>
+
+      {/* Support & Documentation */}
+      <section className="mb-8 rounded-lg border border-zinc-700 bg-zinc-800 p-4">
+        <h2 className="mb-4 text-lg font-semibold text-zinc-100">Help & Support</h2>
+        
+        <p className="mb-4 text-sm text-zinc-400">
+          New to the app? Read the handbook to learn how to manage your campaigns and characters.
+        </p>
+
+        <Link
+          to="/settings/handbook"
+          className="flex w-full items-center justify-center rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-sm font-medium text-amber-500 transition-colors hover:bg-amber-500/10"
+        >
+          📖 How to Use (User Handbook)
+        </Link>
+      </section>
 
       {/* Data Management */}
       <section className="mb-8 rounded-lg border border-zinc-700 bg-zinc-800 p-4">

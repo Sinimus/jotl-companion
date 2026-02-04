@@ -28,6 +28,9 @@ const FocusHelperPage = lazy(() =>
 const SettingsPage = lazy(() =>
   import('@/features/settings/SettingsPage').then((m) => ({ default: m.SettingsPage })),
 )
+const HandbookPage = lazy(() =>
+  import('@/features/settings/HandbookPage').then((m) => ({ default: m.HandbookPage })),
+)
 
 export function AppRoutes() {
   return (
@@ -47,6 +50,7 @@ export function AppRoutes() {
         </Route>
 
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/settings/handbook" element={<HandbookPage />} />
       </Route>
     </Routes>
   )
