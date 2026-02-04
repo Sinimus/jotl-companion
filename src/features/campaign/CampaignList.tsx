@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCampaignStore } from './store'
 import { CampaignCard } from './CampaignCard'
@@ -15,6 +16,19 @@ export function CampaignList() {
 
   const navigate = useNavigate()
 
+  // Memoize campaign list derived states
+  const { featuredCampaign, listCampaigns } = useMemo(() => {
+    const active = campaigns.find((c) => c.id === activeCampaignId)
+    const others = [...campaigns]
+      .filter((c) => c.id !== activeCampaignId)
+      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+
+    return {
+      featuredCampaign: active || others[0],
+      listCampaigns: active ? others : others.slice(1),
+    }
+  }, [campaigns, activeCampaignId])
+
   // Loading gate
   if (!isLoaded) {
     return (
@@ -24,16 +38,8 @@ export function CampaignList() {
     )
   }
 
-  // Determine active campaign
+  // Determine active campaign for label check
   const activeCampaign = campaigns.find((c) => c.id === activeCampaignId)
-  
-  // Sort remaining campaigns by last updated
-  const otherCampaigns = [...campaigns]
-    .filter((c) => c.id !== activeCampaignId)
-    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-
-  const featuredCampaign = activeCampaign || otherCampaigns[0]
-  const listCampaigns = activeCampaign ? otherCampaigns : otherCampaigns.slice(1)
 
   // Branch A — campaigns.length === 0
   if (campaigns.length === 0) {

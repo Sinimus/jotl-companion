@@ -54,7 +54,13 @@ export function AbilityManager({ character, onUpdateAbilities }: AbilityManagerP
       </div>
 
       <div className="space-y-6">
-        {Object.entries(charAbilities).map(([level, cards]) => (
+        {Object.entries(charAbilities)
+          .sort(([a], [b]) => {
+            if (a === 'X') return -1
+            if (b === 'X') return 1
+            return parseInt(a) - parseInt(b)
+          })
+          .map(([level, cards]) => (
           <div key={level}>
             <h4 className="mb-2 text-[10px] font-bold uppercase tracking-wider text-zinc-500">
               Level {level}

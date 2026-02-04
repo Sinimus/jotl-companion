@@ -48,7 +48,7 @@ export function CampaignDetail() {
   const nextScenario = scenarios
     .filter(s => campaign.scenarioStatus[s.id] === 'unlocked')
     .sort((a, b) => a.id - b.id)[0] ?? null
-  const allCompleted = !nextScenario && completedScenarios === TOTAL_SCENARIOS
+  const allCompleted = campaign.scenarioStatus[17] === 'completed'
 
   // ---------------------------------------------------------------------------
   return (
