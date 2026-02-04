@@ -46,7 +46,7 @@ export function CampaignDetail() {
   const nextScenario = scenarios
     .filter(s => campaign.scenarioStatus[s.id] === 'unlocked')
     .sort((a, b) => a.id - b.id)[0] ?? null
-  const allCompleted = !nextScenario && completedScenarios === 17
+  const allCompleted = !nextScenario && completedScenarios === scenarios.length
 
   // ---------------------------------------------------------------------------
   return (
@@ -60,12 +60,12 @@ export function CampaignDetail() {
           {/* Progress bar */}
           <div className="mt-2">
             <div className="mb-1 flex justify-between text-[10px] uppercase text-zinc-500">
-              <span>{completedScenarios}/17 Scenarios</span>
-              <span>{Math.round((completedScenarios / 17) * 100)}%</span>
+              <span>{completedScenarios}/{scenarios.length} Scenarios</span>
+              <span>{Math.round((completedScenarios / scenarios.length) * 100)}%</span>
             </div>
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
               <div className="h-full bg-amber-600 transition-all duration-500"
-                style={{ width: `${(completedScenarios / 17) * 100}%` }} />
+                style={{ width: `${(completedScenarios / scenarios.length) * 100}%` }} />
             </div>
           </div>
         </div>
@@ -122,7 +122,7 @@ export function CampaignDetail() {
             <section className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-4">
               <h3 className="mb-2 text-sm font-semibold text-amber-500">What's Next</h3>
               {allCompleted ? (
-                <p className="text-sm text-zinc-300">Campaign complete! All 17 scenarios finished.</p>
+                <p className="text-sm text-zinc-300">Campaign complete! All {scenarios.length} scenarios finished.</p>
               ) : nextScenario ? (
                 <div>
                   <p className="text-sm font-medium text-zinc-200">

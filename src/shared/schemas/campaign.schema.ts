@@ -10,9 +10,9 @@ export const CampaignSchema = z.object({
   updatedAt: TimestampSchema,
   /** Active party — at most 4 characters. */
   characters: z.array(CharacterProgressSchema).max(4),
-  /** Scenario ID (1-17) → current status.  Keys are coerced from strings. */
+  /** Scenario ID (1-25) → current status.  Keys are coerced from strings. */
   scenarioStatus: z.record(
-    z.coerce.number().int().min(1).max(17),
+    z.coerce.number().int().min(1).max(25),
     ScenarioStatusSchema,
   ),
   /** Ordered list of city-event IDs already drawn this campaign. */

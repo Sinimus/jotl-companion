@@ -43,7 +43,7 @@ export function CampaignList() {
 
         <div className="mt-8 rounded-lg border border-zinc-700 bg-zinc-800 p-6 text-left">
           <p className="text-zinc-300">
-            Track your party through 17 scenarios, manage character progression,
+            Track your party through all 25 scenarios, manage character progression,
             and look up rules — all in one place.
           </p>
         </div>
