@@ -46,7 +46,7 @@ A feature-rich, offline-first companion app for the board game **Gloomhaven: Jaw
 
 1.  **Clone the repository**
     ```bash
-    git clone https://github.com/your-username/jotl-companion.git
+    git clone https://github.com/Sinimus/jotl-companion.git
     cd jotl-companion
     ```
 
@@ -68,11 +68,6 @@ A feature-rich, offline-first companion app for the board game **Gloomhaven: Jaw
 ## 📄 License
 
 This project is licensed under the **GNU General Public License v3.0**. See the [LICENSE](LICENSE) file for details.
-
-## ✍️ Author
-
-**Lukas Walek**
-- Email: l.walek@proton.me (obfuscated)
 
 ---
 *Disclaimer: This is an unofficial fan project and is not affiliated with Cephalofair Games.*

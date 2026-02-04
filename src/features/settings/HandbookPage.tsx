@@ -142,7 +142,6 @@ export function HandbookPage() {
         <hr className="my-8 border-zinc-800" />
 
         <footer className="mt-12 text-center">
-          <p className="text-sm font-semibold text-zinc-300">Author: Lukas Walek</p>
           <p className="text-sm text-zinc-500">License: GNU GPLv3</p>
           <p className="mt-4 text-xs text-zinc-600 italic">
             Disclaimer: This is an unofficial fan project and is not affiliated with Cephalofair Games.

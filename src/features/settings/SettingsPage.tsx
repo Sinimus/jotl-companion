@@ -126,7 +126,15 @@ export function SettingsPage() {
           <span className="font-semibold text-zinc-300">Version:</span> 1.0.0
         </p>
         <p className="mt-1 text-sm text-zinc-400">
-          <span className="font-semibold text-zinc-300">Author:</span> Lukas Walek
+          <span className="font-semibold text-zinc-300">Source:</span>{' '}
+          <a
+            href="https://github.com/Sinimus/jotl-companion"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-500 hover:underline"
+          >
+            GitHub Repository
+          </a>
         </p>
         <p className="mt-1 text-sm text-zinc-400">
           <span className="font-semibold text-zinc-300">License:</span> GNU GPLv3
