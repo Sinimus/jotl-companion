@@ -73,9 +73,9 @@ export function HandbookPage() {
           <h3 className="mb-2 text-lg font-semibold text-zinc-200">The "Scenarios" Tab</h3>
           <p className="mb-4 text-zinc-400">This tab tracks the state of all {scenarios.length} scenarios in the game.</p>
           <ul className="list-disc space-y-2 pl-5 text-zinc-400">
-            <li><strong className="font-semibold text-zinc-200 text-zinc-500">Locked (Gray):</strong> You cannot play this yet. Tap to manually unlock (e.g. from a City Event).</li>
-            <li><strong className="font-semibold text-zinc-200 text-amber-500">Unlocked (Amber):</strong> Available to play. Tap to mark as completed.</li>
-            <li><strong className="font-semibold text-zinc-200 text-emerald-500">Completed (Green):</strong> Already finished. Tap to revert if needed.</li>
+            <li><strong className="font-semibold text-zinc-500">Locked (Gray):</strong> You cannot play this yet. Tap to manually unlock (e.g. from a City Event).</li>
+            <li><strong className="font-semibold text-amber-500">Unlocked (Amber):</strong> Available to play. Tap to mark as completed.</li>
+            <li><strong className="font-semibold text-emerald-500">Completed (Green):</strong> Already finished. Tap to revert if needed.</li>
             <li><strong className="font-semibold text-zinc-200">Goals:</strong> Each card displays the scenario's objective (e.g., "Kill all enemies").</li>
           </ul>
         </section>
