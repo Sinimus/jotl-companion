@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { db } from '@/shared/db'
-import { tables } from '@/data'
+import { tables, scenarios } from '@/data'
 import {
   CampaignSchema,
   CreateCampaignSchema,
@@ -8,6 +8,7 @@ import {
   type Campaign,
   type CreateCampaign,
 } from '@/shared/schemas'
+import * as z from 'zod'
 
 // ---------------------------------------------------------------------------
 // localStorage key for the currently active campaign ID
@@ -39,6 +40,12 @@ interface CampaignActions {
   removeCharacter: (campaignId: string, characterId: string) => Promise<void>
   /** Update character stats.  Auto-recomputes level when XP changes. */
   updateCharacter: (campaignId: string, characterId: string, updates: UpdateCharacterInput) => Promise<void>
+  /** Update status of a scenario. If 'completed', auto-unlocks child scenarios. */
+  setScenarioStatus: (campaignId: string, scenarioId: number, status: 'unlocked' | 'completed') => Promise<void>
+  /** Export all campaigns as JSON string. */
+  exportData: () => Promise<string>
+  /** Import campaigns from JSON string. Validates each campaign. */
+  importData: (json: string) => Promise<{ success: boolean; count: number; error?: string }>
 }
 
 export type CampaignStore = CampaignState & CampaignActions
@@ -54,6 +61,8 @@ export interface UpdateCharacterInput {
   experience?: number
   gold?: number
   checkmarks?: number
+  perkIds?: string[]
+  itemIds?: number[]
 }
 
 // ---------------------------------------------------------------------------
@@ -198,6 +207,8 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
     if (updates.experience !== undefined) merged.experience = updates.experience
     if (updates.gold !== undefined) merged.gold = updates.gold
     if (updates.checkmarks !== undefined) merged.checkmarks = updates.checkmarks
+    if (updates.perkIds !== undefined) merged.perkIds = updates.perkIds
+    if (updates.itemIds !== undefined) merged.itemIds = updates.itemIds
 
     // Auto-recompute level when XP changes
     if (updates.experience !== undefined) {
@@ -218,5 +229,64 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
     set((state) => ({
       campaigns: state.campaigns.map((c) => (c.id === campaignId ? updated : c)),
     }))
+  },
+
+  async setScenarioStatus(campaignId: string, scenarioId: number, status: 'unlocked' | 'completed') {
+    const { campaigns } = get()
+    const campaign = campaigns.find((c) => c.id === campaignId)
+    if (!campaign) throw new Error('Campaign not found')
+
+    const newStatusMap = { ...campaign.scenarioStatus }
+    newStatusMap[scenarioId] = status
+
+    // Auto-unlock logic
+    if (status === 'completed') {
+      const scenarioDef = scenarios.find((s) => s.id === scenarioId)
+      if (scenarioDef && scenarioDef.unlocks) {
+        for (const childId of scenarioDef.unlocks) {
+          if (newStatusMap[childId] === 'locked') {
+            newStatusMap[childId] = 'unlocked'
+          }
+        }
+      }
+    }
+
+    const updated = {
+      ...campaign,
+      scenarioStatus: newStatusMap,
+      updatedAt: new Date(),
+    }
+
+    await db.campaigns.put(updated)
+
+    set((state) => ({
+      campaigns: state.campaigns.map((c) => (c.id === campaignId ? updated : c)),
+    }))
+  },
+
+  async exportData() {
+    const { campaigns } = get()
+    return JSON.stringify(campaigns, null, 2)
+  },
+
+  async importData(json: string) {
+    try {
+      const data = JSON.parse(json)
+      const campaigns = z.array(CampaignSchema).parse(data)
+
+      // Use bulkPut to overwrite existing IDs or add new ones
+      await db.campaigns.bulkPut(campaigns)
+
+      // Refresh store state
+      await get().initStore()
+
+      return { success: true, count: campaigns.length }
+    } catch (e) {
+      return {
+        success: false,
+        count: 0,
+        error: e instanceof Error ? e.message : 'Invalid data format',
+      }
+    }
   },
 }))

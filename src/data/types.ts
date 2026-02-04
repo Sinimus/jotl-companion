@@ -92,3 +92,31 @@ export interface Tables {
   /** Per-slot equip limits.  "half_level" means ceil(characterLevel / 2). */
   itemSlotLimits: Record<ItemSlotLimitKey, number | 'half_level'>
 }
+
+
+// ---------------------------------------------------------------------------
+// rules.json - Game rules and reference data
+// ---------------------------------------------------------------------------
+
+export interface GlossaryEntry {
+  term: string
+  description: string
+  category?: string
+}
+
+export interface RuleSection {
+  id: string
+  title: string
+  content: string[]
+}
+
+export interface TreasureReward {
+  id: number
+  reward: string
+}
+
+export interface RulesData {
+  glossary: GlossaryEntry[]
+  guides: RuleSection[]
+  treasures: TreasureReward[]
+}

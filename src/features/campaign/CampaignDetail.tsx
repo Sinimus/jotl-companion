@@ -2,6 +2,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useCampaignStore } from './store'
 import { CharacterCard } from './CharacterCard'
 import { CharacterForm } from './CharacterForm'
+import { ScenarioTracker } from './ScenarioTracker'
 
 export function CampaignDetail() {
   const { id } = useParams<{ id: string }>()
@@ -83,6 +84,37 @@ export function CampaignDetail() {
           <CharacterForm
             disabled={campaign.characters.length >= 4}
             onAdd={(input) => addCharacter(campaign.id, input)}
+          />
+        </div>
+
+        {/* Scenarios section */}
+        <div className="mt-8 border-t border-zinc-700 pt-6">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-base font-semibold text-zinc-300">Scenarios</h2>
+            <div className="flex gap-2">
+              <button
+                onClick={() => navigate(`/rules`)}
+                className="rounded-md border border-zinc-500/50 bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-300 hover:bg-zinc-700 transition-colors"
+              >
+                Rules →
+              </button>
+              <button
+                onClick={() => navigate(`/campaign/${campaign.id}/checklist`)}
+                className="rounded-md border border-amber-500/50 bg-amber-500/10 px-3 py-1.5 text-sm font-medium text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 transition-colors"
+              >
+                Checklist →
+              </button>
+              <button
+                onClick={() => navigate(`/campaign/${campaign.id}/calculators`)}
+                className="rounded-md border border-blue-500/50 bg-blue-500/10 px-3 py-1.5 text-sm font-medium text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 transition-colors"
+              >
+                Calculators →
+              </button>
+            </div>
+          </div>
+          <ScenarioTracker
+            campaignId={campaign.id}
+            scenarioStatus={campaign.scenarioStatus}
           />
         </div>
       </div>

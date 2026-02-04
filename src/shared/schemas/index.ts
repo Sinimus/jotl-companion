@@ -3,6 +3,7 @@ export {
   ScenarioStatusSchema,
   UuidSchema,
   TimestampSchema,
+  type ScenarioStatus,
 } from './common.schema.ts'
 
 export {

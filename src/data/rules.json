@@ -1,0 +1,623 @@
+{
+  "glossary": [
+    {
+      "term": "Advantage",
+      "description": "Rolling two attack dice and using the higher result. Occurs when attacking from an elevated hex or when specific abilities grant it.",
+      "category": "Combat"
+    },
+    {
+      "term": "Adjacent",
+      "description": "Hexes that share a single edge. Hexes sharing only a corner are not adjacent.",
+      "category": "Positioning"
+    },
+    {
+      "term": "Attack",
+      "description": "An ability targeting an enemy to deal damage or apply effects. Most attacks consume an action.",
+      "category": "Combat"
+    },
+    {
+      "term": "Attribute",
+      "description": "Character statistics: Health (HP), Max HP (for healing cap), and Experience (XP).",
+      "category": "Character"
+    },
+    {
+      "term": "Blood",
+      "description": "Effect from certain abilities causing the target to suffer 1 damage at the start of every turn.",
+      "category": "Condition"
+    },
+    {
+      "term": "Bone",
+      "description": "Effect from certain abilities that modifies attack behavior or damage.",
+      "category": "Mechanic"
+    },
+    {
+      "term": "Battle Goal",
+      "description": "Secret objective drawn at the start of each scenario. Completing grants a checkmark.",
+      "category": "Scenario"
+    },
+    {
+      "term": "Bonus",
+      "description": "Additional benefits granted by abilities, items, or scenario rules.",
+      "category": "General"
+    },
+    {
+      "term": "Character",
+      "description": "One of the player-controlled heroes in the party.",
+      "category": "General"
+    },
+    {
+      "term": "Checkmark",
+      "description": "Reward earned by completing a battle goal. 3 checkmarks = 1 perk.",
+      "category": "Progression"
+    },
+    {
+      "term": "Coin",
+      "description": "Loot tokens collected during scenarios. 1 coin = 1 gold (scenario level dependent).",
+      "category": "Loot"
+    },
+    {
+      "term": "Condition",
+      "description": "Ongoing effect on a figure such as Poison, Wound, Stun, etc.",
+      "category": "Mechanic"
+    },
+    {
+      "term": "Consumable",
+      "description": "Item that is used up when activated (e.g., potions).",
+      "category": "Items"
+    },
+    {
+      "term": "Core Box",
+      "description": "The base Gloomhaven game. Jaws of the Lion is a standalone spinoff.",
+      "category": "General"
+    },
+    {
+      "term": "Damage",
+      "description": "Reduction of HP. Reduces a figure to 0 HP = exhausted/stunned.",
+      "category": "Combat"
+    },
+    {
+      "term": "Disadvantage",
+      "description": "Rolling two attack dice and using the lower result. Occurs when attacking from a lower hex or when adjacent to an enemy as a ranged attacker.",
+      "category": "Combat"
+    },
+    {
+      "term": "Door",
+      "description": "Map feature that can be opened to reveal new areas or provide shortcuts.",
+      "category": "Map"
+    },
+    {
+      "term": "Difficulty",
+      "description": "Adjustable scenario modifier: Easy (-1), Normal (+0), Hard (+1), Very Hard (+2).",
+      "category": "Scenario"
+    },
+    {
+      "term": "Enemy",
+      "description": "Any non-friendly figure, including monsters and hostile NPCs.",
+      "category": "General"
+    },
+    {
+      "term": "Element",
+      "description": "Game element: Fire, Ice, Air, Earth, Light, Dark. Can be infused by abilities for bonuses.",
+      "category": "Mechanic"
+    },
+    {
+      "term": "Elevated",
+      "description": "Position on a map feature (boulder, wall, table) that grants Advantage on melee attacks.",
+      "category": "Positioning"
+    },
+    {
+      "term": "Exhausted",
+      "description": "A character at 0 HP is exhausted and cannot act until revived.",
+      "category": "Condition"
+    },
+    {
+      "term": "Experience",
+      "description": "Points earned by defeating enemies and completing scenarios. Used to level up.",
+      "category": "Progression"
+    },
+    {
+      "term": "Figure",
+      "description": "Any character or monster on the map.",
+      "category": "General"
+    },
+    {
+      "term": "Focus",
+      "description": "The enemy a monster prioritizes. Determined by shortest path to attack at start of monster turn.",
+      "category": "AI"
+    },
+    {
+      "term": "Fire",
+      "description": "Element that can inflict Wound condition.",
+      "category": "Element"
+    },
+    {
+      "term": "Fly",
+      "description": "Monster ability to ignore figures and obstacles when moving.",
+      "category": "Movement"
+    },
+    {
+      "term": "Gold",
+      "description": "Currency used to buy items at the shop between scenarios.",
+      "category": "Loot"
+    },
+    {
+      "term": "Goal",
+      "description": "Victory condition for a scenario.",
+      "category": "Scenario"
+    },
+    {
+      "term": "Guard",
+      "description": "Defensive ability granting Shield or damage reduction.",
+      "category": "Combat"
+    },
+    {
+      "term": "Hex",
+      "description": "One space on the hex-based map grid.",
+      "category": "Map"
+    },
+    {
+      "term": "Health",
+      "description": "Current hit points. At 0, the figure is exhausted.",
+      "category": "Character"
+    },
+    {
+      "term": "Heal",
+      "description": "Restoring HP. Cannot exceed Max HP.",
+      "category": "Combat"
+    },
+    {
+      "term": "Hide",
+      "description": "Effect preventing a monster from moving or attacking.",
+      "category": "Status"
+    },
+    {
+      "term": "Initiative",
+      "description": "Turn order marker. Lower = earlier in the round.",
+      "category": "Combat"
+    },
+    {
+      "term": "Immune",
+      "description": "Cannot be affected by a specific condition or element.",
+      "category": "Mechanic"
+    },
+    {
+      "term": "Infusion",
+      "description": "Creating an element on the element board to grant bonuses to abilities.",
+      "category": "Mechanic"
+    },
+    {
+      "term": "Item",
+      "description": "Equipment or consumable that provides abilities or bonuses.",
+      "category": "Items"
+    },
+    {
+      "term": "Invisible",
+      "description": "Figure cannot be targeted or affected.",
+      "category": "Status"
+    },
+    {
+      "term": "Level",
+      "description": "Character strength (1-9). Higher level = more HP and better abilities.",
+      "category": "Character"
+    },
+    {
+      "term": "Line of Sight",
+      "description": "Requirement for targeted abilities. Drawn from any part of attacker hex to any part of target hex without touching a wall.",
+      "category": "Positioning"
+    },
+    {
+      "term": "Loot",
+      "description": "Collecting coins, treasure tiles, or other rewards during a scenario.",
+      "category": "Loot"
+    },
+    {
+      "term": "Long Rest",
+      "description": "Skipping a turn to recover HP, remove conditions, and discard cards.",
+      "category": "Recovery"
+    },
+    {
+      "term": "Monster",
+      "description": "Enemy figure controlled by AI rules.",
+      "category": "General"
+    },
+    {
+      "term": "Monster Ability",
+      "description": "Action on monster stat card: Attack, Move, Shield, etc.",
+      "category": "AI"
+    },
+    {
+      "term": "Movement",
+      "description": "Reducing the movement stat to enter new hexes.",
+      "category": "Movement"
+    },
+    {
+      "term": "Muddle",
+      "description": "Status causing the figure to turn around before acting.",
+      "category": "Condition"
+    },
+    {
+      "term": "Melee",
+      "description": "An attack where Range is not used; targets must be adjacent.",
+      "category": "Combat"
+    },
+    {
+      "term": "Money Token",
+      "description": "Tokens placed on the map to be converted into gold after a scenario.",
+      "category": "Loot"
+    },
+    {
+      "term": "Negating Damage",
+      "description": "Characters can lose one card from their hand or two from discard to prevent all damage from one source.",
+      "category": "Combat"
+    },
+    {
+      "term": "Normal (Monster)",
+      "description": "Standard rank monsters in white stands.",
+      "category": "Monster"
+    },
+    {
+      "term": "Objective",
+      "description": "Yellow-bordered hexes that must be destroyed or protected.",
+      "category": "Map"
+    },
+    {
+      "term": "Obstacle",
+      "description": "Green-bordered hexes that cannot be moved through unless using Jump.",
+      "category": "Map"
+    },
+    {
+      "term": "Occupied",
+      "description": "A hex containing a figure.",
+      "category": "Map"
+    },
+    {
+      "term": "Order of Round",
+      "description": "Sequence: 1) Card Selection, 2) Ordering of Initiative, 3) Turns, 4) End of Round.",
+      "category": "Combat"
+    },
+    {
+      "term": "Perk",
+      "description": "Permanent attack modifier deck improvements gained by leveling up or check marks.",
+      "category": "Progression"
+    },
+    {
+      "term": "Poison",
+      "description": "Condition causing all attacks against the figure to gain +1 Attack. Prevents healing from increasing HP.",
+      "category": "Condition"
+    },
+    {
+      "term": "Potion",
+      "description": "Consumable item granting healing or other effects.",
+      "category": "Items"
+    },
+    {
+      "term": "Push",
+      "description": "Forcing a figure to move in a specific direction.",
+      "category": "Movement"
+    },
+    {
+      "term": "Pull",
+      "description": "Forcing an enemy up to X hexes closer to the figure using the ability.",
+      "category": "Movement"
+    },
+    {
+      "term": "Persistent (Ability)",
+      "description": "Active bonuses kept in the active area for a specified time or number of uses.",
+      "category": "Ability"
+    },
+    {
+      "term": "Range",
+      "description": "Maximum hexes an attack can reach.",
+      "category": "Combat"
+    },
+    {
+      "term": "Retaliate",
+      "description": "Dealing damage when attacked.",
+      "category": "Combat"
+    },
+    {
+      "term": "Revive",
+      "description": "Bringing an exhausted character back into the scenario.",
+      "category": "Recovery"
+    },
+    {
+      "term": "Round",
+      "description": "Full cycle of all figures taking a turn.",
+      "category": "Combat"
+    },
+    {
+      "term": "Resting",
+      "description": "Returning cards from discard to hand. Short Rest: done at end of round, lose one random card. Long Rest: declared during card selection, initiative 99, player chooses card to lose and heals 2.",
+      "category": "Recovery"
+    },
+    {
+      "term": "Revealing a Room",
+      "description": "Opening a door to set up monsters and determine their initiative.",
+      "category": "Scenario"
+    },
+    {
+      "term": "Rewards",
+      "description": "Benefits (gold, XP, items) received for completing a scenario.",
+      "category": "Scenario"
+    },
+    {
+      "term": "Room",
+      "description": "Discrete areas separated by doors and walls.",
+      "category": "Map"
+    },
+    {
+      "term": "Scenario",
+      "description": "Individual mission with objectives, monsters, and rewards.",
+      "category": "Scenario"
+    },
+    {
+      "term": "Shield",
+      "description": "Reducing damage by a specified amount.",
+      "category": "Combat"
+    },
+    {
+      "term": "Short Rest",
+      "description": "Done at end of round; discard 2 cards, remove one condition, keep active card.",
+      "category": "Recovery"
+    },
+    {
+      "term": "Summon",
+      "description": "Creating a temporary ally figure.",
+      "category": "Summon"
+    },
+    {
+      "term": "Spawn",
+      "description": "Monsters appearing via scenario rules; they act in the round they are spawned.",
+      "category": "Scenario"
+    },
+    {
+      "term": "Special Rules",
+      "description": "Additional rules unique to a specific scenario.",
+      "category": "Scenario"
+    },
+    {
+      "term": "Standee",
+      "description": "Cardboard representation of a monster.",
+      "category": "Components"
+    },
+    {
+      "term": "Stat Card",
+      "description": "Card providing base monster stats for different levels and ranks.",
+      "category": "Components"
+    },
+    {
+      "term": "Stat Envelope",
+      "description": "Holder for stat cards that tracks damage and conditions for a monster set.",
+      "category": "Components"
+    },
+    {
+      "term": "Sticker",
+      "description": "Used on the map board to track scenario availability and progress.",
+      "category": "Components"
+    },
+    {
+      "term": "Strengthen",
+      "description": "Condition causing Advantage on all attacks.",
+      "category": "Condition"
+    },
+    {
+      "term": "Stun",
+      "description": "Condition preventing a figure from performing any abilities on its turn.",
+      "category": "Condition"
+    },
+    {
+      "term": "Suffer Damage",
+      "description": "Directly reducing HP; cannot be reduced by Shield.",
+      "category": "Combat"
+    },
+    {
+      "term": "Supplemental Scenario Book",
+      "description": "Book containing extra map areas or text for larger scenarios.",
+      "category": "Components"
+    },
+    {
+      "term": "Saving",
+      "description": "Storing character data and map progress between sessions.",
+      "category": "General"
+    },
+    {
+      "term": "Section Break",
+      "description": "Pause points in scenario text read only when specific conditions are met.",
+      "category": "Scenario"
+    },
+    {
+      "term": "Self",
+      "description": "An ability targeting only the figure using it.",
+      "category": "Ability"
+    },
+    {
+      "term": "Shop",
+      "description": "Deck of available items characters can purchase.",
+      "category": "Items"
+    },
+    {
+      "term": "Shuffle",
+      "description": "Icon indicating a deck discard pile is shuffled back in at the end of the round.",
+      "category": "Mechanic"
+    },
+    {
+      "term": "Target",
+      "description": "The figure(s) an ability is performed on. Must be in line-of-sight.",
+      "category": "Combat"
+    },
+    {
+      "term": "Trap",
+      "description": "Map features that apply damage or conditions when a figure moves into them.",
+      "category": "Map"
+    },
+    {
+      "term": "Treasure Tile",
+      "description": "Map features acquired via looting to receive unique rewards.",
+      "category": "Loot"
+    },
+    {
+      "term": "Turn",
+      "description": "A figure specific action period within a round.",
+      "category": "Combat"
+    },
+    {
+      "term": "Wall",
+      "description": "Thick dark lines on the map that cannot be crossed and block line-of-sight.",
+      "category": "Map"
+    },
+    {
+      "term": "Wound",
+      "description": "Condition causing the figure to suffer 1 damage at the start of each of its turns.",
+      "category": "Condition"
+    },
+    {
+      "term": "X (Level)",
+      "description": "Extra character cards providing deck-building flexibility.",
+      "category": "Character"
+    }
+  ],
+  "guides": [
+    {
+      "id": "monster_movement",
+      "title": "Monster Movement",
+      "content": [
+        "At the start of its turn, a monster finds a focus, which is the enemy it can get in range to attack using the least movement.",
+        "This is independent of line-of-sight or current attack ability.",
+        "Monsters calculate paths through the fewest possible traps.",
+        "Tie-breakers for focus use the earliest initiative order.",
+        "",
+        "**Movement Rules:**",
+        "Monsters move to get in range for their focus and maximize their attack.",
+        "They move the minimum amount required to maximize this attack.",
+        "Ranged monsters move away from their focus to avoid Disadvantage from adjacency if possible.",
+        "If a monster is already in range and lacks Disadvantage, it will not move.",
+        "Players decide movement for any equal viable options."
+      ]
+    },
+    {
+      "id": "monster_focus",
+      "title": "Finding Focus",
+      "content": [
+        "At the start of its turn, each monster must find a focus.",
+        "The focus is the enemy it can get in range to attack using the least movement, ignoring line-of-sight.",
+        "",
+        "**Tie-breakers (in order):**",
+        "1. Closest enemy (fewest hexes to reach)",
+        "2. Enemy with the lowest initiative value",
+        "3. If still tied, players choose",
+        "",
+        "**Important:** Focus calculation considers the monster current attack ability, but ignores whether it can actually attack this round (e.g., due to card abilities)."
+      ]
+    },
+    {
+      "id": "line_of_sight",
+      "title": "Line of Sight (LoS)",
+      "content": [
+        "**Targeted abilities** require the target to be in line-of-sight.",
+        "",
+        "**Drawing LoS:**",
+        "LoS exists if a line can be drawn from any part of the attacker hex to any part of the target hex without touching a wall line.",
+        "",
+        "**What blocks LoS:**",
+        "- Walls (thick dark lines on the map)",
+        "- Closed doors (act as walls until opened)",
+        "",
+        "**What does NOT block LoS:**",
+        "- Obstacles",
+        "- Objectives",
+        "- Other figures",
+        "",
+        "**Edge cases:**",
+        "- Corners touching walls do NOT block LoS (the line must touch a wall, not just a corner)"
+      ]
+    },
+    {
+      "id": "advantage_disadvantage",
+      "title": "Advantage & Disadvantage",
+      "content": [
+        "**Advantage:** Roll two attack dice and use the higher result.",
+        "",
+        "**When to apply Advantage:**",
+        "- Attacking from an elevated position (on a boulder, table, wall)",
+        "- Specific abilities grant it",
+        "- Shield spell on the attacker",
+        "",
+        "**Disadvantage:** Roll two attack dice and use the lower result.",
+        "",
+        "**When to apply Disadvantage:**",
+        "- Attacking from a lower position",
+        "- Ranged attack while adjacent to an enemy",
+        "- Target is Invisible",
+        "- Specific abilities grant it",
+        "",
+        "**Important:** Both conditions can apply simultaneously, canceling each other out (normal roll)."
+      ]
+    }
+  ],
+  "treasures": [
+    {
+      "id": 1,
+      "reward": "Gain 10 experience"
+    },
+    {
+      "id": 2,
+      "reward": "Ring of Strength (Item 31)"
+    },
+    {
+      "id": 3,
+      "reward": "Gain 15 experience"
+    },
+    {
+      "id": 4,
+      "reward": "Gain 5 gold"
+    },
+    {
+      "id": 5,
+      "reward": "Gain 1 Perk (Check Mark)"
+    },
+    {
+      "id": 6,
+      "reward": "Gain 10 gold"
+    },
+    {
+      "id": 7,
+      "reward": "Gain 5 gold"
+    },
+    {
+      "id": 8,
+      "reward": "Suffer 3 damage, gain POISON condition"
+    },
+    {
+      "id": 9,
+      "reward": "Gain 5 gold"
+    },
+    {
+      "id": 10,
+      "reward": "Fateful Compass (Item 27)"
+    },
+    {
+      "id": 11,
+      "reward": "Ring of Haste (Item 30)"
+    },
+    {
+      "id": 12,
+      "reward": "Gain 5 gold"
+    },
+    {
+      "id": 13,
+      "reward": "Gain 5 gold"
+    },
+    {
+      "id": 14,
+      "reward": "Gain 3 money tokens"
+    },
+    {
+      "id": 15,
+      "reward": "Gain 1 Perk (Check Mark)"
+    },
+    {
+      "id": 16,
+      "reward": "Mana Potion (Item 14)"
+    }
+  ]
+}
