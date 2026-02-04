@@ -3,6 +3,7 @@ import { db } from '@/shared/db'
 import {
   CampaignSchema,
   CreateCampaignSchema,
+  CharacterProgressSchema,
   type Campaign,
   type CreateCampaign,
 } from '@/shared/schemas'
@@ -31,9 +32,19 @@ interface CampaignActions {
   deleteCampaign: (id: string) => Promise<void>
   /** Persist choice to localStorage, update state. */
   setActiveCampaign: (id: string) => void
+  /** Add a character to a campaign (max 4).  Updates Dexie + state. */
+  addCharacter: (campaignId: string, input: CreateCharacter) => Promise<void>
+  /** Remove a character from a campaign.  Updates Dexie + state. */
+  removeCharacter: (campaignId: string, characterId: string) => Promise<void>
 }
 
 export type CampaignStore = CampaignState & CampaignActions
+
+/** Payload for addCharacter — only type + name are supplied by the player. */
+export interface CreateCharacter {
+  type: 'demolitionist' | 'red_guard' | 'hatchet' | 'voidwarden'
+  name: string
+}
 
 // ---------------------------------------------------------------------------
 // Domain helper — initial scenarioStatus for a brand-new campaign.
@@ -50,7 +61,7 @@ function buildInitialScenarioStatus(): Record<number, 'locked' | 'unlocked' | 'c
 // ---------------------------------------------------------------------------
 // Store
 // ---------------------------------------------------------------------------
-export const useCampaignStore = create<CampaignStore>((set) => ({
+export const useCampaignStore = create<CampaignStore>((set, get) => ({
   campaigns: [],
   activeCampaignId: null,
   isLoaded: false,
@@ -97,5 +108,55 @@ export const useCampaignStore = create<CampaignStore>((set) => ({
   setActiveCampaign(id: string) {
     localStorage.setItem(ACTIVE_KEY, id)
     set({ activeCampaignId: id })
+  },
+
+  async addCharacter(campaignId: string, input: CreateCharacter) {
+    const { campaigns } = get()
+    const campaign = campaigns.find((c) => c.id === campaignId)
+    if (!campaign) throw new Error('Campaign not found')
+    if (campaign.characters.length >= 4) throw new Error('Party is full (4/4)')
+
+    // Full Zod validation — rejects invalid type or empty/over-long name
+    const character = CharacterProgressSchema.parse({
+      id: crypto.randomUUID(),
+      type: input.type,
+      name: input.name.trim(),
+      level: 1,
+      experience: 0,
+      gold: 0,
+      checkmarks: 0,
+      perkIds: [],
+      itemIds: [],
+    })
+
+    const updated = {
+      ...campaign,
+      characters: [...campaign.characters, character],
+      updatedAt: new Date(),
+    }
+
+    await db.campaigns.put(updated)
+
+    set((state) => ({
+      campaigns: state.campaigns.map((c) => (c.id === campaignId ? updated : c)),
+    }))
+  },
+
+  async removeCharacter(campaignId: string, characterId: string) {
+    const { campaigns } = get()
+    const campaign = campaigns.find((c) => c.id === campaignId)
+    if (!campaign) throw new Error('Campaign not found')
+
+    const updated = {
+      ...campaign,
+      characters: campaign.characters.filter((c) => c.id !== characterId),
+      updatedAt: new Date(),
+    }
+
+    await db.campaigns.put(updated)
+
+    set((state) => ({
+      campaigns: state.campaigns.map((c) => (c.id === campaignId ? updated : c)),
+    }))
   },
 }))
