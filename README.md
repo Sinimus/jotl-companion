@@ -68,6 +68,86 @@ src/
 
 ## Dev Log
 
+### 2026-02-04 — Character Sheet Polish (Task 20)
+
+**Task 20: Character Sheet Polish**
+- Unified Stats, Perks, and Items into a tabbed character sheet.
+- Implemented `ItemManager` with slot limits and visual inventory.
+- Added "Next Level" XP progress bar and sticky header.
+- Cleaned up routing and layout for a mobile-first experience.
+
+### 2026-02-04 — Item Management (Task 19)
+
+**Task 19: Item Management**
+- Implemented `ItemShop` with filtering by slot and search.
+- Created `ItemManager` for characters to view and manage equipped items.
+- Enforced slot logic (Head, Body, etc.) and small item limits.
+- Integrated into the character data flow.
+
+### 2026-02-04 — Dashboard Redesign (Task 18)
+
+**Task 18: Dashboard Redesign**
+- Transformed `CampaignList` into a dashboard with "Welcome Back" header.
+- Added `ActiveCampaignCard` with large visual stats (Progress, Avg Level).
+- Created `CreateCampaignCard` with inline form expansion.
+- Sorted campaigns by recently updated.
+
+### 2026-02-04 — UI/UX Overhaul (Task 17)
+
+**Task 17: Layout & Navigation**
+- Implemented global `AppLayout` with `BottomNav` for mobile and responsive design.
+- Created `SettingsPage` and migrated Export/Import functionality there.
+- Restructured routing to wrap main views in the new layout.
+- Cleaned up `CampaignList` to focus on campaign management.
+
+### 2026-02-04 — PWA Support (Task 15)
+
+**Task 15: PWA Support (Offline & Installable)**
+- Configured `vite-plugin-pwa` for automatic background updates.
+- Implemented offline caching for all assets and game data (JSON).
+- Created web manifest and custom amber "J" icon.
+- App is now installable on mobile and desktop devices.
+
+### 2026-02-04 — Quick Reference Cards (Task 13)
+
+**Task 13: Quick Reference Cards**
+- `RulesLayout`: Tabbed navigation between Glossary and Reference sections.
+- `ReferencePage`: Visual cards for Conditions (color-coded), Elements (thematic indicators), and core rule guides (Focus, Movement, LoS).
+- Improved formatting for rule content with support for bold, bullet points, and paragraphs.
+- Integrated rules access directly from the Campaign Detail view.
+
+### 2026-02-04 — Searchable Glossary UI (Task 12)
+
+**Task 12: Searchable Glossary UI**
+- `GlossaryPage` component: full-featured browsing experience for 95 terms.
+- Multi-layer filtering: free-text search, A-Z letter filter, and category dropdown.
+- Mobile-responsive layout with horizontal scrolling filters.
+- Support for bold markdown in rule descriptions.
+
+### 2026-02-04 — Rules Data Structure (Task 11)
+
+**Task 11: Rules Data & Glossary Content**
+- Extracted 95 glossary terms from game docs.
+- 4 detailed rule guides (Monster Movement, Focus, LoS, Adv/Disadv).
+- Complete Treasure Index (1-16).
+- Structured in `src/data/rules.json` with full TypeScript typing.
+
+### 2026-02-04 — Post-Scenario Checklist (Task 9)
+
+**Task 9: Post-Scenario Checklist**
+- `PostScenarioChecklist` component: interactive guide for end-of-game rewards
+- Dynamic lookups for Bonus XP and Gold conversion based on scenario level
+- Success/Failure branching checklists
+- Built-in gold calculator for money tokens
+
+### 2026-02-04 — Scenario Tracker (Task 8)
+
+**Task 8: Scenario Tracker & Unlock Chain**
+- `ScenarioTracker` component: visual grid of 17 scenarios
+- Statuses: Locked (gray), Unlocked (interactive), Completed (green check)
+- `setScenarioStatus` store action: auto-unlocks downstream scenarios upon completion
+- Integrated into `CampaignDetail` page
+
 ### 2026-02-04 — Character Detail + Editing (Task 6)
 
 **Task 6: Character Detail View + Editing**

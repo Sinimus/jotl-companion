@@ -17,6 +17,8 @@ export const ScenarioStatusSchema = z.enum([
   'completed',
 ])
 
+export type ScenarioStatus = z.infer<typeof ScenarioStatusSchema>
+
 // ---------------------------------------------------------------------------
 // Primitives
 // ---------------------------------------------------------------------------

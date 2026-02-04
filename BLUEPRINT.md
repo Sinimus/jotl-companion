@@ -3,7 +3,7 @@
 > **Codename:** JotL Companion
 > **Version:** 0.3.0
 > **Last Updated:** 2026-02-04
-> **Status:** Implementation Phase (Tasks 1-6 complete)
+> **Status:** Implementation Phase (Tasks 1-14 complete)
 
 ---
 
@@ -23,9 +23,18 @@ Phase 1: Foundation
   [x] Task 4 — Campaign CRUD + Zustand store
   [x] Task 5 — Character creation flow
 
-Phase 2: Core Features (in progress)
+Phase 2: Core Features (complete)
   [x] Task 6 — Character detail view + stat editing (XP/gold/checkmarks, auto-level)
-  [ ] Task 7 — Level-up workflow  ← NEXT
+  [x] Task 7 — Character perks (selection UI)
+  [x] Task 8 — Scenario tracker + status management
+  [x] Task 9 — Post-scenario checklist (interactive)
+  [x] Task 10 — Calculators (scenario level, gold, XP)
+
+Phase 3: Rules Reference (complete)
+  [x] Task 11 — Rules data structure + content
+  [x] Task 12 — Searchable glossary UI
+  [x] Task 13 — Quick reference cards
+  [x] Task 14 — Monster focus algorithm helper
 ```
 
 ### Key Files to Read
@@ -309,22 +318,24 @@ campaigns: 'id, name, updatedAt'  // Primary key: id
 
 ### Phase 2: Core Features (Tasks 6-10)
 6. **[Task 6]** Character detail view + editing `DONE`
-7. **[Task 7]** Level up workflow
-8. **[Task 8]** Scenario tracker + status management
-9. **[Task 9]** Post-scenario checklist (interactive)
+7. **[Task 7]** Character perks (selection UI) `DONE`
+8. **[Task 8]** Scenario tracker + status management `DONE`
+9. **[Task 9]** Post-scenario checklist (interactive) `DONE`
 10. **[Task 10]** Calculators (scenario level, gold, XP)
 
 ### Phase 3: Rules Reference (Tasks 11-14)
-11. **[Task 11]** Rules data structure + content
-12. **[Task 12]** Searchable glossary UI
-13. **[Task 13]** Quick reference cards (conditions, elements)
-14. **[Task 14]** Monster focus algorithm helper
+11. **[Task 11]** Rules data structure + content `DONE`
+12. **[Task 12]** Searchable glossary UI `DONE`
+13. **[Task 13]** Quick reference cards (conditions, elements) `DONE`
+14. **[Task 14]** Monster focus algorithm helper `DONE`
 
 ### Phase 4: Polish (Tasks 15+)
-15. **[Task 15]** PWA support (offline, installable)
-16. **[Task 16]** Export/import campaigns
-17. **[Task 17]** Dark mode + accessibility
-18. **[Task 18]** Visual campaign map
+15. **[Task 15]** PWA support (offline, installable) `DONE`
+16. **[Task 16]** Export/import campaigns `DONE`
+17. **[Task 17]** UI/UX Overhaul (Layout & Navigation) `DONE`
+18. **[Task 18]** Dashboard Redesign `DONE`
+19. **[Task 19]** Item Management `DONE`
+20. **[Task 20]** Character Sheet Polish `DONE`
 
 ---
 
@@ -420,6 +431,90 @@ campaigns: 'id, name, updatedAt'  // Primary key: id
   - Editable: XP, gold, checkmarks. Read-only: level, HP, perks count, items count.
   - Route: `/campaign/:campaignId/character/:characterId`.
   - Checkmarks capped at 18; shows "X perks earned" (floor(checkmarks/3)).
+
+### 2026-02-04 — Task 7 Spec Published
+
+- Architect spec: `docs/tasks/TASK-007-perk-selection.md`
+- Scope: Perk selection UI in Character Detail, `PerkList` component.
+- Implemented: Checkbox list, "Available/Total" points calculation (Level - 1 + Checks/3), filtering by character class.
+
+### 2026-02-04 — Task 8 Spec Published
+
+- Architect spec: `docs/tasks/TASK-008-scenario-tracker.md`
+- Scope: `ScenarioTracker` component, `setScenarioStatus` action, auto-unlock logic.
+- Implemented: Grid UI for 17 scenarios, auto-unlocking next scenarios on completion.
+
+### 2026-02-04 — Task 9 Spec Published
+
+- Architect spec: `docs/tasks/TASK-009-post-scenario-checklist.md`
+- Scope: `PostScenarioChecklist` component, end-of-game guide.
+- Implemented: Success/Failure steps, scenario level lookup for Bonus XP/Gold, money calculator.
+
+### 2026-02-04 — Task 10 Spec Published
+
+- Architect spec: `docs/tasks/TASK-010-calculators.md`
+- Scope: `CalculatorPage` component for scenario setup.
+- Implemented: Average level calculation, difficulty modifiers, scenario stats lookup (Trap Dmg, Gold, XP).
+
+### 2026-02-04 — Task 11 Spec Published
+
+- Architect spec: `docs/tasks/TASK-011-rules-data.md`
+- Scope: Rules data structure for glossary, guides, and treasures.
+- Implemented: `rules.json` with 95 terms, 4 guides, and 16 treasures; defined TS interfaces.
+
+### 2026-02-04 — Task 12 Spec Published
+
+- Architect spec: `docs/tasks/TASK-012-glossary-ui.md`
+- Scope: `GlossaryPage` component with search, letter, and category filters.
+- Implemented: 3-layer filtering system for 95 terms, Markdown-lite rendering, mobile-responsive layout.
+
+### 2026-02-04 — Task 13 Spec Published
+
+- Architect spec: `docs/tasks/TASK-013-reference-cards.md`
+- Scope: `RulesLayout` with tab navigation and `ReferencePage` with visual cards.
+- Implemented: Tabbed navigation, color-coded Condition cards (Pos/Neg), Element indicators, and Guide cards with rich formatting (bold, bullets).
+
+### 2026-02-04 — Task 14 Spec Published
+
+- Architect spec: `docs/tasks/TASK-014-monster-focus-helper.md`
+- Scope: Interactive wizard for resolving monster focus.
+- Implemented: 3-step algorithm (Movement → Proximity → Initiative), editable target table, and integration with active campaign party.
+
+### 2026-02-04 — Task 15 Spec Published
+
+- Architect spec: `docs/tasks/TASK-015-pwa-support.md`
+- Scope: Transform the app into a Progressive Web App.
+- Implemented: `vite-plugin-pwa` configuration, offline caching, manifest, and custom icon.
+
+### 2026-02-04 — Task 16 Spec Published
+
+- Architect spec: `docs/tasks/TASK-016-export-import.md`
+- Scope: Backup and restore functionality.
+- Implemented: JSON export/import with Zod schema validation in store and settings page.
+
+### 2026-02-04 — Task 17 Spec Published
+
+- Architect spec: `docs/tasks/TASK-017-ui-overhaul.md`
+- Scope: Global layout and navigation.
+- Implemented: `AppLayout`, `BottomNav`, and `SettingsPage`; centralized settings logic.
+
+### 2026-02-04 — Task 18 Spec Published
+
+- Architect spec: `docs/tasks/TASK-018-dashboard.md`
+- Scope: Dashboard redesign with active campaign focus.
+- Implemented: `ActiveCampaignCard`, `CreateCampaignCard` (inline), and sorted list layout.
+
+### 2026-02-04 — Task 19 Spec Published
+
+- Architect spec: `docs/tasks/TASK-019-item-management.md`
+- Scope: Character inventory and shop UI.
+- Implemented: `ItemManager` and `ItemShop` with slot validation and filtering.
+
+### 2026-02-04 — Task 20 Spec Published
+
+- Architect spec: `docs/tasks/TASK-020-character-sheet-polish.md`
+- Scope: Unified character sheet UI.
+- Implemented: Tabbed `CharacterDetail` view (Stats, Perks, Items) with sticky header and mobile optimizations.
 
 ---
 

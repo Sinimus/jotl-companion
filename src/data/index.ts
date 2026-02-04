@@ -10,11 +10,16 @@ import elements from './elements.json'
 import scenarios from './scenarios.json'
 import tables from './tables.json'
 import items from './items.json'
+import rules from './rules.json'
 
-export { characters, perks, conditions, elements, scenarios, tables, items }
+export { characters, perks, conditions, elements, scenarios, tables, items, rules }
 
 export type {
   Character,
+  GlossaryEntry,
+  RuleSection,
+  TreasureReward,
+  RulesData,
   Perk,
   Condition,
   ConditionType,

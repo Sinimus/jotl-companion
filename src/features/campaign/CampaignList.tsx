@@ -1,12 +1,10 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCampaignStore } from './store'
 import { CampaignCard } from './CampaignCard'
+import { ActiveCampaignCard } from './ActiveCampaignCard'
+import { CreateCampaignCard } from './CreateCampaignCard'
 
 export function CampaignList() {
-  const [name, setName] = useState('')
-  const [error, setError] = useState<string | null>(null)
-
   const campaigns = useCampaignStore((s) => s.campaigns)
   const activeCampaignId = useCampaignStore((s) => s.activeCampaignId)
   const isLoaded = useCampaignStore((s) => s.isLoaded)
@@ -16,21 +14,7 @@ export function CampaignList() {
 
   const navigate = useNavigate()
 
-  // -----------------------------------------------------------------------
-  const handleCreate = async () => {
-    const trimmed = name.trim()
-    if (!trimmed) return
-    try {
-      await createCampaign({ name: trimmed })
-      setName('')
-      setError(null)
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to create campaign')
-    }
-  }
-  // -----------------------------------------------------------------------
-
-  // Loading gate — Dexie hydration in progress
+  // Loading gate
   if (!isLoaded) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-900">
@@ -39,55 +23,66 @@ export function CampaignList() {
     )
   }
 
+  // Determine active campaign
+  const activeCampaign = campaigns.find((c) => c.id === activeCampaignId)
+  
+  // Sort remaining campaigns by last updated
+  const otherCampaigns = campaigns
+    .filter((c) => c.id !== activeCampaignId)
+    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+
+  // If no active campaign but we have campaigns, suggest the most recent one as "active" candidate logic-wise,
+  // but visually we might just want to show the list.
+  // Requirement says: "If activeCampaignId exists, show ActiveCampaignCard. If not, show most recently updated."
+  
+  const featuredCampaign = activeCampaign || otherCampaigns[0]
+  const listCampaigns = activeCampaign ? otherCampaigns : otherCampaigns.slice(1)
+
   return (
-    <div className="min-h-screen bg-zinc-900 px-4 py-8">
-      <div className="mx-auto max-w-lg">
-        {/* Page header */}
-        <h1 className="mb-2 text-2xl font-bold text-amber-500">Gloomhaven</h1>
-        <p className="mb-6 text-sm text-zinc-400">Jaws of the Lion — Your Campaigns</p>
+    <div className="mx-auto max-w-2xl px-4 py-8 pb-24">
+      <header className="mb-8">
+        <h1 className="text-3xl font-bold text-amber-500">Welcome Back</h1>
+        <p className="text-zinc-400">Ready for your next adventure?</p>
+      </header>
 
-        {/* Create-campaign form */}
-        <div className="mb-2 flex gap-2">
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
-            placeholder="New campaign name…"
-            className="flex-1 rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-zinc-100 placeholder-zinc-500 focus:border-amber-500 focus:outline-none"
+      <section className="mb-10">
+        {featuredCampaign ? (
+          <ActiveCampaignCard
+            campaign={featuredCampaign}
+            onContinue={() => {
+              setActiveCampaign(featuredCampaign.id)
+              navigate(`/campaign/${featuredCampaign.id}`)
+            }}
           />
-          <button
-            disabled={!name.trim()}
-            onClick={handleCreate}
-            className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-zinc-900 disabled:opacity-40 hover:bg-amber-500"
-          >
-            Create
-          </button>
-        </div>
-
-        {/* Inline error */}
-        {error && <p className="mb-4 text-sm text-red-400">{error}</p>}
-
-        {/* Campaign list or empty state */}
-        {campaigns.length === 0 ? (
-          <p className="mt-8 text-center text-zinc-500">No campaigns yet — create one above.</p>
         ) : (
-          <div className="mt-4 flex flex-col gap-3">
-            {campaigns.map((campaign) => (
-              <CampaignCard
-                key={campaign.id}
-                campaign={campaign}
-                isActive={campaign.id === activeCampaignId}
-                onSelect={() => {
-                  setActiveCampaign(campaign.id)
-                  navigate(`/campaign/${campaign.id}`)
-                }}
-                onDelete={() => deleteCampaign(campaign.id)}
-              />
-            ))}
+          <div className="rounded-xl border border-dashed border-zinc-700 bg-zinc-900/30 p-8 text-center">
+            <p className="mb-4 text-zinc-400">No campaigns found. Start your journey below!</p>
           </div>
         )}
-      </div>
+      </section>
+
+      <section>
+        <h2 className="mb-4 text-lg font-semibold text-zinc-300">
+          {featuredCampaign ? 'Other Campaigns' : 'Create Campaign'}
+        </h2>
+        
+        <div className="grid gap-4 sm:grid-cols-2">
+          <CreateCampaignCard onCreate={(name) => createCampaign({ name })} />
+          
+          {listCampaigns.map((campaign) => (
+            <CampaignCard
+              key={campaign.id}
+              campaign={campaign}
+              isActive={false} // We don't need to highlight it in the list since we have the Active card
+              onSelect={() => {
+                setActiveCampaign(campaign.id)
+                navigate(`/campaign/${campaign.id}`)
+              }}
+              onDelete={() => deleteCampaign(campaign.id)}
+            />
+          ))}
+        </div>
+      </section>
     </div>
   )
 }

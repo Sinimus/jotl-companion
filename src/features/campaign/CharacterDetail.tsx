@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useCampaignStore, computeLevelFromXp, type UpdateCharacterInput } from './store'
 import { characters, tables } from '@/data'
+import { PerkList } from './PerkList'
+import { ItemManager } from '@/features/characters'
 
 export function CharacterDetail() {
   const { campaignId, characterId } = useParams<{ campaignId: string; characterId: string }>()
@@ -13,14 +15,11 @@ export function CharacterDetail() {
   const campaign = isLoaded ? campaigns.find((c) => c.id === campaignId) : undefined
   const character = campaign?.characters.find((c) => c.id === characterId)
 
-  // ---------------------------------------------------------------------------
-  // Local editable state — provides instant UI feedback; persists on blur.
-  // Only re-syncs from the store when the active character identity changes
-  // (i.e. the user navigates to a different character).
-  // ---------------------------------------------------------------------------
+  // Local state for stats editing
   const [xp, setXp] = useState(0)
   const [gold, setGold] = useState(0)
   const [checkmarks, setCheckmarks] = useState(0)
+  const [activeTab, setActiveTab] = useState<'stats' | 'perks' | 'items'>('stats')
 
   useEffect(() => {
     if (character) {
@@ -28,14 +27,9 @@ export function CharacterDetail() {
       setGold(character.gold)
       setCheckmarks(character.checkmarks)
     }
-    // Keyed on characterId only — avoids overwriting in-progress edits when
-    // the store re-renders after our own blur-triggered persist.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [characterId])
 
-  // ---------------------------------------------------------------------------
-  // Loading gate
-  // ---------------------------------------------------------------------------
   if (!isLoaded) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-900">
@@ -44,9 +38,6 @@ export function CharacterDetail() {
     )
   }
 
-  // ---------------------------------------------------------------------------
-  // Not found
-  // ---------------------------------------------------------------------------
   if (!campaign || !character) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-900">
@@ -61,9 +52,6 @@ export function CharacterDetail() {
     )
   }
 
-  // ---------------------------------------------------------------------------
-  // Derived display values — computed from LOCAL state for instant feedback
-  // ---------------------------------------------------------------------------
   const charDef = characters.find((c) => c.id === character.type)
   const computedLevel = computeLevelFromXp(xp)
   const maxHp = (charDef?.hitPoints as Record<string, number>)?.[String(computedLevel)] ?? 0
@@ -77,128 +65,155 @@ export function CharacterDetail() {
 
   const perksFromCheckmarks = Math.floor(checkmarks / 3)
 
-  // ---------------------------------------------------------------------------
-  // Persist to store — reads value from the blur event target to avoid stale
-  // closure over local state.
-  // ---------------------------------------------------------------------------
   const commit = (updates: UpdateCharacterInput) => {
     void updateCharacter(campaignId!, characterId!, updates)
   }
 
-  // ---------------------------------------------------------------------------
+  const handleUpdateItems = (itemIds: number[]) => {
+    updateCharacter(campaignId!, characterId!, { itemIds })
+  }
+
+  const handleTogglePerk = (perkId: string, isSelected: boolean) => {
+    const currentIds = new Set(character.perkIds)
+    if (isSelected) {
+      currentIds.add(perkId)
+    } else {
+      currentIds.delete(perkId)
+    }
+    updateCharacter(campaignId!, characterId!, {
+      perkIds: Array.from(currentIds),
+    })
+  }
+
   return (
-    <div className="min-h-screen bg-zinc-900 px-4 py-8">
-      <div className="mx-auto max-w-lg">
-        {/* Back link */}
-        <Link
-          to={`/campaign/${campaignId}`}
-          className="text-sm text-zinc-500 hover:text-amber-400 transition-colors"
-        >
-          ← Back to {campaign.name}
-        </Link>
-
-        {/* Header */}
-        <div className="mt-4">
-          <span className="text-xs font-medium text-amber-400">
-            {charDef?.name ?? character.type}
-            {charDef ? ` (${charDef.race})` : ''}
-          </span>
-          <h1 className="text-2xl font-bold text-zinc-100">{character.name}</h1>
-        </div>
-
-        {/* Level + HP + XP progress bar */}
-        <div className="mt-6 rounded-lg border border-zinc-700 bg-zinc-800 p-4">
-          <div className="flex items-baseline gap-3">
-            <span className="text-xl font-semibold text-amber-400">Level {computedLevel}</span>
-            <span className="text-sm text-zinc-400">HP {maxHp}</span>
-          </div>
-
-          <div className="mt-3">
-            <div className="mb-1 flex justify-between text-xs text-zinc-500">
-              <span>XP</span>
-              <span>
-                {nextThreshold
-                  ? `${xp} / ${nextThreshold} to Lv${computedLevel + 1}`
-                  : `${xp} (MAX)`}
+    <div className="min-h-screen bg-zinc-950 pb-20">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-40 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur">
+        <div className="px-4 py-3">
+          <Link
+            to={`/campaign/${campaignId}`}
+            className="mb-2 block text-xs font-medium text-zinc-500 hover:text-zinc-300"
+          >
+            ← {campaign.name}
+          </Link>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-xl font-bold text-zinc-100">{character.name}</h1>
+              <span className="text-xs text-amber-500">
+                Level {computedLevel} {charDef?.name}
               </span>
             </div>
-            <div className="h-2 rounded-full bg-zinc-700">
+            <div className="text-right">
+              <span className="block text-2xl font-bold text-red-500">{maxHp}</span>
+              <span className="text-[10px] uppercase text-zinc-500">Max HP</span>
+            </div>
+          </div>
+          
+          {/* XP Bar */}
+          <div className="mt-3">
+            <div className="mb-1 flex justify-between text-[10px] uppercase text-zinc-500">
+              <span>{xp} XP</span>
+              <span>{nextThreshold ? `Next: ${nextThreshold}` : 'Max'}</span>
+            </div>
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
               <div
-                className="h-full rounded-full bg-amber-500 transition-all"
+                className="h-full bg-amber-600 transition-all duration-500"
                 style={{ width: `${Math.min(xpProgress, 100)}%` }}
               />
             </div>
           </div>
         </div>
 
-        {/* Editable stats grid */}
-        <div className="mt-4 grid grid-cols-3 gap-3">
-          {/* XP */}
-          <div className="rounded-lg border border-zinc-700 bg-zinc-800 p-3">
-            <label className="mb-1 block text-xs text-zinc-500">XP</label>
-            <input
-              type="number"
-              min={0}
-              value={xp}
-              onChange={(e) => setXp(Math.max(0, parseInt(e.target.value, 10) || 0))}
-              onBlur={(e) => commit({ experience: Math.max(0, parseInt(e.target.value, 10) || 0) })}
-              className="w-full bg-transparent text-sm text-zinc-100 focus:outline-none"
-            />
-          </div>
-
-          {/* Gold */}
-          <div className="rounded-lg border border-zinc-700 bg-zinc-800 p-3">
-            <label className="mb-1 block text-xs text-zinc-500">Gold</label>
-            <input
-              type="number"
-              min={0}
-              value={gold}
-              onChange={(e) => setGold(Math.max(0, parseInt(e.target.value, 10) || 0))}
-              onBlur={(e) => commit({ gold: Math.max(0, parseInt(e.target.value, 10) || 0) })}
-              className="w-full bg-transparent text-sm text-zinc-100 focus:outline-none"
-            />
-          </div>
-
-          {/* Checkmarks */}
-          <div className="rounded-lg border border-zinc-700 bg-zinc-800 p-3">
-            <label className="mb-1 block text-xs text-zinc-500">Checks</label>
-            <input
-              type="number"
-              min={0}
-              max={18}
-              value={checkmarks}
-              onChange={(e) => setCheckmarks(Math.min(18, Math.max(0, parseInt(e.target.value, 10) || 0)))}
-              onBlur={(e) => commit({ checkmarks: Math.min(18, Math.max(0, parseInt(e.target.value, 10) || 0)) })}
-              className="w-full bg-transparent text-sm text-zinc-100 focus:outline-none"
-            />
-          </div>
+        {/* Tabs */}
+        <div className="flex border-t border-zinc-800">
+          {(['stats', 'perks', 'items'] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`flex-1 py-3 text-sm font-medium transition-colors ${
+                activeTab === tab
+                  ? 'border-b-2 border-amber-500 text-amber-500'
+                  : 'text-zinc-500 hover:text-zinc-300'
+              }`}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
         </div>
+      </div>
 
-        {/* Checkmarks summary */}
-        <p className="mt-2 text-xs text-zinc-500">
-          {checkmarks} / 18 checkmarks &bull; {perksFromCheckmarks} perk{perksFromCheckmarks !== 1 ? 's' : ''} earned
-        </p>
+      <div className="p-4">
+        {activeTab === 'stats' && (
+          <div className="space-y-6">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+                <label className="mb-1 block text-xs font-medium uppercase text-zinc-500">Current XP</label>
+                <input
+                  type="number"
+                  min={0}
+                  value={xp}
+                  onChange={(e) => setXp(Math.max(0, parseInt(e.target.value, 10) || 0))}
+                  onBlur={(e) => commit({ experience: Math.max(0, parseInt(e.target.value, 10) || 0) })}
+                  className="w-full bg-transparent text-3xl font-bold text-zinc-100 focus:outline-none"
+                />
+              </div>
+              <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+                <label className="mb-1 block text-xs font-medium uppercase text-zinc-500">Gold</label>
+                <input
+                  type="number"
+                  min={0}
+                  value={gold}
+                  onChange={(e) => setGold(Math.max(0, parseInt(e.target.value, 10) || 0))}
+                  onBlur={(e) => commit({ gold: Math.max(0, parseInt(e.target.value, 10) || 0) })}
+                  className="w-full bg-transparent text-3xl font-bold text-amber-400 focus:outline-none"
+                />
+              </div>
+            </div>
 
-        {/* Perks + Items placeholders */}
-        <div className="mt-6 space-y-3">
-          <div className="rounded-lg border border-zinc-700 bg-zinc-800 p-4">
-            <h3 className="text-sm font-semibold text-zinc-300">Perks</h3>
-            <p className="mt-1 text-sm text-zinc-500">
-              {character.perkIds.length > 0
-                ? `${character.perkIds.length} selected`
-                : 'Perk selection coming soon'}
-            </p>
+            {/* Battle Goals */}
+            <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+              <div className="mb-4 flex items-center justify-between">
+                <label className="text-xs font-medium uppercase text-zinc-500">Battle Goal Checkmarks</label>
+                <span className="text-xs text-amber-500">
+                  {perksFromCheckmarks} Perk{perksFromCheckmarks !== 1 ? 's' : ''} Earned
+                </span>
+              </div>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => {
+                    const newValue = Math.max(0, checkmarks - 1)
+                    setCheckmarks(newValue)
+                    commit({ checkmarks: newValue })
+                  }}
+                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-700 bg-zinc-800 text-xl text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200"
+                >
+                  -
+                </button>
+                <span className="flex-1 text-center text-3xl font-bold text-zinc-100">{checkmarks}</span>
+                <button
+                  onClick={() => {
+                    const newValue = Math.min(18, checkmarks + 1)
+                    setCheckmarks(newValue)
+                    commit({ checkmarks: newValue })
+                  }}
+                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-700 bg-zinc-800 text-xl text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200"
+                >
+                  +
+                </button>
+              </div>
+              <p className="mt-2 text-center text-xs text-zinc-600">Max 18 checkmarks</p>
+            </div>
           </div>
+        )}
 
-          <div className="rounded-lg border border-zinc-700 bg-zinc-800 p-4">
-            <h3 className="text-sm font-semibold text-zinc-300">Items</h3>
-            <p className="mt-1 text-sm text-zinc-500">
-              {character.itemIds.length > 0
-                ? `${character.itemIds.length} owned`
-                : 'Item management coming soon'}
-            </p>
-          </div>
-        </div>
+        {activeTab === 'perks' && (
+          <PerkList character={character} onToggle={handleTogglePerk} />
+        )}
+
+        {activeTab === 'items' && (
+          <ItemManager character={character} onUpdateItems={handleUpdateItems} />
+        )}
       </div>
     </div>
   )

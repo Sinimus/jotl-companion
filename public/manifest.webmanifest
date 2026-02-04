@@ -1,0 +1,18 @@
+{
+  "name": "JotL Companion",
+  "short_name": "JotL",
+  "description": "Companion app for Gloomhaven: Jaws of the Lion",
+  "theme_color": "#09090b",
+  "background_color": "#09090b",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
