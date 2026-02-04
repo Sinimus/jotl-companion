@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   jotl-companion:
     image: ghcr.io/sinimus/jotl-companion:latest
@@ -5,4 +7,3 @@ services:
     ports:
       - "8080:80"
     restart: unless-stopped
-    # No volumes needed as data is stored in the browser's IndexedDB
