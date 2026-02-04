@@ -1,7 +1,10 @@
 {
   "name": "jotl-companion",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "Unofficial Companion App for Gloomhaven: Jaws of the Lion",
+  "author": "Sinimus <sinimus@noreply>",
+  "license": "GPL-3.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

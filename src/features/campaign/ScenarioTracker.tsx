@@ -72,6 +72,7 @@ export function ScenarioTracker({ campaignId, scenarioStatus }: ScenarioTrackerP
                 {scenario.name}
               </span>
               <span className="mt-0.5 text-xs text-zinc-600">{scenario.location}</span>
+              <span className="mt-0.5 text-xs italic text-zinc-500">{scenario.goal}</span>
             </div>
 
             {/* Checkbox / Icon */}

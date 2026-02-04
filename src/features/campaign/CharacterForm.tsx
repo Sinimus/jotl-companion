@@ -19,6 +19,8 @@ export function CharacterForm({ disabled, onAdd }: CharacterFormProps) {
   }
   // ---------------------------------------------------------------------------
 
+  const selectedCharDef = selectedType ? characters.find((c) => c.id === selectedType) : null
+
   const handleAdd = async () => {
     if (!selectedType || !name.trim()) return
     try {
@@ -51,6 +53,15 @@ export function CharacterForm({ disabled, onAdd }: CharacterFormProps) {
           </button>
         ))}
       </div>
+
+      {selectedCharDef && (
+        <div className="mb-3 rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2">
+          <p className="text-sm text-zinc-200">
+            <span className="font-semibold text-amber-400">{selectedCharDef.name}</span>
+            <span className="text-zinc-500"> &bull; {selectedCharDef.race} &bull; {selectedCharDef.role}</span>
+          </p>
+        </div>
+      )}
 
       {/* Name input + submit */}
       <div className="flex gap-2">
