@@ -1,6 +1,6 @@
 # Gloomhaven: Jaws of the Lion - Unofficial Companion App
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)
 ![License](https://img.shields.io/badge/license-GPLv3-green.svg)
 ![React](https://img.shields.io/badge/react-19.0-blue)
 ![PWA](https://img.shields.io/badge/PWA-Ready-purple)
@@ -8,6 +8,16 @@
 A feature-rich, offline-first companion app for the board game **Gloomhaven: Jaws of the Lion**. Designed to streamline campaign tracking, character management, and rules lookup without replacing the physical tabletop experience.
 
 ---
+
+## 🆕 New in v1.1.0
+
+- **Expanded Item Shop:** All 52 items are now available in the shop with spoiler protection (blurred content for locked items).
+- **Corrected Item Logic:** Proper handling for two-handed items and updated inventory limits.
+- **Flexible Purchasing:** Gold is no longer a hard constraint for equipping items, allowing for manual configuration of existing game states.
+- **Independent Perk Tracking:** Added "Bonus Perks" control for rewards earned outside of battle goals.
+- **Tutorial Logic:** The Post-Scenario Checklist now automatically adjusts for Tutorial Scenarios 1-5 (disabling XP/Gold/Battle Goals/City Events as per the rulebook).
+- **Accurate Character Perks:** Corrected perk lists for all four classes based on official character sheets.
+- **Negative Gold Support:** Characters can now track negative gold balances if needed.
 
 ## 🚀 Features
 

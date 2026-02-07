@@ -70,6 +70,8 @@ export interface Item {
   copies: number
   /** Key identifying when the item is added to the shop. */
   unlockedBy?: 'start' | 'scenario_2' | 'scenario_9' | 'scenario_15' | 'solo'
+  /** For hand items: 1 (default) or 2. */
+  hands?: number
 }
 
 // ---------------------------------------------------------------------------

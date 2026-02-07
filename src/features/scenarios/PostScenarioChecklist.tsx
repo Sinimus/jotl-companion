@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
-import { tables } from '@/data'
+import { tables, scenarios } from '@/data'
 
 // ---------------------------------------------------------------------------
 // Render markdown-style **bold** safely via JSX
@@ -26,6 +26,7 @@ export function PostScenarioChecklist() {
 
   // Local state - does not persist to DB
   const [outcome, setOutcome] = useState<'success' | 'failure'>('success')
+  const [scenarioId, setScenarioId] = useState(1)
   const [scenarioLevel, setScenarioLevel] = useState(1)
   const [moneyTokens, setMoneyTokens] = useState(0)
   const [checkedSteps, setCheckedSteps] = useState<Set<number>>(new Set())
@@ -36,6 +37,59 @@ export function PostScenarioChecklist() {
   }, [scenarioLevel])
 
   const calculatedGold = moneyTokens * levelData.goldConversion
+
+  const successSteps = useMemo(() => {
+    const steps = ['Read the conclusion text in the Scenario Book.']
+    
+    // XP Logic: Tutorial 1-3 no XP. 4+ have XP.
+    if (scenarioId >= 4) {
+      steps.push(`Add **+${levelData.bonusXp}** bonus experience to each character.`)
+    } else {
+      steps.push('**Tutorial:** No bonus experience awarded for Scenarios 1-3.')
+    }
+
+    // Gold Logic: Tutorial 1-2 no Gold. 3+ have Gold.
+    if (scenarioId >= 3) {
+      steps.push(`Tally money tokens. Convert at **${levelData.goldConversion} gold** each.`)
+    } else {
+      steps.push('**Tutorial:** No gold awarded for Scenarios 1-2.')
+    }
+
+    // Battle Goals: 1-3 no Battle Goals. 4+ have Battle Goals.
+    if (scenarioId >= 4) {
+      steps.push('Check Battle Goals. Add checkmarks (✓) if criteria met.')
+    } else {
+      steps.push('**Tutorial:** No battle goals for Scenarios 1-3.')
+    }
+
+    steps.push('Update Scenario Tracker (mark completed).')
+
+    // City Events: 1-2 no City Events. 3+ have City Events.
+    if (scenarioId >= 3) {
+      steps.push('Draw a City Event card.')
+    }
+
+    return steps
+  }, [scenarioId, levelData])
+
+  const failureSteps = useMemo(() => {
+    const steps: string[] = []
+    
+    if (scenarioId >= 4) {
+      steps.push('Record XP earned from abilities.')
+    }
+    
+    if (scenarioId >= 3) {
+      steps.push(`Tally money tokens. Convert at **${levelData.goldConversion} gold** each.`)
+    } else {
+      steps.push('**Tutorial:** No rewards retained on failure for Scenarios 1-2.')
+    }
+
+    steps.push('No Battle Goals, no Bonus XP, no Scenario Completion.')
+    return steps
+  }, [scenarioId, levelData])
+
+  const steps = outcome === 'success' ? successSteps : failureSteps
 
   const toggleStep = (stepIndex: number) => {
     setCheckedSteps((prev) => {
@@ -48,23 +102,6 @@ export function PostScenarioChecklist() {
       return next
     })
   }
-
-  const successSteps = [
-    'Read the conclusion text in the Scenario Book.',
-    `Add **+${levelData.bonusXp}** bonus experience to each character.`,
-    `Tally money tokens. Convert at **${levelData.goldConversion} gold** each.`,
-    'Check Battle Goals. Add checkmarks (✓) if criteria met.',
-    'Update Scenario Tracker (mark completed).',
-    'Draw a City Event card (if instructed).',
-  ]
-
-  const failureSteps = [
-    'Record XP earned from abilities.',
-    `Tally money tokens. Convert at **${levelData.goldConversion} gold** each.`,
-    'No Battle Goals, no Bonus XP, no Scenario Completion.',
-  ]
-
-  const steps = outcome === 'success' ? successSteps : failureSteps
 
   if (!isLoaded) {
     return (
@@ -102,6 +139,25 @@ export function PostScenarioChecklist() {
         {/* Configuration */}
         <div className="mt-6 rounded-lg border border-zinc-700 bg-zinc-800 p-4">
           <h2 className="mb-3 text-sm font-semibold text-zinc-300">Configuration</h2>
+
+          {/* Scenario Selector */}
+          <div className="mb-4">
+            <label className="mb-2 block text-xs text-zinc-500">Scenario</label>
+            <select
+              value={scenarioId}
+              onChange={(e) => {
+                setScenarioId(Number(e.target.value))
+                setCheckedSteps(new Set())
+              }}
+              className="w-full rounded-md border border-zinc-600 bg-zinc-700 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500 focus:outline-none"
+            >
+              {scenarios.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.id}: {s.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
           {/* Outcome toggle */}
           <div className="mb-4">

@@ -15,19 +15,9 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
   const [showHidden, setShowHidden] = useState(false)
 
   const filteredItems = useMemo(() => {
-    const isScenarioCompleted = (id: number) => scenarioStatus[id] === 'completed'
-
     return items.filter((item) => {
-      // 1. Progress check
-      let isUnlocked = false
-      if (item.unlockedBy === 'start') isUnlocked = true
-      else if (item.unlockedBy === 'scenario_2' && isScenarioCompleted(2)) isUnlocked = true
-      else if (item.unlockedBy === 'scenario_9' && isScenarioCompleted(9)) isUnlocked = true
-      else if (item.unlockedBy === 'scenario_15' && isScenarioCompleted(15)) isUnlocked = true
-      else if (item.unlockedBy === 'solo') isUnlocked = false // Manual reveal only
-
-      if (!isUnlocked && !showHidden && !ownedItemIds.includes(item.id)) return false
-
+      // 1. Progress check - REMOVED (we show all items now)
+      
       // 2. Slot filter
       const matchesSlot = selectedSlot === 'all' || item.slot === selectedSlot
       
@@ -38,6 +28,12 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
     })
   }, [selectedSlot, searchQuery, scenarioStatus, showHidden, ownedItemIds])
 
+  // Track revealed spoilers per session
+  const [revealedIds, setRevealedIds] = useState<number[]>([])
+  const toggleReveal = (id: number) => {
+    setRevealedIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
+  }
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
       <div className="flex h-full max-h-[800px] w-full max-w-2xl flex-col rounded-xl border border-zinc-700 bg-zinc-900 shadow-2xl">
@@ -46,7 +42,7 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
           <div>
             <h2 className="text-xl font-bold text-zinc-100">Item Shop</h2>
             <p className="text-[10px] uppercase tracking-wider text-zinc-500">
-              {showHidden ? 'Showing All Items' : 'Filtered by Progress'}
+              Showing All Items
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -54,7 +50,7 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
               onClick={() => setShowHidden(!showHidden)}
               className={`text-xs font-medium transition-colors ${showHidden ? 'text-amber-500' : 'text-zinc-500 hover:text-zinc-300'}`}
             >
-              {showHidden ? 'Hide Locked' : 'Reveal All'}
+              {showHidden ? 'Hide Spoilers' : 'Reveal All Spoilers'}
             </button>
             <button onClick={onClose} className="text-zinc-400 hover:text-zinc-100">
               ✕
@@ -103,38 +99,56 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
 
               if (isOwned) isLocked = false
 
+              // Global override
+              if (showHidden) isLocked = false
+              // Local reveal
+              const isRevealed = revealedIds.includes(item.id)
+              
+              // If locked and not revealed, we obscure it
+              const isObscured = isLocked && !isRevealed
+
               return (
                 <div
                   key={item.id}
-                  className={`flex flex-col justify-between rounded-lg border p-3 transition-colors ${
+                  className={`relative flex flex-col justify-between rounded-lg border p-3 transition-colors overflow-hidden ${
                     isOwned
                       ? 'border-emerald-900/50 bg-emerald-950/10'
-                      : isLocked
-                        ? 'border-zinc-800 bg-zinc-900/30 opacity-60'
-                        : 'border-zinc-700 bg-zinc-800/50 hover:border-zinc-600'
+                      : 'border-zinc-700 bg-zinc-800/50 hover:border-zinc-600'
                   }`}
                 >
+                  {isObscured && (
+                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-zinc-900/90 backdrop-blur-sm">
+                      <span className="mb-2 text-sm font-bold text-zinc-500">#{item.id} Spoiler</span>
+                      <button
+                        onClick={() => toggleReveal(item.id)}
+                        className="rounded-full border border-zinc-600 px-3 py-1 text-xs text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                      >
+                        Reveal
+                      </button>
+                    </div>
+                  )}
+
                   <div>
                     <div className="mb-1 flex items-start justify-between">
                       <div className="min-w-0">
-                        <span className={`font-semibold block truncate ${isLocked ? 'text-zinc-500' : 'text-zinc-200'}`}>
+                        <span className="font-semibold block truncate text-zinc-200">
                           #{item.id} {item.name}
                         </span>
-                        <span className="text-[10px] uppercase text-zinc-500">{item.slot}</span>
+                        <div className="flex gap-2">
+                           <span className="text-[10px] uppercase text-zinc-500">{item.slot}</span>
+                           {item.hands === 2 && (
+                             <span className="text-[10px] font-bold uppercase text-amber-600">2 Hands</span>
+                           )}
+                        </div>
                       </div>
-                      {isLocked && (
-                        <span className="shrink-0 rounded bg-zinc-800 px-1.5 py-0.5 text-[8px] font-bold uppercase text-zinc-600">
-                          Locked
-                        </span>
-                      )}
                     </div>
-                    <p className={`mb-3 text-xs ${isLocked ? 'text-zinc-600 italic' : 'text-zinc-400'}`}>
-                      {isLocked ? 'Complete more scenarios to unlock this item.' : item.effect}
+                    <p className="mb-3 text-xs text-zinc-400">
+                      {item.effect}
                     </p>
                   </div>
                   
                   <div className="flex items-center justify-between border-t border-zinc-700/50 pt-2">
-                    <span className={`text-xs font-medium ${isLocked ? 'text-zinc-600' : 'text-amber-500'}`}>
+                    <span className="text-xs font-medium text-amber-500">
                       {item.cost} Gold
                     </span>
                     {isOwned ? (
@@ -143,15 +157,10 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
                       </span>
                     ) : (
                       <button
-                        disabled={isLocked && !showHidden}
                         onClick={() => onEquip(item.id)}
-                        className={`rounded px-3 py-1 text-xs font-medium transition-colors ${
-                          isLocked && !showHidden
-                            ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
-                            : 'bg-zinc-700 text-zinc-200 hover:bg-amber-600 hover:text-white'
-                        }`}
+                        className="rounded px-3 py-1 text-xs font-medium transition-colors bg-zinc-700 text-zinc-200 hover:bg-amber-600 hover:text-white"
                       >
-                        Buy
+                        {isLocked ? 'Unlock & Buy' : 'Buy'}
                       </button>
                     )}
                   </div>
@@ -162,14 +171,6 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
           {filteredItems.length === 0 && (
             <div className="py-12 text-center">
               <p className="text-zinc-500">No items found matching your filters.</p>
-              {!showHidden && (
-                <button 
-                  onClick={() => setShowHidden(true)}
-                  className="mt-2 text-xs text-amber-500 hover:underline"
-                >
-                  Reveal all hidden items?
-                </button>
-              )}
             </div>
           )}
         </div>

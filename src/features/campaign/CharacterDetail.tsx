@@ -112,6 +112,14 @@ export function CharacterDetail() {
     }
   }
 
+  const handleUpdateBonusPerks = async (bonusPerks: number) => {
+    try {
+      await updateCharacter(campaignId!, characterId!, { bonusPerks })
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Failed to update bonus perks')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-zinc-950 pb-20">
       {/* Sticky Header */}
@@ -237,7 +245,7 @@ export function CharacterDetail() {
         )}
 
         {activeTab === 'perks' && (
-          <PerkList character={character} onToggle={handleTogglePerk} />
+          <PerkList character={character} onToggle={handleTogglePerk} onUpdateBonusPerks={handleUpdateBonusPerks} />
         )}
 
         {activeTab === 'items' && (

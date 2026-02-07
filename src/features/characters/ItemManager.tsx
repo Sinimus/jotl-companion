@@ -47,7 +47,32 @@ export function ItemManager({ character, scenarioStatus, onUpdateItems }: ItemMa
     let newIds = [...character.itemIds]
     let sellValue = 0
 
-    if (slot !== 'small' && slot !== 'hand') {
+    if (slot === 'hand') {
+      // Hand logic: check total hands used
+      // Existing items in hand slot
+      const currentHandItems = newIds
+        .map(id => items.find(i => i.id === id))
+        .filter((i): i is Item => i?.slot === 'hand')
+
+      const currentHandsUsed = currentHandItems.reduce((acc, item) => acc + (item.hands ?? 1), 0)
+      const newHandsRequired = newItem.hands ?? 1
+      
+      // Calculate max hands (always 2)
+      const maxHands = 2
+
+      // If adding this item exceeds maxHands, we must prompt to remove items
+      if (currentHandsUsed + newHandsRequired > maxHands) {
+         // Simple strategy: If full, ask to clear slot? 
+         // Or just alert?
+         // User wants "allow 2 items in hands".
+         // If we are at 2/2, and add 1-hand, we need to remove 1.
+         // If we are at 1/2, and add 2-hand, we need to remove 1.
+         // If we are at 2/2, and add 2-hand, we need to remove all 2.
+         
+         alert(`Cannot equip ${newItem.name}. Hand slots full (${currentHandsUsed}/${maxHands}). Remove items first.`)
+         return
+      }
+    } else if (slot !== 'small') {
       // Single-slot: replacing the existing item gives a sell refund
       const existing = currentInSlot[0]
       if (existing) {
@@ -56,6 +81,7 @@ export function ItemManager({ character, scenarioStatus, onUpdateItems }: ItemMa
         newIds = newIds.filter((id) => id !== existing.id)
       }
     } else {
+      // Small items
       if (currentInSlot.length >= limit) {
         alert(`Slot full! Remove an item from ${slot} first.`)
         return
@@ -63,10 +89,8 @@ export function ItemManager({ character, scenarioStatus, onUpdateItems }: ItemMa
     }
 
     const netCost = newItem.cost - sellValue
-    if (character.gold < netCost) {
-      alert(`Not enough gold! Need ${netCost}, have ${character.gold}.`)
-      return
-    }
+    // Gold check removed per user request
+    // if (character.gold < netCost) { ... }
 
     newIds.push(itemId)
     onUpdateItems({ itemIds: newIds, gold: character.gold - netCost })

@@ -6,74 +6,100 @@ import { computeLevelFromXp } from './rules'
 interface PerkListProps {
   character: CharacterProgress
   onToggle: (perkId: string, isSelected: boolean) => void
+  onUpdateBonusPerks: (count: number) => void
 }
 
-export function PerkList({ character, onToggle }: PerkListProps) {
+export function PerkList({ character, onToggle, onUpdateBonusPerks }: PerkListProps) {
   // Filter perks for this character class
   const characterPerks = perks.filter((p) => p.characterId === character.type)
 
   // Calculate available perk points
   const levelPerks = computeLevelFromXp(character.experience) - 1
   const checkmarkPerks = Math.floor(character.checkmarks / 3)
-  const totalEarned = levelPerks + checkmarkPerks
+  const totalEarned = levelPerks + checkmarkPerks + (character.bonusPerks || 0)
   const spent = character.perkIds.length
   const available = totalEarned - spent
 
   return (
-    <div className="rounded-lg border border-zinc-700 bg-zinc-800 p-4">
-      <div className="mb-3 flex items-baseline justify-between">
-        <h3 className="text-sm font-semibold text-zinc-300">Perks</h3>
-        <span className="text-xs text-zinc-500">
-          Available: <span className={cn(available > 0 ? 'text-emerald-400' : 'text-zinc-400')}>{available}</span>
-          {' '}/ Total: {totalEarned}
-        </span>
+    <div className="space-y-4">
+      {/* Bonus Perks Control */}
+      <div className="rounded-lg border border-zinc-800 bg-zinc-900 p-4">
+        <div className="mb-2 flex items-center justify-between">
+          <label className="text-xs font-medium uppercase text-zinc-500">Bonus Perks</label>
+          <span className="text-[10px] text-zinc-600">From Scenario Rewards</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => onUpdateBonusPerks(Math.max(0, (character.bonusPerks || 0) - 1))}
+            className="flex h-8 w-8 items-center justify-center rounded border border-zinc-700 bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+          >
+            -
+          </button>
+          <span className="text-xl font-bold text-zinc-100">{character.bonusPerks || 0}</span>
+          <button
+            onClick={() => onUpdateBonusPerks((character.bonusPerks || 0) + 1)}
+            className="flex h-8 w-8 items-center justify-center rounded border border-zinc-700 bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+          >
+            +
+          </button>
+        </div>
       </div>
 
-      <div className="space-y-2">
-        {characterPerks.map((perk) => {
-          const isSelected = character.perkIds.includes(perk.id)
-          const isDisabled = !isSelected && available <= 0
+      <div className="rounded-lg border border-zinc-700 bg-zinc-800 p-4">
+        <div className="mb-3 flex items-baseline justify-between">
+          <h3 className="text-sm font-semibold text-zinc-300">Perks Selection</h3>
+          <span className="text-xs text-zinc-500">
+            Available: <span className={cn(available > 0 ? 'text-emerald-400' : 'text-zinc-400')}>{available}</span>
+            {' '}/ Total: {totalEarned}
+          </span>
+        </div>
 
-          return (
-            <label
-              key={perk.id}
-              className={cn(
-                'flex items-start gap-3 rounded-md border px-3 py-2 transition-colors',
-                isSelected
-                  ? 'border-amber-500/50 bg-amber-500/10'
-                  : 'border-zinc-700 hover:border-zinc-600',
-                isDisabled && 'cursor-not-allowed opacity-50'
-              )}
-            >
-              <input
-                type="checkbox"
-                checked={isSelected}
-                disabled={isDisabled}
-                onChange={(e) => onToggle(perk.id, e.target.checked)}
+        <div className="space-y-2">
+          {characterPerks.map((perk) => {
+            const isSelected = character.perkIds.includes(perk.id)
+            const isDisabled = !isSelected && available <= 0
+
+            return (
+              <label
+                key={perk.id}
                 className={cn(
-                  'mt-0.5 h-4 w-4 rounded border-zinc-600 bg-zinc-700',
-                  'focus:ring-2 focus:ring-amber-500 focus:ring-offset-0 focus:ring-offset-zinc-900',
-                  'disabled:cursor-not-allowed disabled:opacity-50',
-                  'checked:bg-amber-500 checked:border-amber-500'
-                )}
-              />
-              <span
-                className={cn(
-                  'text-sm leading-snug',
-                  isSelected ? 'text-amber-200' : 'text-zinc-300',
-                  isDisabled && 'text-zinc-500'
+                  'flex items-start gap-3 rounded-md border px-3 py-2 transition-colors',
+                  isSelected
+                    ? 'border-amber-500/50 bg-amber-500/10'
+                    : 'border-zinc-700 hover:border-zinc-600',
+                  isDisabled && 'cursor-not-allowed opacity-50'
                 )}
               >
-                {perk.description}
-              </span>
-            </label>
-          )
-        })}
-      </div>
+                <input
+                  type="checkbox"
+                  checked={isSelected}
+                  disabled={isDisabled}
+                  onChange={(e) => onToggle(perk.id, e.target.checked)}
+                  className={cn(
+                    'mt-0.5 h-4 w-4 rounded border-zinc-600 bg-zinc-700',
+                    'focus:ring-2 focus:ring-amber-500 focus:ring-offset-0 focus:ring-offset-zinc-900',
+                    'disabled:cursor-not-allowed disabled:opacity-50',
+                    'checked:bg-amber-500 checked:border-amber-500'
+                  )}
+                />
+                <span
+                  className={cn(
+                    'text-sm leading-snug',
+                    isSelected ? 'text-amber-200' : 'text-zinc-300',
+                    isDisabled && 'text-zinc-500'
+                  )}
+                >
+                  {perk.description}
+                </span>
+              </label>
+            )
+          })}
+        </div>
 
-      {characterPerks.length === 0 && (
-        <p className="text-sm text-zinc-500">No perks available for this character class.</p>
-      )}
+        {characterPerks.length === 0 && (
+          <p className="text-sm text-zinc-500">No perks available for this character class.</p>
+        )}
+      </div>
     </div>
   )
 }

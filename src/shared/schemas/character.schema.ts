@@ -9,7 +9,7 @@ export const CharacterProgressSchema = z.object({
   /** Cumulative experience; never resets. */
   experience: z.number().int().min(0),
   /** Current gold balance. */
-  gold: z.number().int().min(0),
+  gold: z.number().int(),
   /** Check marks earned via battle goals (0-18; every 3 → 1 perk). */
   checkmarks: z.number().int().min(0).max(18),
   /** IDs of perks taken — references perks.json. */
@@ -18,6 +18,8 @@ export const CharacterProgressSchema = z.object({
   itemIds: z.array(z.number().int()),
   /** IDs of selected ability cards (for optional tracking). */
   selectedAbilityIds: z.array(z.string()),
+  /** Bonus perks earned from scenario rewards or other sources. */
+  bonusPerks: z.number().int().min(0).default(0),
 })
 
 export type CharacterProgress = z.infer<typeof CharacterProgressSchema>

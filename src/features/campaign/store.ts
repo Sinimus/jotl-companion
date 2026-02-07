@@ -80,6 +80,7 @@ export interface UpdateCharacterInput {
   perkIds?: string[]
   itemIds?: number[]
   selectedAbilityIds?: string[]
+  bonusPerks?: number
 }
 
 // ---------------------------------------------------------------------------
@@ -268,6 +269,7 @@ export const useCampaignStore = create<CampaignStore>((set, get) => ({
     if (updates.perkIds !== undefined) merged.perkIds = updates.perkIds
     if (updates.itemIds !== undefined) merged.itemIds = updates.itemIds
     if (updates.selectedAbilityIds !== undefined) merged.selectedAbilityIds = updates.selectedAbilityIds
+    if (updates.bonusPerks !== undefined) merged.bonusPerks = updates.bonusPerks
 
     // Full Zod safety check before persisting
     const validated = CharacterProgressSchema.parse(merged)
