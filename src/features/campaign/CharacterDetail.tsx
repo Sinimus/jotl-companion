@@ -16,20 +16,22 @@ export function CharacterDetail() {
 
   const character = campaign?.characters.find((c) => c.id === characterId)
 
-  // Local state for stats editing
-  const [xp, setXp] = useState(0)
-  const [gold, setGold] = useState(0)
-  const [checkmarks, setCheckmarks] = useState(0)
+  // Local state for stats editing — initialize from character if available
+  const [xp, setXp] = useState(character?.experience ?? 0)
+  const [gold, setGold] = useState(character?.gold ?? 0)
+  const [checkmarks, setCheckmarks] = useState(character?.checkmarks ?? 0)
   const [activeTab, setActiveTab] = useState<'stats' | 'perks' | 'items'>('stats')
 
   // ---------------------------------------------------------------------------
   // Sync local input state when the store-backed character changes externally
-  // (e.g. after import).  "Previous props" pattern — avoids an effect and the
-  // cascading-render warning that comes with setState inside useEffect.
+  // (e.g. after update or navigation).
   // ---------------------------------------------------------------------------
-  const [syncedCharacter, setSyncedCharacter] = useState(character)
-  if (character !== syncedCharacter) {
-    setSyncedCharacter(character)
+  const [syncedCharacterId, setSyncedCharacterId] = useState<string | undefined>(character?.id)
+  const [syncedCharacterRef, setSyncedCharacterRef] = useState(character)
+
+  if (character?.id !== syncedCharacterId || character !== syncedCharacterRef) {
+    setSyncedCharacterId(character?.id)
+    setSyncedCharacterRef(character)
     if (character) {
       setXp(character.experience)
       setGold(character.gold)
@@ -190,6 +192,7 @@ export function CharacterDetail() {
                   value={xp}
                   onChange={(e) => setXp(Math.max(0, parseInt(e.target.value, 10) || 0))}
                   onBlur={(e) => commit({ experience: Math.max(0, parseInt(e.target.value, 10) || 0) })}
+                  onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
                   className="w-full bg-transparent text-3xl font-bold text-zinc-100 focus:outline-none"
                 />
               </div>
@@ -201,6 +204,7 @@ export function CharacterDetail() {
                   value={gold}
                   onChange={(e) => setGold(Math.max(0, parseInt(e.target.value, 10) || 0))}
                   onBlur={(e) => commit({ gold: Math.max(0, parseInt(e.target.value, 10) || 0) })}
+                  onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
                   className="w-full bg-transparent text-3xl font-bold text-amber-400 focus:outline-none"
                 />
               </div>
