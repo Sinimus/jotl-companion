@@ -47,6 +47,6 @@ jobs:
 
       - name: Deploy to Coolify
         run: |
-          curl -f -s -X GET \
+          curl -f -s -X POST \
             "https://coolify.sinimus.com/api/v1/deploy?uuid=fui1sr710stiey89n5w1r6g3&force=false" \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}"
