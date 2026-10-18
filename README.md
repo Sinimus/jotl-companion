@@ -6,24 +6,23 @@
 
 An offline-first companion app for the board game **Gloomhaven: Jaws of the Lion**. It keeps the campaign between sessions and answers rules questions without replacing the physical tabletop experience. The current version is shown in Settings, in the About section, and comes from `package.json`.
 
-The app is unofficial. Its game data (items, perks, glossary, scenarios) was entered by hand and is being checked against the publisher's rules; at the table the rulebook has the last word.
+The app is unofficial. Every row of its game data names its source: a page of the Learn to Play Guide (`LtP p.N`) or of the Rules Glossary (`Glossary p.N`), a page of the Scenario Book (`SB p.N`), the printed card (`card`), or the community data of Gloomhaven Secretariat (`GHS`) where the books are silent. Rules texts are short paraphrases, not copies; at the table the books have the last word. The app does not replace the Scenario Book: maps, setup, special rules and story stay there.
 
 ## Features
 
 - **Campaign management:** several campaigns, scenario unlocks and party progress.
-- **Character sheets:** HP, XP, gold, items, perks, ability cards and battle goal checkmarks, with a bonus perks counter for perks earned outside of battle goals.
-- **Scenario tracker:** locked, unlocked and completed scenarios with their goals.
+- **Character sheets:** HP, XP, gold, perks, ability cards (A/B, 1, X, 2 to 9, hand limit) and battle goal checkmarks; items owned and items brought into the next scenario are kept apart, the shop checks gold and the copies in the party.
+- **Scenario tracker:** locked, unlocked, completed and closed scenarios (completing a branch closes its alternative); goal and location, with monsters, treasures and rewards behind a spoiler button.
 - **Tools:**
   - scenario level calculator (party average and difficulty),
-  - post-scenario checklist (gold conversion, bonus XP; the tutorial scenarios 1 to 5 skip the steps the rulebook skips),
-  - monster focus helper.
-- **Rules reference:** searchable glossary and quick reference cards.
+  - post-scenario checklist (gold, bonus experience, battle goals, events, level up, closed scenarios and the one-time steps of scenarios 1 to 5).
+- **Rules reference:** glossary with page numbers, conditions, elements, short guides and the monster turn step by step.
 - **Offline first:** a Progressive Web App; campaigns are stored in the browser (IndexedDB).
-- **Data portability:** export and import of campaign data as JSON backups.
+- **Data portability:** export and import of campaign data as JSON backups. An old backup is converted on import like stored data (database version 2: items 37 to 52 refunded, card names to card ids).
 
 ## Tech stack
 
-- React 19, TypeScript 5.9 (strict), Vite 7
+- React 19, TypeScript 5.9 (strict), Vite 8
 - Tailwind CSS v4
 - Zustand 5 for state, Dexie.js (IndexedDB) for persistence, Zod v4 for validation of stored and imported data
 - vitest for tests, ESLint for linting

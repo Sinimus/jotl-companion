@@ -144,7 +144,7 @@ export interface Tables {
 export interface GlossaryEntry {
   term: string
   description: string
-  category?: string
+  category: string
   source: string
 }
 

@@ -51,6 +51,24 @@ describe('source citations', () => {
   })
 })
 
+describe('rules glossary', () => {
+  it('lists every term once', () => {
+    const terms = rules.glossary.map((g) => g.term)
+    expect(new Set(terms).size).toBe(terms.length)
+  })
+
+  it('files every entry under a category', () => {
+    for (const entry of rules.glossary) {
+      expect(entry.category.trim().length).toBeGreaterThan(0)
+    }
+  })
+
+  it('has no term the game does not have', () => {
+    const removed = ['Blood', 'Bone', 'Guard', 'Hide', 'Attribute', 'Revive']
+    expect(rules.glossary.filter((g) => removed.includes(g.term))).toEqual([])
+  })
+})
+
 describe('items', () => {
   it('has the 36 items of the box with ids 1-36 and unique names', () => {
     expect(items).toHaveLength(36)

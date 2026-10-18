@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { rules } from '@/data'
+import { formatSource } from '@/shared/lib/source'
 
 export function GlossaryPage() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -10,7 +11,7 @@ export function GlossaryPage() {
   const categories = useMemo(() => {
     const cats = new Set<string>()
     rules.glossary.forEach((entry) => {
-      if (entry.category) cats.add(entry.category)
+      cats.add(entry.category)
     })
     return Array.from(cats).sort()
   }, [])
@@ -76,8 +77,12 @@ export function GlossaryPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="mb-2 text-3xl font-bold text-amber-500">Rules Glossary</h1>
-          <p className="text-zinc-400">
+          <p className="mb-1 text-zinc-400">
             Searchable reference for Gloomhaven: Jaws of the Lion terms
+          </p>
+          <p className="text-sm text-zinc-500">
+            Short paraphrases. The full rules are in the Rules Glossary and the
+            Learn to Play Guide; page numbers are given with each entry.
           </p>
         </div>
 
@@ -172,15 +177,14 @@ export function GlossaryPage() {
               >
                 <div className="mb-2 flex items-start justify-between gap-2">
                   <h3 className="text-lg font-semibold text-amber-400">{entry.term}</h3>
-                  {entry.category && (
-                    <span className="shrink-0 rounded bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-400">
-                      {entry.category}
-                    </span>
-                  )}
+                  <span className="shrink-0 rounded bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-400">
+                    {entry.category}
+                  </span>
                 </div>
                 <p className="text-zinc-300 leading-relaxed">
                   {renderDescription(entry.description)}
                 </p>
+                <p className="mt-2 text-xs text-zinc-500">{formatSource(entry.source)}</p>
               </div>
             ))
           )}

@@ -32,7 +32,7 @@ export function RulesLayout() {
               Quick Reference
             </NavLink>
             <NavLink
-              to="/rules/focus-helper"
+              to="/rules/monster-turn"
               className={({ isActive }) =>
                 `border-b-2 py-4 text-sm font-medium transition-colors ${
                   isActive
@@ -41,7 +41,7 @@ export function RulesLayout() {
                 }`
               }
             >
-              Focus Helper
+              Monster Turn
             </NavLink>
           </nav>
         </div>
