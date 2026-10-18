@@ -1,4 +1,4 @@
-import * as z from 'zod'
+import * as z from 'zod/mini'
 
 // ---------------------------------------------------------------------------
 // Enums — IDs must stay in sync with src/data/characters.json
@@ -23,7 +23,7 @@ export type ScenarioStatus = z.infer<typeof ScenarioStatusSchema>
 // Primitives
 // ---------------------------------------------------------------------------
 
-export const UuidSchema = z.string().uuid()
+export const UuidSchema = z.uuid()
 
 /** Accepts Date objects or ISO-string representations and coerces to Date. */
 export const TimestampSchema = z.coerce.date()
