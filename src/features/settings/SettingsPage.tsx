@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCampaignStore } from '@/features/campaign/store'
+import { version } from '../../../package.json'
 
 export function SettingsPage() {
   const [status, setStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null)
@@ -170,7 +171,7 @@ export function SettingsPage() {
       <section className="rounded-lg border border-zinc-700 bg-zinc-800 p-4">
         <h2 className="mb-2 text-lg font-semibold text-zinc-100">About</h2>
         <p className="text-sm text-zinc-400">
-          <span className="font-semibold text-zinc-300">Version:</span> 1.0.0
+          <span className="font-semibold text-zinc-300">Version:</span> {version}
         </p>
         <p className="mt-1 text-sm text-zinc-400">
           <span className="font-semibold text-zinc-300">Source:</span>{' '}

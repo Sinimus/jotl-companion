@@ -1,83 +1,67 @@
 # Gloomhaven: Jaws of the Lion - Unofficial Companion App
 
-![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)
 ![License](https://img.shields.io/badge/license-GPLv3-green.svg)
-![React](https://img.shields.io/badge/react-19.0-blue)
+![React](https://img.shields.io/badge/react-19-blue)
 ![PWA](https://img.shields.io/badge/PWA-Ready-purple)
 
-A feature-rich, offline-first companion app for the board game **Gloomhaven: Jaws of the Lion**. Designed to streamline campaign tracking, character management, and rules lookup without replacing the physical tabletop experience.
+An offline-first companion app for the board game **Gloomhaven: Jaws of the Lion**. It keeps the campaign between sessions and answers rules questions without replacing the physical tabletop experience. The current version is shown in Settings, in the About section, and comes from `package.json`.
 
----
+The app is unofficial. Its game data (items, perks, glossary, scenarios) was entered by hand and is being checked against the publisher's rules; at the table the rulebook has the last word.
 
-## 🆕 New in v1.1.0
+## Features
 
-- **Expanded Item Shop:** All 52 items are now available in the shop with spoiler protection (blurred content for locked items).
-- **Corrected Item Logic:** Proper handling for two-handed items and updated inventory limits.
-- **Flexible Purchasing:** Gold is no longer a hard constraint for equipping items, allowing for manual configuration of existing game states.
-- **Independent Perk Tracking:** Added "Bonus Perks" control for rewards earned outside of battle goals.
-- **Tutorial Logic:** The Post-Scenario Checklist now automatically adjusts for Tutorial Scenarios 1-5 (disabling XP/Gold/Battle Goals/City Events as per the rulebook).
-- **Accurate Character Perks:** Corrected perk lists for all four classes based on official character sheets.
-- **Negative Gold Support:** Characters can now track negative gold balances if needed.
+- **Campaign management:** several campaigns, scenario unlocks and party progress.
+- **Character sheets:** HP, XP, gold, items, perks, ability cards and battle goal checkmarks, with a bonus perks counter for perks earned outside of battle goals.
+- **Scenario tracker:** locked, unlocked and completed scenarios with their goals.
+- **Tools:**
+  - scenario level calculator (party average and difficulty),
+  - post-scenario checklist (gold conversion, bonus XP; the tutorial scenarios 1 to 5 skip the steps the rulebook skips),
+  - monster focus helper.
+- **Rules reference:** searchable glossary and quick reference cards.
+- **Offline first:** a Progressive Web App; campaigns are stored in the browser (IndexedDB).
+- **Data portability:** export and import of campaign data as JSON backups.
 
-## 🚀 Features
+## Tech stack
 
-- **Campaign Management**: Track multiple campaigns, scenario unlocks, and party progress.
-- **Character Sheets**: Manage HP, XP, Gold, Items, Perks, and Battle Goals.
-- **Scenario Tracker**: Visualizes locked, unlocked, and completed scenarios with goals.
-- **Tools & Calculators**:
-  - Scenario Level Calculator (based on party avg & difficulty).
-  - Post-Scenario Checklist (Gold conversion, Bonus XP, etc.).
-  - Monster Focus Helper (interactive wizard).
-- **Rules Reference**:
-  - Searchable Glossary (Conditions, Keywords).
-  - Quick Reference Cards (Elements, Round Structure).
-- **Offline First**: Fully functional offline as a Progressive Web App (PWA).
-- **Data Portability**: Export/Import your campaign data as JSON backups.
+- React 19, TypeScript 5.9 (strict), Vite 7
+- Tailwind CSS v4
+- Zustand 5 for state, Dexie.js (IndexedDB) for persistence, Zod v4 for validation of stored and imported data
+- vitest for tests, ESLint for linting
+- nginx in the production image
 
-## 🛠️ Tech Stack
+## Getting started
 
-- **Frontend**: React 19, TypeScript 5.9, Vite 7
-- **Styling**: Tailwind CSS v4
-- **State Management**: Zustand 5
-- **Persistence**: Dexie.js (IndexedDB)
-- **Validation**: Zod v4
+Prerequisites: Node.js 24 (see `.nvmrc`) and pnpm 10 (the exact version is pinned in `packageManager`). npm and yarn are not used.
 
-## 📖 Documentation
+```bash
+git clone https://github.com/Sinimus/jotl-companion.git
+cd jotl-companion
+pnpm install
+pnpm dev
+```
 
-- **[In-App Handbook]**: Accessible via Settings > How to Use.
+| Command | What it does |
+|---|---|
+| `pnpm dev` | development server |
+| `pnpm lint` | ESLint |
+| `pnpm test` | vitest, one run |
+| `pnpm build` | type check and production build into `dist/` |
+| `pnpm preview` | serves the production build locally |
 
-## 📦 Getting Started
+## Docker
 
-### Prerequisites
-- Node.js 20+
-- pnpm (recommended) or npm
+The production image is a two-stage build: Node 24 builds the app, `nginx:stable-alpine` serves it on port 80. The image has a `HEALTHCHECK` (busybox `wget` on `127.0.0.1`). `nginx.conf` sends `no-cache` for `index.html`, `sw.js`, `registerSW.js` and the manifest so that new versions reach installed apps, and caches the hashed files in `/assets/` for a year.
 
-### Installation
+```bash
+docker build -t jotl-companion .
+docker run --rm -p 8080:80 jotl-companion
+```
 
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/Sinimus/jotl-companion.git
-    cd jotl-companion
-    ```
+## Continuous integration and deployment
 
-2.  **Install dependencies**
-    ```bash
-    pnpm install
-    ```
+- **Pull requests to `main`** (`.github/workflows/pull-request.yml`): `pnpm lint`, `pnpm test`, `pnpm build`, then a Docker build without push and a smoke test of the container (HTTP 200, page title, cache and security headers, manifest type, a hashed bundle, the healthcheck command).
+- **Push to `main` and manual runs** (`.github/workflows/docker-publish.yml`): builds the image, pushes it to GitHub Container Registry and triggers the redeploy of the hosting platform. The deploy call answers 200 even when the rollout fails afterwards, so a deployment is verified by the hash of `assets/index-*.js` in the served `index.html`, which must match the build of the merged `main`.
 
-3.  **Start the development server**
-    ```bash
-    pnpm dev
-    ```
-
-4.  **Build for production**
-    ```bash
-    pnpm build
-    ```
-
-## 📄 License
+## License
 
 This project is licensed under the **GNU General Public License v3.0**. See the [LICENSE](LICENSE) file for details.
-
----
-*Disclaimer: This is an unofficial fan project and is not affiliated with Cephalofair Games.*
