@@ -1,44 +1,36 @@
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
-import { tables, characters } from '@/data'
-import { computeLevelFromXp } from '@/features/campaign/rules'
+import { characters } from '@/data'
+import { computeLevelFromXp, computeScenarioLevel, scenarioLevelRow, type Difficulty } from '@/features/campaign/rules'
 
 export function CalculatorPage() {
   const { campaignId } = useParams<{ campaignId: string }>()
 
   const { isLoaded, campaign } = useLoadedCampaign(campaignId)
 
-  // Difficulty modifier state: -1 (Easy), 0 (Normal), 1 (Hard), 2 (Very Hard)
-  const [difficultyModifier, setDifficultyModifier] = useState<0 | 1 | 2 | 3>(1) // Index: 0=-1, 1=0, 2=1, 3=2
+  const [difficulty, setDifficulty] = useState<Difficulty>('normal')
 
-  // Difficulty modifier mapping: index -> actual modifier
-  const modifiers: { label: string; value: number; color: string }[] = [
-    { label: 'Easy', value: -1, color: 'bg-emerald-600' },
-    { label: 'Normal', value: 0, color: 'bg-blue-600' },
-    { label: 'Hard', value: 1, color: 'bg-orange-600' },
-    { label: 'Very Hard', value: 2, color: 'bg-red-600' },
+  // Difficulty selector (LtP p.29): easy −1, normal 0, hard +1, very hard +2.
+  const difficulties: { label: string; value: Difficulty; modifier: number; color: string }[] = [
+    { label: 'Easy', value: 'easy', modifier: -1, color: 'bg-emerald-600' },
+    { label: 'Normal', value: 'normal', modifier: 0, color: 'bg-blue-600' },
+    { label: 'Hard', value: 'hard', modifier: 1, color: 'bg-orange-600' },
+    { label: 'Very Hard', value: 'very_hard', modifier: 2, color: 'bg-red-600' },
   ]
 
-  const selectedDifficulty = modifiers[difficultyModifier]
+  const selectedDifficulty = difficulties.find((d) => d.value === difficulty) ?? difficulties[1]
 
-  // Calculate average party level
-  const avgLevel =
-    campaign?.characters.length && campaign.characters.length > 0
-      ? campaign.characters.reduce((sum, char) => sum + computeLevelFromXp(char.experience), 0) / campaign.characters.length
-      : 1
+  // Scenario level from the character levels and the difficulty (LtP p.29).
+  const characterLevels = (campaign?.characters ?? []).map((char) => computeLevelFromXp(char.experience))
+  const finalLevel = computeScenarioLevel(characterLevels, selectedDifficulty.value)
+  const levelData = scenarioLevelRow(finalLevel)
 
-  // Base scenario level: ceil(average / 2)
+  // Base values before the difficulty modifier, for the overview display.
+  const avgLevel = characterLevels.length > 0
+    ? characterLevels.reduce((sum, level) => sum + level, 0) / characterLevels.length
+    : 1
   const baseLevel = Math.ceil(avgLevel / 2)
-
-  // Final level: clamped between 0 and 7
-  const finalLevel = Math.max(0, Math.min(7, baseLevel + selectedDifficulty.value))
-
-  // Look up scenario level data from tables.json
-  const levelData = useMemo(
-    () => tables.scenarioLevelTable.find((row) => row.level === finalLevel) ?? tables.scenarioLevelTable[0],
-    [finalLevel]
-  )
 
   if (!isLoaded) {
     return (
@@ -118,20 +110,20 @@ export function CalculatorPage() {
           <div className="mb-4">
             <label className="mb-2 block text-xs text-zinc-500">Difficulty</label>
             <div className="grid grid-cols-4 gap-2">
-              {modifiers.map((diff, index) => (
+              {difficulties.map((diff) => (
                 <button
                   key={diff.label}
                   type="button"
-                  onClick={() => setDifficultyModifier(index as 0 | 1 | 2 | 3)}
+                  onClick={() => setDifficulty(diff.value)}
                   className={[
                     'rounded-md px-2 py-2 text-xs font-medium transition-colors',
-                    difficultyModifier === index
+                    difficulty === diff.value
                       ? `${diff.color} text-white shadow-lg`
                       : 'bg-zinc-700 text-zinc-400 hover:bg-zinc-600',
                   ].join(' ')}
                 >
                   {diff.label}
-                  <span className="block text-[10px] opacity-75">{diff.value > 0 ? `+${diff.value}` : diff.value}</span>
+                  <span className="block text-[10px] opacity-75">{diff.modifier > 0 ? `+${diff.modifier}` : diff.modifier}</span>
                 </button>
               ))}
             </div>
@@ -142,7 +134,7 @@ export function CalculatorPage() {
             <p className="text-xs uppercase tracking-wider text-amber-300">Scenario Level</p>
             <p className="mt-2 text-5xl font-bold text-amber-400">{finalLevel}</p>
             <p className="mt-2 text-xs text-zinc-400">
-              Base {baseLevel} {selectedDifficulty.value > 0 ? `+ ${selectedDifficulty.value}` : selectedDifficulty.value < 0 ? `- ${Math.abs(selectedDifficulty.value)}` : ''}
+              Base {baseLevel} {selectedDifficulty.modifier > 0 ? `+ ${selectedDifficulty.modifier}` : selectedDifficulty.modifier < 0 ? `- ${Math.abs(selectedDifficulty.modifier)}` : ''}
             </p>
           </div>
         </div>
@@ -172,7 +164,7 @@ export function CalculatorPage() {
 
         {/* Note */}
         <p className="mt-4 text-xs text-zinc-500">
-          ℹ️ Scenario Level is calculated as <code className="rounded bg-zinc-800 px-1 py-0.5">ceil(Average Party Level / 2)</code> adjusted by difficulty.
+          ℹ️ Scenario Level is calculated as <code className="rounded bg-zinc-800 px-1 py-0.5">ceil(Average Party Level / 2)</code> adjusted by difficulty. LtP p.29.
         </p>
       </div>
     </div>

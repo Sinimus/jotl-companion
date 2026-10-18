@@ -1,7 +1,7 @@
 import { perks } from '@/data'
 import type { CharacterProgress } from '@/shared/schemas'
 import { cn } from '@/shared/lib/utils'
-import { computeLevelFromXp } from './rules'
+import { perkPoints } from './rules'
 
 interface PerkListProps {
   character: CharacterProgress
@@ -13,12 +13,12 @@ export function PerkList({ character, onToggle, onUpdateBonusPerks }: PerkListPr
   // Filter perks for this character class
   const characterPerks = perks.filter((p) => p.characterId === character.type)
 
-  // Calculate available perk points
-  const levelPerks = computeLevelFromXp(character.experience) - 1
-  const checkmarkPerks = Math.floor(character.checkmarks / 3)
-  const totalEarned = levelPerks + checkmarkPerks + (character.bonusPerks || 0)
-  const spent = character.perkIds.length
-  const available = totalEarned - spent
+  const { earned: totalEarned, available } = perkPoints({
+    experience: character.experience,
+    checkmarks: character.checkmarks,
+    bonusPerks: character.bonusPerks,
+    perkIds: character.perkIds,
+  })
 
   return (
     <div className="space-y-4">
@@ -100,6 +100,11 @@ export function PerkList({ character, onToggle, onUpdateBonusPerks }: PerkListPr
           <p className="text-sm text-zinc-500">No perks available for this character class.</p>
         )}
       </div>
+
+      <p className="text-[10px] italic text-zinc-600">
+        Perks as printed on the character's perk sheet. 3 checkmarks = 1 perk (max 18, LtP p.25);
+        1 perk per level gained (LtP p.29).
+      </p>
     </div>
   )
 }

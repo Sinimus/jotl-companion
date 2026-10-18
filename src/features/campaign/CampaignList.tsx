@@ -4,6 +4,7 @@ import { useCampaignStore } from './store'
 import { CampaignCard } from './CampaignCard'
 import { ActiveCampaignCard } from './ActiveCampaignCard'
 import { CreateCampaignCard } from './CreateCampaignCard'
+import { MigrationNotes } from './MigrationNotes'
 import { TOTAL_SCENARIOS } from '@/data'
 
 export function CampaignList() {
@@ -11,6 +12,8 @@ export function CampaignList() {
   const corruptedCampaigns = useCampaignStore((s) => s.corruptedCampaigns)
   const activeCampaignId = useCampaignStore((s) => s.activeCampaignId)
   const isLoaded = useCampaignStore((s) => s.isLoaded)
+  const migrationNotes = useCampaignStore((s) => s.migrationNotes)
+  const dismissMigrationNotes = useCampaignStore((s) => s.dismissMigrationNotes)
   const createCampaign = useCampaignStore((s) => s.createCampaign)
   const deleteCampaign = useCampaignStore((s) => s.deleteCampaign)
   const setActiveCampaign = useCampaignStore((s) => s.setActiveCampaign)
@@ -42,12 +45,27 @@ export function CampaignList() {
   // Determine active campaign for label check
   const activeCampaign = campaigns.find((c) => c.id === activeCampaignId)
 
+  const migrationNotesPanel = migrationNotes.length > 0 && (
+    <section className="mt-4 rounded-lg border border-amber-500/40 bg-amber-500/5 p-4 text-left">
+      <h2 className="mb-3 text-sm font-bold text-amber-500">Your campaigns were updated</h2>
+      <MigrationNotes notes={migrationNotes} />
+      <button
+        onClick={() => void dismissMigrationNotes()}
+        className="mt-3 w-full rounded-lg border border-zinc-600 bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-200 transition-colors hover:bg-zinc-600"
+      >
+        Got it
+      </button>
+    </section>
+  )
+
   // Branch A — campaigns.length === 0
   if (campaigns.length === 0) {
     return (
       <div className="mx-auto max-w-lg px-4 py-16 text-center">
         <h1 className="text-4xl font-bold text-amber-500">Gloomhaven: Jaws of the Lion</h1>
         <p className="mt-1 text-zinc-400">Unofficial Companion App</p>
+
+        {migrationNotesPanel}
 
         {corruptedCampaigns.length > 0 && (
           <div className="mt-4 rounded-lg border border-red-500/50 bg-red-500/10 p-3 text-left">
@@ -83,6 +101,8 @@ export function CampaignList() {
           </Link>
         )}
       </div>
+
+      {migrationNotesPanel}
 
       {/* Featured card */}
       <div className="mt-4">

@@ -1,34 +1,64 @@
 import { useState, useMemo } from 'react'
-import { items, type Item, type ItemSlot } from '@/data'
-import { type ScenarioStatus } from '@/shared/schemas'
+import { items, type Item, type ItemSlot, type ItemUnlock } from '@/data'
+import { type CharacterProgress, type ScenarioStatus } from '@/shared/schemas'
+import { itemAvailability, partyCopiesOwned } from '@/features/campaign/rules'
 
 interface ItemShopProps {
-  ownedItemIds: number[]
+  /** The character buying or gaining the item. */
+  character: CharacterProgress
+  /** Whole party — the box holds a limited number of copies of each item. */
+  party: CharacterProgress[]
   scenarioStatus: Record<number, ScenarioStatus>
   /** Treasures the party has looted — some items enter the game through them. */
   lootedTreasureIds: number[]
   onBuy: (itemId: number) => void
+  onGain: (itemId: number) => void
   onClose: () => void
 }
 
-/** An item is available when any of its unlock conditions is satisfied. */
-function isAvailable(
-  item: Item,
-  scenarioStatus: Record<number, ScenarioStatus>,
-  lootedTreasureIds: number[]
-): boolean {
-  return item.unlock.some((unlock) => {
-    if (unlock.type === 'treasure') return lootedTreasureIds.includes(unlock.treasure)
-    if (unlock.type === 'misplacedGoods') return scenarioStatus[unlock.scenario] !== 'locked'
-    // shop and scenario unlocks need the scenario completed
-    return scenarioStatus[unlock.scenario] === 'completed'
-  })
+/** Human-readable origin of one unlock entry, e.g. "shop after scenario 2". */
+function unlockLabel(unlock: ItemUnlock): string {
+  switch (unlock.type) {
+    case 'shop':
+      return `shop after scenario ${unlock.scenario}`
+    case 'scenario':
+      return `scenario ${unlock.scenario} reward`
+    case 'treasure':
+      return `treasure ${unlock.treasure}`
+    case 'misplacedGoods':
+      return `misplaced goods ${unlock.token}, scenario ${unlock.scenario}`
+  }
 }
 
-export function ItemShop({ ownedItemIds, scenarioStatus, lootedTreasureIds, onBuy, onClose }: ItemShopProps) {
+/** Where a reward item comes from, capitalized for the reward label. */
+function rewardOrigin(unlock: ItemUnlock): string {
+  const label = unlockLabel(unlock)
+  return label.charAt(0).toUpperCase() + label.slice(1)
+}
+
+export function ItemShop({
+  character,
+  party,
+  scenarioStatus,
+  lootedTreasureIds,
+  onBuy,
+  onGain,
+  onClose,
+}: ItemShopProps) {
   const [selectedSlot, setSelectedSlot] = useState<ItemSlot | 'all'>('all')
   const [searchQuery, setSearchQuery] = useState('')
-  const [showHidden, setShowHidden] = useState(false)
+  // Spoiler reveals live per session only (locked names stay out of the DOM).
+  const [revealedIds, setRevealedIds] = useState<Set<number>>(new Set())
+
+  const campaign = { scenarioStatus, lootedTreasureIds }
+
+  const counts = { shop: 0, reward: 0, locked: 0 }
+  for (const item of items) {
+    const availability = itemAvailability(item, campaign)
+    if (availability === 'shop') counts.shop += 1
+    else if (availability === 'reward') counts.reward += 1
+    else counts.locked += 1
+  }
 
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
@@ -42,10 +72,21 @@ export function ItemShop({ ownedItemIds, scenarioStatus, lootedTreasureIds, onBu
     })
   }, [selectedSlot, searchQuery])
 
-  // Track revealed spoilers per session
-  const [revealedIds, setRevealedIds] = useState<number[]>([])
-  const toggleReveal = (id: number) => {
-    setRevealedIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
+  const reveal = (id: number) => {
+    setRevealedIds((prev) => new Set(prev).add(id))
+  }
+  const revealAll = () => {
+    setRevealedIds(new Set(items.map((item) => item.id)))
+  }
+
+  /** Reason the character cannot take the item right now, if any. */
+  const takeBlockReason = (item: Item): string | null => {
+    if (character.itemIds.includes(item.id)) return 'Owned'
+    if (partyCopiesOwned(item.id, party) >= item.copies) return 'All copies owned'
+    if (itemAvailability(item, campaign) === 'shop' && character.gold < item.cost) {
+      return 'Not enough gold'
+    }
+    return null
   }
 
   return (
@@ -56,16 +97,18 @@ export function ItemShop({ ownedItemIds, scenarioStatus, lootedTreasureIds, onBu
           <div>
             <h2 className="text-xl font-bold text-zinc-100">Item Shop</h2>
             <p className="text-[10px] uppercase tracking-wider text-zinc-500">
-              Showing All Items
+              Available: {counts.shop} · Rewards: {counts.reward} · Locked: {counts.locked}
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => setShowHidden(!showHidden)}
-              className={`text-xs font-medium transition-colors ${showHidden ? 'text-amber-500' : 'text-zinc-500 hover:text-zinc-300'}`}
-            >
-              {showHidden ? 'Hide Spoilers' : 'Reveal All Spoilers'}
-            </button>
+            {counts.locked > 0 && (
+              <button
+                onClick={revealAll}
+                className="text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-300"
+              >
+                Reveal all
+              </button>
+            )}
             <button onClick={onClose} className="text-zinc-400 hover:text-zinc-100">
               ✕
             </button>
@@ -102,74 +145,120 @@ export function ItemShop({ ownedItemIds, scenarioStatus, lootedTreasureIds, onBu
         <div className="flex-1 overflow-y-auto p-4">
           <div className="grid gap-3 sm:grid-cols-2">
             {filteredItems.map((item) => {
-              const isOwned = ownedItemIds.includes(item.id)
+              const availability = itemAvailability(item, campaign)
+              const ownedByParty = partyCopiesOwned(item.id, party)
+              const isOwned = character.itemIds.includes(item.id)
+              const isRevealed = revealedIds.has(item.id)
 
-              let isLocked = !isAvailable(item, scenarioStatus, lootedTreasureIds)
+              // Spoiler tile: until revealed, the name and effect stay out of the DOM.
+              if (availability === 'locked' && !isRevealed) {
+                return (
+                  <div
+                    key={item.id}
+                    className="flex flex-col items-center justify-center rounded-lg border border-zinc-700 bg-zinc-800/50 p-3"
+                  >
+                    <span className="text-sm font-bold text-zinc-500">#{item.id}</span>
+                    <span className="mb-2 text-[10px] uppercase text-zinc-600">{item.slot}</span>
+                    <button
+                      onClick={() => reveal(item.id)}
+                      className="rounded-full border border-zinc-600 px-3 py-1 text-xs text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                    >
+                      Reveal
+                    </button>
+                  </div>
+                )
+              }
 
-              if (isOwned) isLocked = false
-
-              // Global override
-              if (showHidden) isLocked = false
-              // Local reveal
-              const isRevealed = revealedIds.includes(item.id)
-
-              // If locked and not revealed, we obscure it
-              const isObscured = isLocked && !isRevealed
+              const blockReason = availability === 'locked' ? 'Not available yet' : takeBlockReason(item)
+              const rewardOrigins = item.unlock
+                .filter((unlock) => {
+                  if (unlock.type === 'scenario') return scenarioStatus[unlock.scenario] === 'completed'
+                  if (unlock.type === 'treasure') return lootedTreasureIds.includes(unlock.treasure)
+                  if (unlock.type === 'misplacedGoods') return scenarioStatus[unlock.scenario] !== 'locked'
+                  return false
+                })
+                .map((unlock) => rewardOrigin(unlock))
 
               return (
                 <div
                   key={item.id}
-                  className={`relative flex flex-col justify-between rounded-lg border p-3 transition-colors overflow-hidden ${
+                  className={`flex flex-col justify-between rounded-lg border p-3 transition-colors ${
                     isOwned
                       ? 'border-emerald-900/50 bg-emerald-950/10'
-                      : 'border-zinc-700 bg-zinc-800/50 hover:border-zinc-600'
+                      : availability === 'locked'
+                        ? 'border-zinc-800 bg-zinc-900/60'
+                        : 'border-zinc-700 bg-zinc-800/50 hover:border-zinc-600'
                   }`}
                 >
-                  {isObscured && (
-                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-zinc-900/90 backdrop-blur-sm">
-                      <span className="mb-2 text-sm font-bold text-zinc-500">#{item.id} Spoiler</span>
-                      <button
-                        onClick={() => toggleReveal(item.id)}
-                        className="rounded-full border border-zinc-600 px-3 py-1 text-xs text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
-                      >
-                        Reveal
-                      </button>
-                    </div>
-                  )}
-
                   <div>
                     <div className="mb-1 flex items-start justify-between">
                       <div className="min-w-0">
-                        <span className="font-semibold block truncate text-zinc-200">
+                        <span className="block truncate font-semibold text-zinc-200">
                           #{item.id} {item.name}
                         </span>
                         <div className="flex gap-2">
-                           <span className="text-[10px] uppercase text-zinc-500">{item.slot}</span>
+                          <span className="text-[10px] uppercase text-zinc-500">{item.slot}</span>
+                          {availability === 'reward' && (
+                            <span className="text-[10px] font-bold uppercase text-amber-500">Reward</span>
+                          )}
+                          {availability === 'locked' && (
+                            <span className="text-[10px] font-bold uppercase text-zinc-600">Locked</span>
+                          )}
                         </div>
                       </div>
+                      {availability === 'shop' && (
+                        <span className="shrink-0 text-xs font-medium text-amber-500">{item.cost} Gold</span>
+                      )}
                     </div>
-                    <p className="mb-3 text-xs text-zinc-400">
-                      {item.effect}
-                    </p>
+                    {availability === 'reward' && (
+                      <p className="mb-1 text-[10px] uppercase tracking-wider text-zinc-500">
+                        {rewardOrigins.join(' · ')}
+                      </p>
+                    )}
+                    <p className="mb-3 text-xs text-zinc-400">{item.effect}</p>
                   </div>
 
-                  <div className="flex items-center justify-between border-t border-zinc-700/50 pt-2">
-                    <span className="text-xs font-medium text-amber-500">
-                      {item.cost} Gold
-                    </span>
-                    {isOwned ? (
-                      <span className="flex items-center gap-1 text-xs font-medium text-emerald-500">
-                        ✓ Owned
-                      </span>
+                  <div className="flex items-center justify-between gap-2 border-t border-zinc-700/50 pt-2">
+                    {availability === 'locked' ? (
+                      <span className="text-xs italic text-zinc-600">{blockReason}</span>
                     ) : (
-                      <button
-                        onClick={() => onBuy(item.id)}
-                        className="rounded px-3 py-1 text-xs font-medium transition-colors bg-zinc-700 text-zinc-200 hover:bg-amber-600 hover:text-white"
-                      >
-                        Buy
-                      </button>
+                      <>
+                        <span className="text-[10px] uppercase tracking-wider text-zinc-500">
+                          In party: {ownedByParty}/{item.copies}
+                        </span>
+                        {isOwned ? (
+                          <span className="flex items-center gap-1 text-xs font-medium text-emerald-500">
+                            ✓ Owned
+                          </span>
+                        ) : blockReason ? (
+                          <button
+                            disabled
+                            className="cursor-not-allowed rounded bg-zinc-700/60 px-3 py-1 text-xs font-medium text-zinc-500"
+                          >
+                            {blockReason}
+                          </button>
+                        ) : availability === 'shop' ? (
+                          <button
+                            onClick={() => onBuy(item.id)}
+                            className="rounded bg-zinc-700 px-3 py-1 text-xs font-medium text-zinc-200 transition-colors hover:bg-amber-600 hover:text-white"
+                          >
+                            Buy ({item.cost} gold)
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => onGain(item.id)}
+                            className="rounded bg-zinc-700 px-3 py-1 text-xs font-medium text-zinc-200 transition-colors hover:bg-amber-600 hover:text-white"
+                          >
+                            Gain
+                          </button>
+                        )}
+                      </>
                     )}
                   </div>
+
+                  <p className="mt-2 text-[10px] italic text-zinc-600">
+                    {item.source} · {item.unlock.map((unlock) => `${unlockLabel(unlock)} (${unlock.source})`).join('; ')}
+                  </p>
                 </div>
               )
             })}

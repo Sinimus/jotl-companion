@@ -31,6 +31,7 @@ export interface Condition {
   type: ConditionType
   removal: ConditionRemoval
   description: string
+  source: string
 }
 
 export interface Element {
@@ -38,6 +39,8 @@ export interface Element {
   name: string
   /** Hex colour string for UI badges / icons. */
   color: string
+  description: string
+  source: string
 }
 
 export interface Scenario {
@@ -130,6 +133,7 @@ export interface Tables {
   /** Level (1-9) as string key → cumulative XP required to reach that level. */
   levelThresholds: Record<string, number>
   scenarioLevelTable: ScenarioLevelRow[]
+  source: string
 }
 
 
@@ -141,12 +145,14 @@ export interface GlossaryEntry {
   term: string
   description: string
   category?: string
+  source: string
 }
 
 export interface RuleSection {
   id: string
   title: string
   content: string[]
+  source: string
 }
 
 export interface RulesData {

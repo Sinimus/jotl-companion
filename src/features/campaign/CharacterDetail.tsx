@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { useCampaignStore, type UpdateCharacterInput } from './store'
-import { computeLevelFromXp } from './rules'
+import { computeLevelFromXp, handLimitFor } from './rules'
 import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { characters, tables } from '@/data'
 import { PerkList } from './PerkList'
@@ -14,7 +14,9 @@ export function CharacterDetail() {
   const { isLoaded, campaign } = useLoadedCampaign(campaignId)
   const updateCharacter = useCampaignStore((s) => s.updateCharacter)
   const buyItem = useCampaignStore((s) => s.buyItem)
+  const gainItem = useCampaignStore((s) => s.gainItem)
   const sellItem = useCampaignStore((s) => s.sellItem)
+  const setEquippedItems = useCampaignStore((s) => s.setEquippedItems)
 
   const character = campaign?.characters.find((c) => c.id === characterId)
 
@@ -66,6 +68,7 @@ export function CharacterDetail() {
   const charDef = characters.find((c) => c.id === character.type)
   const computedLevel = computeLevelFromXp(xp)
   const maxHp = (charDef?.hitPoints as Record<string, number>)?.[String(computedLevel)] ?? 0
+  const handLimit = handLimitFor(character.type)
 
   const levelThresholds = tables.levelThresholds as Record<string, number>
   const currentThreshold = levelThresholds[String(computedLevel)]
@@ -90,6 +93,24 @@ export function CharacterDetail() {
       await buyItem(campaignId, characterId, itemId)
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Failed to buy item')
+    }
+  }
+
+  const handleGainItem = async (itemId: number) => {
+    if (!campaignId || !characterId) return
+    try {
+      await gainItem(campaignId, characterId, itemId)
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Failed to gain item')
+    }
+  }
+
+  const handleSetEquippedItems = async (itemIds: number[]) => {
+    if (!campaignId || !characterId) return
+    try {
+      await setEquippedItems(campaignId, characterId, itemIds)
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Failed to change equipped items')
     }
   }
 
@@ -152,9 +173,15 @@ export function CharacterDetail() {
                 Level {computedLevel} {charDef?.name}
               </span>
             </div>
-            <div className="text-right">
-              <span className="block text-2xl font-bold text-red-500">{maxHp}</span>
-              <span className="text-[10px] uppercase text-zinc-500">Max HP</span>
+            <div className="flex items-start gap-4 text-right">
+              <div>
+                <span className="block text-2xl font-bold text-red-500">{maxHp}</span>
+                <span className="text-[10px] uppercase text-zinc-500">Max HP</span>
+              </div>
+              <div>
+                <span className="block text-2xl font-bold text-zinc-300">{handLimit}</span>
+                <span className="text-[10px] uppercase text-zinc-500">Hand limit</span>
+              </div>
             </div>
           </div>
           
@@ -267,10 +294,13 @@ export function CharacterDetail() {
         {activeTab === 'items' && (
           <ItemManager
             character={character}
+            party={campaign.characters}
             scenarioStatus={campaign.scenarioStatus}
             lootedTreasureIds={campaign.lootedTreasureIds}
             onBuy={handleBuyItem}
+            onGain={handleGainItem}
             onSell={handleSellItem}
+            onSetEquippedItems={handleSetEquippedItems}
           />
         )}
       </div>
