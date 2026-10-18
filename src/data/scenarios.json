@@ -4,199 +4,615 @@
     "name": "Roadside Ambush",
     "location": "B1",
     "goal": "Kill all enemies",
-    "unlockedBy": null,
-    "unlocks": [2]
+    "unlocks": [
+      2
+    ],
+    "blocks": [],
+    "monsters": [
+      "Vermling Raider"
+    ],
+    "treasures": [],
+    "rewards": [],
+    "source": "SB p.2",
+    "unlocksSource": "SB p.2",
+    "blocksSource": "GHS",
+    "rewardsSource": "SB p.2",
+    "treasuresSource": "SB p.2"
   },
   {
     "id": 2,
     "name": "A Hole in the Wall",
     "location": "B1",
     "goal": "Kill all enemies",
-    "unlockedBy": 1,
-    "unlocks": [3]
+    "unlocks": [
+      3
+    ],
+    "blocks": [],
+    "monsters": [
+      "Vermling Raider"
+    ],
+    "treasures": [
+      14
+    ],
+    "rewards": [
+      "25 gold each",
+      "Items 01-13 added to the shop"
+    ],
+    "source": "SB p.4",
+    "unlocksSource": "SB p.4",
+    "blocksSource": "GHS",
+    "rewardsSource": "SB p.4",
+    "treasuresSource": "SB p.5"
   },
   {
     "id": 3,
     "name": "The Black Ship",
     "location": "D5",
     "goal": "Kill all enemies",
-    "unlockedBy": 2,
-    "unlocks": [4]
+    "unlocks": [
+      4
+    ],
+    "blocks": [],
+    "monsters": [
+      "Giant Viper",
+      "Zealot"
+    ],
+    "treasures": [
+      10
+    ],
+    "rewards": [
+      "1 perk each"
+    ],
+    "source": "SB p.6",
+    "unlocksSource": "LtP p.23",
+    "blocksSource": "GHS",
+    "rewardsSource": "LtP p.24",
+    "treasuresSource": "SB p.7"
   },
   {
     "id": 4,
     "name": "A Ritual in Stone",
     "location": "C2",
-    "goal": "Destroy all summoning stones and kill all enemies",
-    "unlockedBy": 3,
-    "unlocks": [5]
+    "goal": "Destroy all summoning stones, then kill all enemies",
+    "unlocks": [
+      5
+    ],
+    "blocks": [],
+    "monsters": [
+      "Stone Golem",
+      "Zealot"
+    ],
+    "treasures": [
+      16
+    ],
+    "rewards": [
+      "Mana Potion (Item 14) to one character"
+    ],
+    "source": "SB p.8",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "LtP p.27",
+    "treasuresSource": "SB p.8"
   },
   {
     "id": 5,
     "name": "A Deeper Understanding",
     "location": "C2",
     "goal": "Kill the Blood Tumor",
-    "unlockedBy": 4,
-    "unlocks": [6]
+    "unlocks": [
+      6
+    ],
+    "blocks": [],
+    "monsters": [
+      "Blood Tumor",
+      "Chaos Demon",
+      "Zealot"
+    ],
+    "treasures": [
+      9
+    ],
+    "rewards": [
+      "25 experience each"
+    ],
+    "source": "SB p.10",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.11"
   },
   {
     "id": 6,
     "name": "Corrupted Research",
     "location": "B4",
-    "goal": "Kill all enemies",
-    "unlockedBy": 5,
-    "unlocks": [7, 8]
+    "goal": "Destroy all growths",
+    "unlocks": [
+      7,
+      8
+    ],
+    "blocks": [],
+    "monsters": [
+      "Rat Monstrosity",
+      "Black Sludge"
+    ],
+    "treasures": [],
+    "rewards": [
+      "1 checkmark each"
+    ],
+    "source": "SB p.12",
+    "unlocksSource": "SB p.12",
+    "blocksSource": "GHS",
+    "rewardsSource": "SB p.12",
+    "treasuresSource": "SB p.12"
   },
   {
     "id": 7,
     "name": "Sunken Tumor",
     "location": "D2",
     "goal": "Kill the Blood Tumor",
-    "unlockedBy": 6,
-    "unlocks": [9]
+    "unlocks": [
+      9
+    ],
+    "blocks": [
+      8
+    ],
+    "monsters": [
+      "Blood Tumor",
+      "Vermling Scout",
+      "Zealot"
+    ],
+    "treasures": [
+      12
+    ],
+    "rewards": [
+      "20 experience each"
+    ],
+    "source": "SB p.14",
+    "unlocksSource": "SB p.18",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.15"
   },
   {
     "id": 8,
     "name": "Hidden Tumor",
     "location": "C4",
     "goal": "Kill the Blood Tumor",
-    "unlockedBy": 6,
-    "unlocks": [9]
+    "unlocks": [
+      9
+    ],
+    "blocks": [
+      7
+    ],
+    "monsters": [
+      "Blood Tumor",
+      "Chaos Demon",
+      "Zealot"
+    ],
+    "treasures": [
+      4
+    ],
+    "rewards": [
+      "20 experience each"
+    ],
+    "source": "SB p.16",
+    "unlocksSource": "SB p.18",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.17"
   },
   {
     "id": 9,
     "name": "Explosive Evolution",
-    "location": "D2 / C4",
+    "location": "D2 or C4",
     "goal": "Kill the Blood Horror",
-    "unlockedBy": 7,
-    "unlocks": [10]
+    "unlocks": [
+      10
+    ],
+    "blocks": [],
+    "monsters": [
+      "Blood Horror",
+      "Living Corpse",
+      "Zealot"
+    ],
+    "treasures": [
+      1
+    ],
+    "rewards": [
+      "20 experience each",
+      "Items 15-20 added to the shop"
+    ],
+    "source": "SB p.18",
+    "unlocksSource": "SB p.19",
+    "blocksSource": "GHS",
+    "rewardsSource": "SB p.19",
+    "treasuresSource": "SB p.19"
   },
   {
     "id": 10,
     "name": "The Gauntlet",
     "location": "E2",
     "goal": "Kill all enemies",
-    "unlockedBy": 9,
-    "unlocks": [11, 12]
+    "unlocks": [
+      11,
+      12
+    ],
+    "blocks": [],
+    "monsters": [
+      "Black Sludge",
+      "Chaos Demon",
+      "Stone Golem"
+    ],
+    "treasures": [
+      8
+    ],
+    "rewards": [
+      "15 experience each"
+    ],
+    "source": "SB p.20",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "GHS"
   },
   {
     "id": 11,
     "name": "Defiled Sewers",
     "location": "D2",
-    "goal": "All characters escape",
-    "unlockedBy": 10,
-    "unlocks": [13, 19]
+    "goal": "All characters must escape",
+    "unlocks": [
+      13,
+      19
+    ],
+    "blocks": [
+      12
+    ],
+    "monsters": [
+      "Black Sludge",
+      "Giant Viper",
+      "Vermling Scout"
+    ],
+    "treasures": [],
+    "rewards": [
+      "Flea-Bitten Shawl (Item 28)"
+    ],
+    "source": "SB p.22",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.22"
   },
   {
     "id": 12,
     "name": "Beguiling Sewers",
     "location": "B5",
     "goal": "Destroy all pillars",
-    "unlockedBy": 10,
-    "unlocks": [14, 18]
+    "unlocks": [
+      14,
+      18
+    ],
+    "blocks": [
+      11
+    ],
+    "monsters": [
+      "Living Corpse",
+      "Living Spirit"
+    ],
+    "treasures": [],
+    "rewards": [
+      "Flea-Bitten Shawl (Item 28)"
+    ],
+    "source": "SB p.24",
+    "unlocksSource": "SB p.25",
+    "blocksSource": "SB p.25",
+    "rewardsSource": "SB p.25",
+    "treasuresSource": "SB p.24"
   },
   {
     "id": 13,
     "name": "Vile Harvest",
     "location": "D3",
-    "goal": "Destroy all alchemy tables",
-    "unlockedBy": 11,
-    "unlocks": [15]
+    "goal": "Kill all enemies",
+    "unlocks": [
+      15
+    ],
+    "blocks": [],
+    "monsters": [
+      "Black Sludge",
+      "Blood Imp",
+      "Zealot"
+    ],
+    "treasures": [
+      5
+    ],
+    "rewards": [
+      "1 checkmark each"
+    ],
+    "source": "SB p.26",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.27"
   },
   {
     "id": 14,
     "name": "Toxic Harvest",
     "location": "B4",
     "goal": "Kill all enemies",
-    "unlockedBy": 12,
-    "unlocks": [15]
+    "unlocks": [
+      15
+    ],
+    "blocks": [],
+    "monsters": [
+      "Blood Imp",
+      "Giant Viper",
+      "Zealot"
+    ],
+    "treasures": [
+      15
+    ],
+    "rewards": [
+      "1 checkmark each"
+    ],
+    "source": "SB p.28",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.29"
   },
   {
     "id": 15,
     "name": "Tainted Blood",
     "location": "C4",
-    "goal": "Destroy all alchemy tables",
-    "unlockedBy": 13,
-    "unlocks": [16]
+    "goal": "Destroy all tables and kill all enemies",
+    "unlocks": [
+      16
+    ],
+    "blocks": [],
+    "monsters": [
+      "Black Imp",
+      "Blood Imp",
+      "Zealot"
+    ],
+    "treasures": [],
+    "rewards": [
+      "10 gold each",
+      "Items 21-26 added to the shop"
+    ],
+    "source": "SB p.30",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.30"
   },
   {
     "id": 16,
     "name": "Mixed Results",
     "location": "B4",
     "goal": "Kill all enemies",
-    "unlockedBy": 15,
-    "unlocks": [17]
+    "unlocks": [
+      17
+    ],
+    "blocks": [],
+    "monsters": [
+      "Black Imp",
+      "Blood Imp",
+      "Rat Monstrosity"
+    ],
+    "treasures": [],
+    "rewards": [
+      "15 experience each",
+      "Tower Shield (Item 29)"
+    ],
+    "source": "SB p.32",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.32"
   },
   {
     "id": 17,
     "name": "Red Twilight",
     "location": "C6",
     "goal": "Kill the First of the Order",
-    "unlockedBy": 16,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": [],
+    "monsters": [
+      "Blood Imp",
+      "Blood Monstrosity",
+      "First of the Order"
+    ],
+    "treasures": [
+      3
+    ],
+    "rewards": [
+      "30 gold each",
+      "25 experience each"
+    ],
+    "source": "SB p.34",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.35"
   },
   {
     "id": 18,
     "name": "The Heist",
     "location": "A5",
-    "goal": "Loot two treasure tiles and escape",
-    "unlockedBy": 12,
-    "unlocks": []
+    "goal": "Loot C treasure tiles, then all characters must escape",
+    "unlocks": [],
+    "blocks": [],
+    "monsters": [
+      "Stone Golem"
+    ],
+    "treasures": [
+      2,
+      6,
+      7,
+      13
+    ],
+    "rewards": [
+      "10 experience each"
+    ],
+    "source": "SB p.36",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.36, SB p.37, GHS"
   },
   {
     "id": 19,
     "name": "Den of Thieves",
     "location": "A5",
     "goal": "Destroy all nests and loot all treasure tiles",
-    "unlockedBy": 11,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": [],
+    "monsters": [
+      "Rat Monstrosity",
+      "Vermling Raider",
+      "Vermling Scout"
+    ],
+    "treasures": [],
+    "rewards": [
+      "Ring of Strength (Item 31)"
+    ],
+    "source": "SB p.38",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.38"
   },
   {
     "id": 20,
     "name": "Misplaced Goods",
     "location": "C5",
-    "goal": "Find all goods and kill all revealed enemies",
-    "unlockedBy": null,
-    "unlocks": []
+    "goal": "Find all goods, then kill all revealed enemies",
+    "unlocks": [],
+    "blocks": [],
+    "monsters": [
+      "Black Sludge",
+      "Chaos Demon",
+      "Giant Viper",
+      "Rat Monstrosity"
+    ],
+    "treasures": [],
+    "rewards": [
+      "10 gold each"
+    ],
+    "source": "SB p.40",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.40"
   },
   {
     "id": 21,
     "name": "Agents of Chaos",
     "location": "C9",
     "goal": "Kill four Chaos Demons",
-    "unlockedBy": null,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": [],
+    "monsters": [
+      "Chaos Demon",
+      "Giant Viper"
+    ],
+    "treasures": [
+      11
+    ],
+    "rewards": [
+      "15 gold each"
+    ],
+    "source": "SB p.42",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "GHS"
   },
   {
     "id": 22,
     "name": "Unfriendly Message",
     "location": "D1",
     "goal": "Kill the Stone Golem",
-    "unlockedBy": null,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": [],
+    "monsters": [
+      "Giant Viper",
+      "Stone Golem",
+      "Vermling Raider"
+    ],
+    "treasures": [],
+    "rewards": [
+      "Steel Ring (Item 33)"
+    ],
+    "source": "SB p.44",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "SB p.44",
+    "treasuresSource": "SB p.44"
   },
   {
     "id": 23,
     "name": "Best of the Best",
     "location": "B5",
     "goal": "Kill all enemies",
-    "unlockedBy": null,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": [],
+    "monsters": [
+      "Giant Viper",
+      "Rat Monstrosity",
+      "Stone Golem",
+      "Vermling Raider"
+    ],
+    "treasures": [],
+    "rewards": [
+      "Barbed Axe (Item 34)"
+    ],
+    "source": "SB p.46",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.46"
   },
   {
     "id": 24,
     "name": "Warding the Void",
     "location": "A3",
     "goal": "Kill all enemies and protect all wards",
-    "unlockedBy": null,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": [],
+    "monsters": [
+      "Black Imp",
+      "Chaos Demon"
+    ],
+    "treasures": [],
+    "rewards": [
+      "Robes of Command (Item 35)"
+    ],
+    "source": "SB p.48",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "GHS",
+    "treasuresSource": "SB p.48"
   },
   {
     "id": 25,
     "name": "The Greatest Job in the World",
     "location": "C7",
-    "goal": "Destroy all pillars",
-    "unlockedBy": null,
-    "unlocks": []
+    "goal": "Destroy all pillars, then all characters must escape",
+    "unlocks": [],
+    "blocks": [],
+    "monsters": [
+      "Living Spirit",
+      "Vermling Raider",
+      "Vermling Scout"
+    ],
+    "treasures": [],
+    "rewards": [
+      "Jet Boots (Item 36)"
+    ],
+    "source": "SB p.50",
+    "unlocksSource": "GHS",
+    "blocksSource": "GHS",
+    "rewardsSource": "SB p.50",
+    "treasuresSource": "SB p.50"
   }
 ]

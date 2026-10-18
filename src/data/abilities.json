@@ -1,50 +1,1154 @@
-{
-  "demolitionist": {
-    "1": ["Crushing Weight", "Explode", "Explosive Blitz", "Implode", "Knock Out the Support", "One-Two Punch", "Piston Punch", "The Big One", "Windup"],
-    "X": ["Level", "Lobbed Charge", "Rubble"],
-    "2": ["Crash Protocol", "Robotic Enhancement"],
-    "3": ["Fire Bombs", "Nowhere To Run"],
-    "4": ["Extra Fuel", "Remote Detonation"],
-    "5": ["Mech Suit", "Drill Fist"],
-    "6": ["Dust Cloud", "Insult To Injury"],
-    "7": ["Micro Missiles", "Gut Punch"],
-    "8": ["The Bigger One", "Collateral Damage"],
-    "9": ["Wholesale Destruction"]
+[
+  {
+    "id": "demolitionist-a-implode",
+    "characterId": "demolitionist",
+    "name": "Implode",
+    "level": "A",
+    "initiative": 88,
+    "source": "GHS"
   },
-  "hatchet": {
-    "1": ["Center Mass", "Close Cuts", "Disorienting Barrage", "Double Throw", "Follow Through", "Power Pitch", "Retrieval", "Second Wind", "Stopping Power", "The Favorite"],
-    "X": ["Care Package", "Extra Lift", "Fancy Hat"],
-    "2": ["Ricochet", "Repeat Shot"],
-    "3": ["Sharpened Blades", "Fearsome Efficiency"],
-    "4": ["Ripped From The Flesh", "Overwatch"],
-    "5": ["The New Favorite", "Brutalize"],
-    "6": ["Quick Turnaround", "Camaraderie"],
-    "7": ["Heart Seeker", "Repeat Shot"],
-    "8": ["Shrapnel", "Excessive Force"],
-    "9": ["The Ultimate Favorite"]
+  {
+    "id": "demolitionist-a-knock-out-the-support",
+    "characterId": "demolitionist",
+    "name": "Knock Out the Support",
+    "level": "A",
+    "initiative": 20,
+    "source": "GHS"
   },
-  "red_guard": {
-    "1": ["Blinding Sickle", "Desert Night", "Flame Shroud", "Flaming Sickle", "Healing Sands", "Shield of the Desert", "Shield Spikes", "Shocking Advance", "Swift Strength", "Twirling Stabs", "Blade Dance"],
-    "X": ["Precision Strike", "Warmth of the Sun", "Warrior of the Sun"],
-    "2": ["Harvest Sickle", "Strangling Chain"],
-    "3": ["Barbaric Instincts", "Burn Away the Dark"],
-    "4": ["Bulwark", "Radiant Sickle"],
-    "5": ["Sand Devil", "Fierce Brilliance"],
-    "6": ["Flying Sickle", "Vicious Ballet"],
-    "7": ["Horns of the Beast", "Honorable Fury"],
-    "8": ["No Fear", "Soaring Shield"],
-    "9": ["Prismatic Sickle", "Radiant Sickle"]
+  {
+    "id": "demolitionist-a-piston-punch",
+    "characterId": "demolitionist",
+    "name": "Piston Punch",
+    "level": "A",
+    "initiative": 42,
+    "source": "GHS"
   },
-  "voidwarden": {
-    "1": ["Black Boon", "Close To the Abyss", "Cold Embrace", "Freeze the Soul", "Gift of the Void", "Grasp of Doom", "Lure of the Void", "Master Influence", "Resigned Frenzy", "Signs of the Void", "Suggestion", "Turn Out the Lights", "Wicked Scratch"],
-    "X": ["Sap Warmth", "Crushing Cold", "Give and Take"],
-    "2": ["Commanding Presence", "Taunting Fate"],
-    "3": ["Savage Instinct", "Stand Fast"],
-    "4": ["The Last Journey", "Surge of Power"],
-    "5": ["Withering Conviction", "Hateful Blast"],
-    "6": ["Spirit Hunger", "Empowered Link"],
-    "7": ["Lull Into Oblivion", "Eye of the Void"],
-    "8": ["Possessed By Fate", "No Escape"],
-    "9": ["Void Walk", "Master of Puppets"]
+  {
+    "id": "demolitionist-a-explosive-blitz",
+    "characterId": "demolitionist",
+    "name": "Explosive Blitz",
+    "level": "A",
+    "initiative": 19,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-a-the-big-one",
+    "characterId": "demolitionist",
+    "name": "The Big One",
+    "level": "A",
+    "initiative": 37,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-a-one-two-punch",
+    "characterId": "demolitionist",
+    "name": "One-Two Punch",
+    "level": "A",
+    "initiative": 66,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-b-the-big-one",
+    "characterId": "demolitionist",
+    "name": "The Big One",
+    "level": "B",
+    "initiative": 37,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-b-one-two-punch",
+    "characterId": "demolitionist",
+    "name": "One-Two Punch",
+    "level": "B",
+    "initiative": 66,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-1-windup",
+    "characterId": "demolitionist",
+    "name": "Windup",
+    "level": "1",
+    "initiative": 77,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-1-crushing-weight",
+    "characterId": "demolitionist",
+    "name": "Crushing Weight",
+    "level": "1",
+    "initiative": 22,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-1-knock-out-the-support",
+    "characterId": "demolitionist",
+    "name": "Knock Out the Support",
+    "level": "1",
+    "initiative": 20,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-1-explode",
+    "characterId": "demolitionist",
+    "name": "Explode",
+    "level": "1",
+    "initiative": 28,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-1-implode",
+    "characterId": "demolitionist",
+    "name": "Implode",
+    "level": "1",
+    "initiative": 88,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-1-piston-punch",
+    "characterId": "demolitionist",
+    "name": "Piston Punch",
+    "level": "1",
+    "initiative": 42,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-1-explosive-blitz",
+    "characterId": "demolitionist",
+    "name": "Explosive Blitz",
+    "level": "1",
+    "initiative": 19,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-1-the-big-one",
+    "characterId": "demolitionist",
+    "name": "The Big One",
+    "level": "1",
+    "initiative": 37,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-1-one-two-punch",
+    "characterId": "demolitionist",
+    "name": "One-Two Punch",
+    "level": "1",
+    "initiative": 66,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-x-rubble",
+    "characterId": "demolitionist",
+    "name": "Rubble",
+    "level": "X",
+    "initiative": 55,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-x-level",
+    "characterId": "demolitionist",
+    "name": "Level",
+    "level": "X",
+    "initiative": 0,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-x-lobbed-charge",
+    "characterId": "demolitionist",
+    "name": "Lobbed Charge",
+    "level": "X",
+    "initiative": 52,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-2-robotic-enhancement",
+    "characterId": "demolitionist",
+    "name": "Robotic Enhancement",
+    "level": "2",
+    "initiative": 33,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-2-crash-protocol",
+    "characterId": "demolitionist",
+    "name": "Crash Protocol",
+    "level": "2",
+    "initiative": 74,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-3-fire-bombs",
+    "characterId": "demolitionist",
+    "name": "Fire Bombs",
+    "level": "3",
+    "initiative": 24,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-3-nowhere-to-run",
+    "characterId": "demolitionist",
+    "name": "Nowhere to Run",
+    "level": "3",
+    "initiative": 39,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-4-remote-detonation",
+    "characterId": "demolitionist",
+    "name": "Remote Detonation",
+    "level": "4",
+    "initiative": 63,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-4-extra-fuel",
+    "characterId": "demolitionist",
+    "name": "Extra Fuel",
+    "level": "4",
+    "initiative": 3,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-5-mech-suit",
+    "characterId": "demolitionist",
+    "name": "Mech Suit",
+    "level": "5",
+    "initiative": 80,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-6-dust-cloud",
+    "characterId": "demolitionist",
+    "name": "Dust Cloud",
+    "level": "6",
+    "initiative": 15,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-6-drill-fist",
+    "characterId": "demolitionist",
+    "name": "Drill Fist",
+    "level": "6",
+    "initiative": 62,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-7-micro-missiles",
+    "characterId": "demolitionist",
+    "name": "Micro Missiles",
+    "level": "7",
+    "initiative": 16,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-7-insult-to-injury",
+    "characterId": "demolitionist",
+    "name": "Insult to Injury",
+    "level": "7",
+    "initiative": 64,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-8-gut-punch",
+    "characterId": "demolitionist",
+    "name": "Gut Punch",
+    "level": "8",
+    "initiative": 26,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-8-the-bigger-one",
+    "characterId": "demolitionist",
+    "name": "The Bigger One",
+    "level": "8",
+    "initiative": 31,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-9-collateral-damage",
+    "characterId": "demolitionist",
+    "name": "Collateral Damage",
+    "level": "9",
+    "initiative": 15,
+    "source": "GHS"
+  },
+  {
+    "id": "demolitionist-9-wholesale-destruction",
+    "characterId": "demolitionist",
+    "name": "Wholesale Destruction",
+    "level": "9",
+    "initiative": 34,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-a-stopping-power",
+    "characterId": "hatchet",
+    "name": "Stopping Power",
+    "level": "A",
+    "initiative": 35,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-a-double-throw",
+    "characterId": "hatchet",
+    "name": "Double Throw",
+    "level": "A",
+    "initiative": 64,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-a-disorienting-barrage",
+    "characterId": "hatchet",
+    "name": "Disorienting Barrage",
+    "level": "A",
+    "initiative": 51,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-a-second-wind",
+    "characterId": "hatchet",
+    "name": "Second Wind",
+    "level": "A",
+    "initiative": 18,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-a-center-mass",
+    "characterId": "hatchet",
+    "name": "Center Mass",
+    "level": "A",
+    "initiative": 24,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-a-close-cuts",
+    "characterId": "hatchet",
+    "name": "Close Cuts",
+    "level": "A",
+    "initiative": 25,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-b-center-mass",
+    "characterId": "hatchet",
+    "name": "Center Mass",
+    "level": "B",
+    "initiative": 24,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-b-close-cuts",
+    "characterId": "hatchet",
+    "name": "Close Cuts",
+    "level": "B",
+    "initiative": 25,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-1-the-favorite",
+    "characterId": "hatchet",
+    "name": "The Favorite",
+    "level": "1",
+    "initiative": 17,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-1-retrieval",
+    "characterId": "hatchet",
+    "name": "Retrieval",
+    "level": "1",
+    "initiative": 46,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-1-close-cuts",
+    "characterId": "hatchet",
+    "name": "Close Cuts",
+    "level": "1",
+    "initiative": 25,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-1-center-mass",
+    "characterId": "hatchet",
+    "name": "Center Mass",
+    "level": "1",
+    "initiative": 24,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-1-stopping-power",
+    "characterId": "hatchet",
+    "name": "Stopping Power",
+    "level": "1",
+    "initiative": 35,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-1-double-throw",
+    "characterId": "hatchet",
+    "name": "Double Throw",
+    "level": "1",
+    "initiative": 64,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-1-disorienting-barrage",
+    "characterId": "hatchet",
+    "name": "Disorienting Barrage",
+    "level": "1",
+    "initiative": 51,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-1-power-pitch",
+    "characterId": "hatchet",
+    "name": "Power Pitch",
+    "level": "1",
+    "initiative": 60,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-1-follow-through",
+    "characterId": "hatchet",
+    "name": "Follow Through",
+    "level": "1",
+    "initiative": 39,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-1-second-wind",
+    "characterId": "hatchet",
+    "name": "Second Wind",
+    "level": "1",
+    "initiative": 18,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-x-care-package",
+    "characterId": "hatchet",
+    "name": "Care Package",
+    "level": "X",
+    "initiative": 30,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-x-extra-lift",
+    "characterId": "hatchet",
+    "name": "Extra Lift",
+    "level": "X",
+    "initiative": 21,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-x-fancy-hat",
+    "characterId": "hatchet",
+    "name": "Fancy Hat",
+    "level": "X",
+    "initiative": 12,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-2-repeat-shot",
+    "characterId": "hatchet",
+    "name": "Repeat Shot",
+    "level": "2",
+    "initiative": 31,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-2-ricochet",
+    "characterId": "hatchet",
+    "name": "Ricochet",
+    "level": "2",
+    "initiative": 56,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-3-fearsome-efficiency",
+    "characterId": "hatchet",
+    "name": "Fearsome Efficiency",
+    "level": "3",
+    "initiative": 58,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-3-sharpened-blades",
+    "characterId": "hatchet",
+    "name": "Sharpened Blades",
+    "level": "3",
+    "initiative": 44,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-4-ripped-from-the-flesh",
+    "characterId": "hatchet",
+    "name": "Ripped From the Flesh",
+    "level": "4",
+    "initiative": 20,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-4-overwatch",
+    "characterId": "hatchet",
+    "name": "Overwatch",
+    "level": "4",
+    "initiative": 40,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-5-the-new-favorite",
+    "characterId": "hatchet",
+    "name": "The New Favorite",
+    "level": "5",
+    "initiative": 15,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-6-bombardment",
+    "characterId": "hatchet",
+    "name": "Bombardment",
+    "level": "6",
+    "initiative": 54,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-6-quick-turnaround",
+    "characterId": "hatchet",
+    "name": "Quick Turnaround",
+    "level": "6",
+    "initiative": 11,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-7-excessive-force",
+    "characterId": "hatchet",
+    "name": "Excessive Force",
+    "level": "7",
+    "initiative": 47,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-7-brutalize",
+    "characterId": "hatchet",
+    "name": "Brutalize",
+    "level": "7",
+    "initiative": 22,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-8-shrapnel",
+    "characterId": "hatchet",
+    "name": "Shrapnel",
+    "level": "8",
+    "initiative": 37,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-8-camaraderie",
+    "characterId": "hatchet",
+    "name": "Camaraderie",
+    "level": "8",
+    "initiative": 75,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-9-executioners-axe",
+    "characterId": "hatchet",
+    "name": "Executioner's Axe",
+    "level": "9",
+    "initiative": 79,
+    "source": "GHS"
+  },
+  {
+    "id": "hatchet-9-heart-seeker",
+    "characterId": "hatchet",
+    "name": "Heart Seeker",
+    "level": "9",
+    "initiative": 32,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-a-flaming-sickle",
+    "characterId": "red_guard",
+    "name": "Flaming Sickle",
+    "level": "A",
+    "initiative": 63,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-a-blinding-sickle",
+    "characterId": "red_guard",
+    "name": "Blinding Sickle",
+    "level": "A",
+    "initiative": 87,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-a-twirling-stabs",
+    "characterId": "red_guard",
+    "name": "Twirling Stabs",
+    "level": "A",
+    "initiative": 38,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-a-shocking-advance",
+    "characterId": "red_guard",
+    "name": "Shocking Advance",
+    "level": "A",
+    "initiative": 14,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-a-desert-night",
+    "characterId": "red_guard",
+    "name": "Desert Night",
+    "level": "A",
+    "initiative": 90,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-a-shield-spikes",
+    "characterId": "red_guard",
+    "name": "Shield Spikes",
+    "level": "A",
+    "initiative": 41,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-b-desert-night",
+    "characterId": "red_guard",
+    "name": "Desert Night",
+    "level": "B",
+    "initiative": 90,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-b-flaming-sickle",
+    "characterId": "red_guard",
+    "name": "Flaming Sickle",
+    "level": "B",
+    "initiative": 63,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-1-swift-strength",
+    "characterId": "red_guard",
+    "name": "Swift Strength",
+    "level": "1",
+    "initiative": 16,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-1-healing-sands",
+    "characterId": "red_guard",
+    "name": "Healing Sands",
+    "level": "1",
+    "initiative": 32,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-1-shield-spikes",
+    "characterId": "red_guard",
+    "name": "Shield Spikes",
+    "level": "1",
+    "initiative": 41,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-1-flaming-sickle",
+    "characterId": "red_guard",
+    "name": "Flaming Sickle",
+    "level": "1",
+    "initiative": 63,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-1-blinding-sickle",
+    "characterId": "red_guard",
+    "name": "Blinding Sickle",
+    "level": "1",
+    "initiative": 87,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-1-twirling-stabs",
+    "characterId": "red_guard",
+    "name": "Twirling Stabs",
+    "level": "1",
+    "initiative": 38,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-1-flame-shroud",
+    "characterId": "red_guard",
+    "name": "Flame Shroud",
+    "level": "1",
+    "initiative": 6,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-1-shocking-advance",
+    "characterId": "red_guard",
+    "name": "Shocking Advance",
+    "level": "1",
+    "initiative": 14,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-1-shield-of-the-desert",
+    "characterId": "red_guard",
+    "name": "Shield of the Desert",
+    "level": "1",
+    "initiative": 10,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-1-desert-night",
+    "characterId": "red_guard",
+    "name": "Desert Night",
+    "level": "1",
+    "initiative": 90,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-x-warrior-of-the-sun",
+    "characterId": "red_guard",
+    "name": "Warrior of the Sun",
+    "level": "X",
+    "initiative": 13,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-x-blade-dance",
+    "characterId": "red_guard",
+    "name": "Blade Dance",
+    "level": "X",
+    "initiative": 29,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-x-precision-strike",
+    "characterId": "red_guard",
+    "name": "Precision Strike",
+    "level": "X",
+    "initiative": 40,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-2-harvest-sickle",
+    "characterId": "red_guard",
+    "name": "Harvest Sickle",
+    "level": "2",
+    "initiative": 52,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-2-barbaric-instincts",
+    "characterId": "red_guard",
+    "name": "Barbaric Instincts",
+    "level": "2",
+    "initiative": 12,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-3-warmth-of-the-sun",
+    "characterId": "red_guard",
+    "name": "Warmth of the Sun",
+    "level": "3",
+    "initiative": 23,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-3-strangling-chain",
+    "characterId": "red_guard",
+    "name": "Strangling Chain",
+    "level": "3",
+    "initiative": 19,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-4-radiant-sickle",
+    "characterId": "red_guard",
+    "name": "Radiant Sickle",
+    "level": "4",
+    "initiative": 79,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-4-burn-away-the-dark",
+    "characterId": "red_guard",
+    "name": "Burn Away the Dark",
+    "level": "4",
+    "initiative": 31,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-5-sand-devil",
+    "characterId": "red_guard",
+    "name": "Sand Devil",
+    "level": "5",
+    "initiative": 55,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-6-fierce-brilliance",
+    "characterId": "red_guard",
+    "name": "Fierce Brilliance",
+    "level": "6",
+    "initiative": 22,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-6-flying-sickle",
+    "characterId": "red_guard",
+    "name": "Flying Sickle",
+    "level": "6",
+    "initiative": 91,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-7-vicious-ballet",
+    "characterId": "red_guard",
+    "name": "Vicious Ballet",
+    "level": "7",
+    "initiative": 28,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-7-horns-of-the-beast",
+    "characterId": "red_guard",
+    "name": "Horns of the Beast",
+    "level": "7",
+    "initiative": 8,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-8-prismatic-sickle",
+    "characterId": "red_guard",
+    "name": "Prismatic Sickle",
+    "level": "8",
+    "initiative": 70,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-8-no-fear",
+    "characterId": "red_guard",
+    "name": "No Fear",
+    "level": "8",
+    "initiative": 1,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-9-soaring-shield",
+    "characterId": "red_guard",
+    "name": "Soaring Shield",
+    "level": "9",
+    "initiative": 3,
+    "source": "GHS"
+  },
+  {
+    "id": "red_guard-9-honorable-fury",
+    "characterId": "red_guard",
+    "name": "Honorable Fury",
+    "level": "9",
+    "initiative": 89,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-a-black-boon",
+    "characterId": "voidwarden",
+    "name": "Black Boon",
+    "level": "A",
+    "initiative": 43,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-a-turn-out-the-lights",
+    "characterId": "voidwarden",
+    "name": "Turn Out the Lights",
+    "level": "A",
+    "initiative": 49,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-a-wicked-scratch",
+    "characterId": "voidwarden",
+    "name": "Wicked Scratch",
+    "level": "A",
+    "initiative": 68,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-a-suggestion",
+    "characterId": "voidwarden",
+    "name": "Suggestion",
+    "level": "A",
+    "initiative": 23,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-a-gift-of-the-void",
+    "characterId": "voidwarden",
+    "name": "Gift of the Void",
+    "level": "A",
+    "initiative": 89,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-a-lure-of-the-void",
+    "characterId": "voidwarden",
+    "name": "Lure of the Void",
+    "level": "A",
+    "initiative": 67,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-b-lure-of-the-void",
+    "characterId": "voidwarden",
+    "name": "Lure of the Void",
+    "level": "B",
+    "initiative": 67,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-b-wicked-scratch",
+    "characterId": "voidwarden",
+    "name": "Wicked Scratch",
+    "level": "B",
+    "initiative": 68,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-1-signs-of-the-void",
+    "characterId": "voidwarden",
+    "name": "Signs of the Void",
+    "level": "1",
+    "initiative": 15,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-1-close-to-the-abyss",
+    "characterId": "voidwarden",
+    "name": "Close to the Abyss",
+    "level": "1",
+    "initiative": 72,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-1-gift-of-the-void",
+    "characterId": "voidwarden",
+    "name": "Gift of the Void",
+    "level": "1",
+    "initiative": 89,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-1-black-boon",
+    "characterId": "voidwarden",
+    "name": "Black Boon",
+    "level": "1",
+    "initiative": 43,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-1-freeze-the-soul",
+    "characterId": "voidwarden",
+    "name": "Freeze the Soul",
+    "level": "1",
+    "initiative": 58,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-1-wicked-scratch",
+    "characterId": "voidwarden",
+    "name": "Wicked Scratch",
+    "level": "1",
+    "initiative": 68,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-1-turn-out-the-lights",
+    "characterId": "voidwarden",
+    "name": "Turn Out the Lights",
+    "level": "1",
+    "initiative": 49,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-1-lure-of-the-void",
+    "characterId": "voidwarden",
+    "name": "Lure of the Void",
+    "level": "1",
+    "initiative": 67,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-1-grasp-of-doom",
+    "characterId": "voidwarden",
+    "name": "Grasp of Doom",
+    "level": "1",
+    "initiative": 36,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-1-master-influence",
+    "characterId": "voidwarden",
+    "name": "Master Influence",
+    "level": "1",
+    "initiative": 83,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-1-suggestion",
+    "characterId": "voidwarden",
+    "name": "Suggestion",
+    "level": "1",
+    "initiative": 23,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-x-resigned-frenzy",
+    "characterId": "voidwarden",
+    "name": "Resigned Frenzy",
+    "level": "X",
+    "initiative": 26,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-x-cold-embrace",
+    "characterId": "voidwarden",
+    "name": "Cold Embrace",
+    "level": "X",
+    "initiative": 71,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-x-sap-warmth",
+    "characterId": "voidwarden",
+    "name": "Sap Warmth",
+    "level": "X",
+    "initiative": 59,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-2-give-and-take",
+    "characterId": "voidwarden",
+    "name": "Give and Take",
+    "level": "2",
+    "initiative": 21,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-2-crushing-cold",
+    "characterId": "voidwarden",
+    "name": "Crushing Cold",
+    "level": "2",
+    "initiative": 86,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-3-taunting-fate",
+    "characterId": "voidwarden",
+    "name": "Taunting Fate",
+    "level": "3",
+    "initiative": 13,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-3-commanding-presence",
+    "characterId": "voidwarden",
+    "name": "Commanding Presence",
+    "level": "3",
+    "initiative": 75,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-4-savage-instinct",
+    "characterId": "voidwarden",
+    "name": "Savage Instinct",
+    "level": "4",
+    "initiative": 51,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-4-the-last-journey",
+    "characterId": "voidwarden",
+    "name": "The Last Journey",
+    "level": "4",
+    "initiative": 38,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-5-stand-fast",
+    "characterId": "voidwarden",
+    "name": "Stand Fast",
+    "level": "5",
+    "initiative": 90,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-6-withering-conviction",
+    "characterId": "voidwarden",
+    "name": "Withering Conviction",
+    "level": "6",
+    "initiative": 44,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-6-surge-of-power",
+    "characterId": "voidwarden",
+    "name": "Surge of Power",
+    "level": "6",
+    "initiative": 81,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-7-hateful-blast",
+    "characterId": "voidwarden",
+    "name": "Hateful Blast",
+    "level": "7",
+    "initiative": 29,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-7-spirit-hunger",
+    "characterId": "voidwarden",
+    "name": "Spirit Hunger",
+    "level": "7",
+    "initiative": 68,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-8-lull-into-oblivion",
+    "characterId": "voidwarden",
+    "name": "Lull into Oblivion",
+    "level": "8",
+    "initiative": 11,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-8-empowered-link",
+    "characterId": "voidwarden",
+    "name": "Empowered Link",
+    "level": "8",
+    "initiative": 59,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-9-eye-of-the-void",
+    "characterId": "voidwarden",
+    "name": "Eye of the Void",
+    "level": "9",
+    "initiative": 19,
+    "source": "GHS"
+  },
+  {
+    "id": "voidwarden-9-possessed-by-fate",
+    "characterId": "voidwarden",
+    "name": "Possessed by Fate",
+    "level": "9",
+    "initiative": 66,
+    "source": "GHS"
   }
-}
+]

@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCampaignStore } from '@/features/campaign/store'
+import { MigrationNotes } from '@/features/campaign'
+import type { MigrationNote } from '@/shared/db'
 import { version } from '../../../package.json'
 
 export function SettingsPage() {
   const [status, setStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null)
+  const [importNotes, setImportNotes] = useState<MigrationNote[]>([])
   
   const campaigns = useCampaignStore((s) => s.campaigns)
   const corruptedCampaigns = useCampaignStore((s) => s.corruptedCampaigns)
@@ -49,11 +52,17 @@ export function SettingsPage() {
       const content = await file.text()
       const result = await importData(content)
       if (result.success) {
-        setStatus({ type: 'success', message: `Import successful! ${result.count} campaign(s) imported.` })
+        setImportNotes(result.notes ?? [])
+        const changes = result.notes && result.notes.length > 0
+          ? ` ${result.notes.length} change${result.notes.length === 1 ? '' : 's'} applied during the import.`
+          : ''
+        setStatus({ type: 'success', message: `Import successful! ${result.count} campaign(s) imported.${changes}` })
       } else {
+        setImportNotes([])
         setStatus({ type: 'error', message: result.error || 'Import failed' })
       }
     } catch (e) {
+      setImportNotes([])
       setStatus({ type: 'error', message: e instanceof Error ? e.message : 'Import failed' })
     }
   }
@@ -129,6 +138,12 @@ export function SettingsPage() {
           <p className={`mb-4 text-sm ${status.type === 'success' ? 'text-emerald-400' : 'text-red-400'}`}>
             {status.type === 'success' ? '✓ ' : '⚠ '}{status.message}
           </p>
+        )}
+
+        {status?.type === 'success' && importNotes.length > 0 && (
+          <div className="mb-4">
+            <MigrationNotes notes={importNotes} />
+          </div>
         )}
 
         <div className="flex flex-col gap-3">

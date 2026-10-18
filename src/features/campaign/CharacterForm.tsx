@@ -58,7 +58,7 @@ export function CharacterForm({ disabled, onAdd }: CharacterFormProps) {
         <div className="mb-3 rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2">
           <p className="text-sm text-zinc-200">
             <span className="font-semibold text-amber-400">{selectedCharDef.name}</span>
-            <span className="text-zinc-500"> &bull; {selectedCharDef.race} &bull; {selectedCharDef.role}</span>
+            <span className="text-zinc-500"> &bull; {selectedCharDef.race}</span>
           </p>
         </div>
       )}

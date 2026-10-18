@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { CampaignList, CampaignDetail, CharacterDetail } from '@/features/campaign'
 import { AppLayout } from '@/shared/components/layout/AppLayout'
 
@@ -22,8 +22,8 @@ const GlossaryPage = lazy(() =>
 const ReferencePage = lazy(() =>
   import('@/features/rules/ReferencePage').then((m) => ({ default: m.ReferencePage })),
 )
-const FocusHelperPage = lazy(() =>
-  import('@/features/rules/FocusHelperPage').then((m) => ({ default: m.FocusHelperPage })),
+const MonsterTurnPage = lazy(() =>
+  import('@/features/rules/MonsterTurnPage').then((m) => ({ default: m.MonsterTurnPage })),
 )
 const SettingsPage = lazy(() =>
   import('@/features/settings/SettingsPage').then((m) => ({ default: m.SettingsPage })),
@@ -46,7 +46,9 @@ export function AppRoutes() {
           <Route index element={<GlossaryPage />} />
           <Route path="glossary" element={<GlossaryPage />} />
           <Route path="reference" element={<ReferencePage />} />
-          <Route path="focus-helper" element={<FocusHelperPage />} />
+          <Route path="monster-turn" element={<MonsterTurnPage />} />
+          {/* Bookmarks to the removed focus calculator land on its successor. */}
+          <Route path="focus-helper" element={<Navigate to="/rules/monster-turn" replace />} />
         </Route>
 
         <Route path="/settings" element={<SettingsPage />} />

@@ -63,7 +63,7 @@ export function CharacterCard({ character, onSelect, onDelete }: CharacterCardPr
       </div>
 
       <p className="mt-1 text-sm text-zinc-500">
-        {charDef?.race} &bull; {charDef?.role}
+        {charDef?.race}
       </p>
 
       {/* Stats row */}

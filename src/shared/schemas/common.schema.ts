@@ -15,6 +15,9 @@ export const ScenarioStatusSchema = z.enum([
   'locked',
   'unlocked',
   'completed',
+  // A scenario the campaign can no longer play because an alternative
+  // branch was completed (Glossary p.18 "Closed Scenario").
+  'closed',
 ])
 
 export type ScenarioStatus = z.infer<typeof ScenarioStatusSchema>

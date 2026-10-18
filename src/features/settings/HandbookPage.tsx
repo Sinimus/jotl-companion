@@ -123,8 +123,8 @@ export function HandbookPage() {
           <p className="mb-4 text-zinc-400">Access the <strong className="font-semibold text-zinc-200">Rules</strong> section via the bottom navigation bar.</p>
           <ul className="list-disc space-y-2 pl-5 text-zinc-400">
             <li><strong className="font-semibold text-zinc-200">Glossary:</strong> A searchable dictionary of game terms.</li>
-            <li><strong className="font-semibold text-zinc-200">Reference:</strong> Digital cards for round structure, condition tokens, and elements.</li>
-            <li><strong className="font-semibold text-zinc-200">Focus Helper:</strong> An interactive tool to determine monster focus using the proximity and initiative rules.</li>
+            <li><strong className="font-semibold text-zinc-200">Reference:</strong> Conditions, elements and the element board, and short guides (round structure, line of sight, advantage).</li>
+            <li><strong className="font-semibold text-zinc-200">Monster Turn:</strong> The monster turn procedure step by step with diagrams (Rules Glossary p.26).</li>
           </ul>
         </section>
 

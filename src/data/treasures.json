@@ -1,0 +1,114 @@
+[
+  {
+    "id": 1,
+    "reward": "Gain 10 experience",
+    "scenario": 9,
+    "source": "Glossary p.31",
+    "scenarioSource": "SB p.19"
+  },
+  {
+    "id": 2,
+    "reward": "Ring of Strength (Item 31)",
+    "scenario": 18,
+    "source": "Glossary p.31",
+    "scenarioSource": "SB p.37"
+  },
+  {
+    "id": 3,
+    "reward": "Gain 15 experience",
+    "scenario": 17,
+    "source": "Glossary p.31",
+    "scenarioSource": "SB p.35"
+  },
+  {
+    "id": 4,
+    "reward": "Gain 5 gold",
+    "scenario": 8,
+    "source": "Glossary p.31",
+    "scenarioSource": "SB p.17"
+  },
+  {
+    "id": 5,
+    "reward": "Gain 1 checkmark",
+    "scenario": 13,
+    "source": "Glossary p.31",
+    "scenarioSource": "SB p.27"
+  },
+  {
+    "id": 6,
+    "reward": "Gain 10 gold",
+    "scenario": 18,
+    "source": "Glossary p.31",
+    "scenarioSource": "SB p.36"
+  },
+  {
+    "id": 7,
+    "reward": "Gain 5 gold",
+    "scenario": 18,
+    "source": "Glossary p.31",
+    "scenarioSource": "SB p.36"
+  },
+  {
+    "id": 8,
+    "reward": "Suffer 3 damage and gain POISON",
+    "scenario": 10,
+    "source": "Glossary p.31",
+    "scenarioSource": "GHS"
+  },
+  {
+    "id": 9,
+    "reward": "Gain 5 gold",
+    "scenario": 5,
+    "source": "Glossary p.31",
+    "scenarioSource": "SB p.11"
+  },
+  {
+    "id": 10,
+    "reward": "Fateful Compass (Item 27)",
+    "scenario": 3,
+    "source": "Glossary p.31",
+    "scenarioSource": "SB p.7"
+  },
+  {
+    "id": 11,
+    "reward": "Ring of Haste (Item 30)",
+    "scenario": 21,
+    "source": "Glossary p.31",
+    "scenarioSource": "GHS"
+  },
+  {
+    "id": 12,
+    "reward": "Gain 5 gold",
+    "scenario": 7,
+    "source": "Glossary p.31",
+    "scenarioSource": "SB p.15"
+  },
+  {
+    "id": 13,
+    "reward": "Gain 5 gold",
+    "scenario": 18,
+    "source": "Glossary p.31",
+    "scenarioSource": "GHS"
+  },
+  {
+    "id": 14,
+    "reward": "Gain 3 money tokens",
+    "scenario": 2,
+    "source": "Glossary p.31",
+    "scenarioSource": "SB p.5"
+  },
+  {
+    "id": 15,
+    "reward": "Gain 1 checkmark",
+    "scenario": 14,
+    "source": "Glossary p.31",
+    "scenarioSource": "SB p.29"
+  },
+  {
+    "id": 16,
+    "reward": "Mana Potion (Item 14)",
+    "scenario": 4,
+    "source": "Glossary p.31",
+    "scenarioSource": "SB p.8"
+  }
+]
