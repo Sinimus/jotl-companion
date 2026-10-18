@@ -21,7 +21,7 @@ export function CreateCampaignCard({ initiallyExpanded, onCreate }: CreateCampai
     return (
       <button
         onClick={() => setIsExpanded(true)}
-        className="w-full rounded-lg border border-dashed border-zinc-700 px-4 py-3 text-left text-sm text-zinc-500 transition-colors hover:border-zinc-500 hover:text-zinc-300"
+        className="min-h-11 w-full rounded-lg border border-dashed border-zinc-700 px-4 py-3 text-left text-sm text-zinc-500 transition-colors hover:border-zinc-500 hover:text-zinc-300"
       >
         + New Campaign
       </button>
@@ -38,13 +38,13 @@ export function CreateCampaignCard({ initiallyExpanded, onCreate }: CreateCampai
         onChange={(e) => setName(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
         placeholder="Campaign Name..."
-        className="mb-4 w-full rounded-lg border border-zinc-600 bg-zinc-800 px-3 py-2 text-zinc-100 placeholder-zinc-500 focus:border-amber-500 focus:outline-none"
+        className="mb-4 min-h-11 w-full rounded-lg border border-zinc-600 bg-zinc-800 px-3 py-2 text-zinc-100 placeholder-zinc-500 focus:border-amber-500 focus:outline-none"
       />
       <div className="flex gap-2">
         <button
           onClick={handleSubmit}
           disabled={!name.trim()}
-          className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-zinc-900 disabled:opacity-50 hover:bg-amber-500"
+          className="min-h-11 rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-zinc-900 disabled:opacity-50 hover:bg-amber-500"
         >
           Create
         </button>

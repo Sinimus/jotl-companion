@@ -86,7 +86,7 @@ export function TreasureTracker({ campaignId, lootedTreasureIds, scenarioStatus 
         })}
       </div>
 
-      <p className="mt-4 text-xs text-zinc-600">
+      <p className="mt-4 text-xs text-zinc-500">
         Rewards: Rules Glossary p.31 (Treasure Index). Tile locations: Scenario Book preview, GHS for
         tiles 8, 11, 13.
       </p>

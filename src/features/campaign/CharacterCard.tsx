@@ -1,16 +1,17 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { type CharacterProgress } from '@/shared/schemas'
 import { characters } from '@/data'
 import { computeLevelFromXp } from './rules'
 
 interface CharacterCardProps {
   character: CharacterProgress
-  /** Navigate to the character detail page */
-  onSelect: () => void
+  /** Address of the character detail page */
+  to: string
   onDelete: () => void
 }
 
-export function CharacterCard({ character, onSelect, onDelete }: CharacterCardProps) {
+export function CharacterCard({ character, to, onDelete }: CharacterCardProps) {
   const [confirmDelete, setConfirmDelete] = useState(false)
 
   // Static character definition — name, race, HP table.
@@ -20,56 +21,52 @@ export function CharacterCard({ character, onSelect, onDelete }: CharacterCardPr
   const maxHp = (charDef?.hitPoints as Record<string, number>)?.[String(computedLevel)] ?? 0
 
   return (
-    <div
-      onClick={onSelect}
-      className="cursor-pointer rounded-lg border border-zinc-700 bg-zinc-800 p-4 transition-colors hover:border-zinc-500"
-    >
-      {/* Header: type badge + player name + delete control */}
-      <div className="flex items-start justify-between gap-2">
-        <div>
-          <span className="text-xs font-medium text-amber-400">
-            {charDef?.name ?? character.type}
-          </span>
-          <h3 className="text-lg font-semibold text-zinc-100">{character.name}</h3>
-        </div>
+    <div className="relative rounded-lg border border-zinc-700 bg-zinc-800 transition-colors focus-within:border-zinc-500 hover:border-zinc-500">
+      {/* The whole card is one link; the remove control sits beside it, not inside it. */}
+      <Link
+        to={to}
+        className="block rounded-lg p-4 pr-24 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500"
+      >
+        <span className="block text-xs font-medium text-amber-400">
+          {charDef?.name ?? character.type}
+        </span>
+        <span className="block text-lg font-semibold text-zinc-100">{character.name}</span>
+        <span className="mt-1 block text-sm text-zinc-400">{charDef?.race}</span>
+        {/* Stats row */}
+        <span className="mt-1.5 block text-sm text-zinc-400">
+          Lv {computedLevel} &bull; HP {maxHp} &bull; {character.gold}g &bull; {character.itemIds.length} items
+        </span>
+      </Link>
 
-        {/* stopPropagation — delete click must not navigate to detail */}
-        <div onClick={(e) => e.stopPropagation()}>
-          {confirmDelete ? (
-            <div className="flex shrink-0 gap-2">
-              <button
-                onClick={onDelete}
-                className="text-xs text-red-400 hover:text-red-300"
-              >
-                Confirm
-              </button>
-              <button
-                onClick={() => setConfirmDelete(false)}
-                className="text-xs text-zinc-500 hover:text-zinc-300"
-              >
-                Cancel
-              </button>
-            </div>
-          ) : (
+      <div className="absolute right-1 top-1">
+        {confirmDelete ? (
+          <div className="flex shrink-0">
             <button
-              onClick={() => setConfirmDelete(true)}
-              className="text-zinc-500 hover:text-red-400 transition-colors"
-              aria-label={`Remove ${character.name}`}
+              type="button"
+              onClick={onDelete}
+              className="min-h-11 px-2 text-xs text-red-400 hover:text-red-300"
             >
-              ×
+              Confirm
             </button>
-          )}
-        </div>
+            <button
+              type="button"
+              onClick={() => setConfirmDelete(false)}
+              className="min-h-11 px-2 text-xs text-zinc-400 hover:text-zinc-200"
+            >
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setConfirmDelete(true)}
+            className="flex h-11 w-11 items-center justify-center text-xl text-zinc-400 transition-colors hover:text-red-400"
+            aria-label={`Remove ${character.name}`}
+          >
+            ×
+          </button>
+        )}
       </div>
-
-      <p className="mt-1 text-sm text-zinc-500">
-        {charDef?.race}
-      </p>
-
-      {/* Stats row */}
-      <p className="mt-1.5 text-sm text-zinc-400">
-        Lv {computedLevel} &bull; HP {maxHp} &bull; {character.gold}g &bull; {character.itemIds.length} items
-      </p>
     </div>
   )
 }

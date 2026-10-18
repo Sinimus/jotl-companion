@@ -1,7 +1,8 @@
-import { useState, useMemo } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { items, type Item, type ItemSlot, type ItemUnlock } from '@/data'
 import { type CharacterProgress, type ScenarioStatus } from '@/shared/schemas'
 import { itemAvailability, partyCopiesOwned } from '@/features/campaign/rules'
+import { filterShopItems } from './shopFilter'
 
 interface ItemShopProps {
   /** The character buying or gaining the item. */
@@ -51,6 +52,16 @@ export function ItemShop({
   const [revealedIds, setRevealedIds] = useState<Set<number>>(new Set())
 
   const campaign = { scenarioStatus, lootedTreasureIds }
+  const titleId = useId()
+
+  // Escape closes the dialog, as the close button does.
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [onClose])
 
   const counts = { shop: 0, reward: 0, locked: 0 }
   for (const item of items) {
@@ -60,17 +71,11 @@ export function ItemShop({
     else counts.locked += 1
   }
 
-  const filteredItems = useMemo(() => {
-    return items.filter((item) => {
-      // 1. Slot filter
-      const matchesSlot = selectedSlot === 'all' || item.slot === selectedSlot
-
-      // 2. Search filter
-      const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase())
-
-      return matchesSlot && matchesSearch
-    })
-  }, [selectedSlot, searchQuery])
+  const filteredItems = filterShopItems(items, {
+    slot: selectedSlot,
+    query: searchQuery,
+    isHidden: (item) => itemAvailability(item, campaign) === 'locked' && !revealedIds.has(item.id),
+  })
 
   const reveal = (id: number) => {
     setRevealedIds((prev) => new Set(prev).add(id))
@@ -90,12 +95,17 @@ export function ItemShop({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+    >
       <div className="flex h-full max-h-[800px] w-full max-w-2xl flex-col rounded-xl border border-zinc-700 bg-zinc-900 shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-zinc-700 p-4">
           <div>
-            <h2 className="text-xl font-bold text-zinc-100">Item Shop</h2>
+            <h2 id={titleId} className="text-xl font-bold text-zinc-100">Item Shop</h2>
             <p className="text-[10px] uppercase tracking-wider text-zinc-500">
               Available: {counts.shop} · Rewards: {counts.reward} · Locked: {counts.locked}
             </p>
@@ -104,12 +114,17 @@ export function ItemShop({
             {counts.locked > 0 && (
               <button
                 onClick={revealAll}
-                className="text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-300"
+                className="min-h-11 px-1 text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-200"
               >
                 Reveal all
               </button>
             )}
-            <button onClick={onClose} className="text-zinc-400 hover:text-zinc-100">
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close shop"
+              className="flex h-11 w-11 shrink-0 items-center justify-center text-zinc-400 hover:text-zinc-100"
+            >
               ✕
             </button>
           </div>
@@ -119,20 +134,21 @@ export function ItemShop({
         <div className="flex flex-col gap-3 border-b border-zinc-700 bg-zinc-800/50 p-4">
           <input
             type="text"
+            aria-label="Search items"
             placeholder="Search items..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg border border-zinc-600 bg-zinc-800 px-3 py-2 text-zinc-100 focus:border-amber-500 focus:outline-none"
+            className="min-h-11 w-full rounded-lg border border-zinc-600 bg-zinc-800 px-3 py-2 text-zinc-100 focus:border-amber-500 focus:outline-none"
           />
           <div className="flex gap-2 overflow-x-auto pb-1">
             {(['all', 'head', 'body', 'feet', 'hand', 'small'] as const).map((slot) => (
               <button
                 key={slot}
                 onClick={() => setSelectedSlot(slot)}
-                className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium capitalize transition-colors ${
+                className={`flex min-h-11 shrink-0 items-center rounded-full px-4 text-xs font-medium capitalize transition-colors ${
                   selectedSlot === slot
-                    ? 'bg-amber-600 text-white'
-                    : 'bg-zinc-700 text-zinc-400 hover:bg-zinc-600'
+                    ? 'bg-amber-700 text-white'
+                    : 'bg-zinc-700 text-zinc-300 hover:bg-zinc-600'
                 }`}
               >
                 {slot}
@@ -158,10 +174,11 @@ export function ItemShop({
                     className="flex flex-col items-center justify-center rounded-lg border border-zinc-700 bg-zinc-800/50 p-3"
                   >
                     <span className="text-sm font-bold text-zinc-500">#{item.id}</span>
-                    <span className="mb-2 text-[10px] uppercase text-zinc-600">{item.slot}</span>
+                    <span className="mb-2 text-[10px] uppercase text-zinc-500">{item.slot}</span>
                     <button
                       onClick={() => reveal(item.id)}
-                      className="rounded-full border border-zinc-600 px-3 py-1 text-xs text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                      aria-label={`Reveal item ${item.id}`}
+                      className="min-h-11 rounded-full border border-zinc-600 px-4 text-xs text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
                     >
                       Reveal
                     </button>
@@ -202,7 +219,7 @@ export function ItemShop({
                             <span className="text-[10px] font-bold uppercase text-amber-500">Reward</span>
                           )}
                           {availability === 'locked' && (
-                            <span className="text-[10px] font-bold uppercase text-zinc-600">Locked</span>
+                            <span className="text-[10px] font-bold uppercase text-zinc-500">Locked</span>
                           )}
                         </div>
                       </div>
@@ -220,7 +237,7 @@ export function ItemShop({
 
                   <div className="flex items-center justify-between gap-2 border-t border-zinc-700/50 pt-2">
                     {availability === 'locked' ? (
-                      <span className="text-xs italic text-zinc-600">{blockReason}</span>
+                      <span className="text-xs italic text-zinc-500">{blockReason}</span>
                     ) : (
                       <>
                         <span className="text-[10px] uppercase tracking-wider text-zinc-500">
@@ -233,21 +250,21 @@ export function ItemShop({
                         ) : blockReason ? (
                           <button
                             disabled
-                            className="cursor-not-allowed rounded bg-zinc-700/60 px-3 py-1 text-xs font-medium text-zinc-500"
+                            className="min-h-11 cursor-not-allowed rounded bg-zinc-700/60 px-3 py-1 text-xs font-medium text-zinc-500"
                           >
                             {blockReason}
                           </button>
                         ) : availability === 'shop' ? (
                           <button
                             onClick={() => onBuy(item.id)}
-                            className="rounded bg-zinc-700 px-3 py-1 text-xs font-medium text-zinc-200 transition-colors hover:bg-amber-600 hover:text-white"
+                            className="min-h-11 rounded bg-zinc-700 px-3 py-1 text-xs font-medium text-zinc-200 transition-colors hover:bg-amber-600 hover:text-white"
                           >
                             Buy ({item.cost} gold)
                           </button>
                         ) : (
                           <button
                             onClick={() => onGain(item.id)}
-                            className="rounded bg-zinc-700 px-3 py-1 text-xs font-medium text-zinc-200 transition-colors hover:bg-amber-600 hover:text-white"
+                            className="min-h-11 rounded bg-zinc-700 px-3 py-1 text-xs font-medium text-zinc-200 transition-colors hover:bg-amber-600 hover:text-white"
                           >
                             Gain
                           </button>
@@ -256,7 +273,7 @@ export function ItemShop({
                     )}
                   </div>
 
-                  <p className="mt-2 text-[10px] italic text-zinc-600">
+                  <p className="mt-2 text-[10px] italic text-zinc-500">
                     {item.source} · {item.unlock.map((unlock) => `${unlockLabel(unlock)} (${unlock.source})`).join('; ')}
                   </p>
                 </div>

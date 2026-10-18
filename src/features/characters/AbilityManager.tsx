@@ -57,6 +57,8 @@ export function AbilityManager({ character, onUpdateAbilities }: AbilityManagerP
   if (!isExpanded) {
     return (
       <button
+        type="button"
+        aria-expanded="false"
         onClick={() => setIsExpanded(true)}
         className="w-full rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-left transition-colors hover:border-zinc-700"
       >
@@ -110,10 +112,12 @@ export function AbilityManager({ character, onUpdateAbilities }: AbilityManagerP
                   return (
                     <button
                       key={card.id}
+                      type="button"
+                      aria-pressed={isSelected}
                       onClick={() => toggleAbility(card.id)}
                       title={isAboveLevel ? `Above level ${characterLevel}` : undefined}
                       className={cn(
-                        'rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors',
+                        'min-h-11 rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors',
                         isTooHigh
                           ? 'border-red-500/60 bg-red-500/10 text-red-400'
                           : isSelected
@@ -134,7 +138,7 @@ export function AbilityManager({ character, onUpdateAbilities }: AbilityManagerP
         })}
       </div>
 
-      <p className="mt-6 text-[10px] italic text-zinc-600">
+      <p className="mt-6 text-[10px] italic text-zinc-500">
         Card levels and initiatives: GHS (community data). The hand limit is printed on the character mat.
       </p>
     </div>

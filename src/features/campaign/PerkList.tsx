@@ -25,20 +25,24 @@ export function PerkList({ character, onToggle, onUpdateBonusPerks }: PerkListPr
       {/* Bonus Perks Control */}
       <div className="rounded-lg border border-zinc-800 bg-zinc-900 p-4">
         <div className="mb-2 flex items-center justify-between">
-          <label className="text-xs font-medium uppercase text-zinc-500">Bonus Perks</label>
-          <span className="text-[10px] text-zinc-600">From Scenario Rewards</span>
+          <h2 className="text-xs font-medium uppercase text-zinc-500">Bonus Perks</h2>
+          <span className="text-[10px] text-zinc-500">From Scenario Rewards</span>
         </div>
         <div className="flex items-center gap-4">
           <button
+            type="button"
+            aria-label="Remove a bonus perk"
             onClick={() => onUpdateBonusPerks(Math.max(0, (character.bonusPerks || 0) - 1))}
-            className="flex h-8 w-8 items-center justify-center rounded border border-zinc-700 bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+            className="flex h-11 w-11 items-center justify-center rounded border border-zinc-700 bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
           >
             -
           </button>
           <span className="text-xl font-bold text-zinc-100">{character.bonusPerks || 0}</span>
           <button
+            type="button"
+            aria-label="Add a bonus perk"
             onClick={() => onUpdateBonusPerks((character.bonusPerks || 0) + 1)}
-            className="flex h-8 w-8 items-center justify-center rounded border border-zinc-700 bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+            className="flex h-11 w-11 items-center justify-center rounded border border-zinc-700 bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
           >
             +
           </button>
@@ -63,7 +67,7 @@ export function PerkList({ character, onToggle, onUpdateBonusPerks }: PerkListPr
               <label
                 key={perk.id}
                 className={cn(
-                  'flex items-start gap-3 rounded-md border px-3 py-2 transition-colors',
+                  'flex min-h-11 items-start gap-3 rounded-md border px-3 py-2.5 transition-colors',
                   isSelected
                     ? 'border-amber-500/50 bg-amber-500/10'
                     : 'border-zinc-700 hover:border-zinc-600',
@@ -76,7 +80,7 @@ export function PerkList({ character, onToggle, onUpdateBonusPerks }: PerkListPr
                   disabled={isDisabled}
                   onChange={(e) => onToggle(perk.id, e.target.checked)}
                   className={cn(
-                    'mt-0.5 h-4 w-4 rounded border-zinc-600 bg-zinc-700',
+                    'mt-0.5 h-5 w-5 shrink-0 rounded border-zinc-600 bg-zinc-700',
                     'focus:ring-2 focus:ring-amber-500 focus:ring-offset-0 focus:ring-offset-zinc-900',
                     'disabled:cursor-not-allowed disabled:opacity-50',
                     'checked:bg-amber-500 checked:border-amber-500'
@@ -101,7 +105,7 @@ export function PerkList({ character, onToggle, onUpdateBonusPerks }: PerkListPr
         )}
       </div>
 
-      <p className="text-[10px] italic text-zinc-600">
+      <p className="text-[10px] italic text-zinc-500">
         Perks as printed on the character's perk sheet. 3 checkmarks = 1 perk (max 18, LtP p.25);
         1 perk per level gained (LtP p.29).
       </p>

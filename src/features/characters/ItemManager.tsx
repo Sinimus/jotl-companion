@@ -53,13 +53,13 @@ export function ItemManager({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-zinc-300">
+        <h2 className="font-semibold text-zinc-300">
           Inventory{' '}
           <span className="ml-1 text-lg font-bold text-amber-400">{character.gold}g</span>
-        </h3>
+        </h2>
         <button
           onClick={() => setIsShopOpen(true)}
-          className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-bold text-zinc-900 hover:bg-amber-500"
+          className="min-h-11 rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-bold text-zinc-900 hover:bg-amber-500"
         >
           Open Shop
         </button>
@@ -67,9 +67,9 @@ export function ItemManager({
 
       {/* What the character brings into the next scenario */}
       <div className="rounded-lg border border-zinc-700 bg-zinc-800/50 p-3">
-        <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
+        <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
           Brings into the next scenario
-        </h4>
+        </h3>
         <div className="space-y-1.5">
           {SLOTS.map((slot) => {
             const equipped = character.equippedItemIds
@@ -83,7 +83,7 @@ export function ItemManager({
                 <span className="text-xs font-bold uppercase text-zinc-500">{slot}</span>
                 <span className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
                   {equipped.length === 0 ? (
-                    <span className="text-xs italic text-zinc-600">—</span>
+                    <span className="text-xs italic text-zinc-500">—</span>
                   ) : (
                     equipped.map((item) => (
                       <span
@@ -102,18 +102,18 @@ export function ItemManager({
             )
           })}
         </div>
-        <p className="mt-2 text-[10px] italic text-zinc-600">
+        <p className="mt-2 text-[10px] italic text-zinc-500">
           Limits apply only to what a character brings into a scenario; owning more is fine (Glossary p.11).
         </p>
       </div>
 
       {/* Everything the character owns */}
       <div className="rounded-lg border border-zinc-700 bg-zinc-800/50 p-3">
-        <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
+        <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
           Owned items
-        </h4>
+        </h3>
         {ownedItems.length === 0 ? (
-          <p className="py-2 text-center text-xs italic text-zinc-600">
+          <p className="py-2 text-center text-xs italic text-zinc-500">
             No items yet — visit the shop.
           </p>
         ) : (
@@ -136,7 +136,7 @@ export function ItemManager({
                     <div className="flex shrink-0 items-center gap-1.5">
                       <button
                         onClick={() => toggleEquipped(item)}
-                        className={`rounded px-2 py-1 text-xs font-medium transition-colors ${
+                        className={`min-h-11 rounded px-2 py-1 text-xs font-medium transition-colors ${
                           isEquipped
                             ? 'bg-amber-600/20 text-amber-400 hover:bg-amber-600/30'
                             : 'bg-zinc-700 text-zinc-300 hover:bg-zinc-600'
@@ -151,13 +151,13 @@ export function ItemManager({
                               setSellConfirmId(null)
                               onSell(item.id)
                             }}
-                            className="rounded bg-red-600/80 px-2 py-1 text-xs font-bold text-white hover:bg-red-500"
+                            className="min-h-11 rounded bg-red-600/80 px-2 py-1 text-xs font-bold text-white hover:bg-red-500"
                           >
                             Confirm sell
                           </button>
                           <button
                             onClick={() => setSellConfirmId(null)}
-                            className="rounded px-1.5 py-1 text-xs text-zinc-500 hover:text-zinc-300"
+                            className="min-h-11 rounded px-1.5 py-1 text-xs text-zinc-500 hover:text-zinc-300"
                           >
                             Keep
                           </button>
@@ -165,7 +165,7 @@ export function ItemManager({
                       ) : (
                         <button
                           onClick={() => setSellConfirmId(item.id)}
-                          className="rounded px-2 py-1 text-xs font-medium text-zinc-500 hover:text-red-400"
+                          className="min-h-11 rounded px-2 py-1 text-xs font-medium text-zinc-500 hover:text-red-400"
                         >
                           Sell (+{Math.ceil(item.cost / 2)} gold)
                         </button>

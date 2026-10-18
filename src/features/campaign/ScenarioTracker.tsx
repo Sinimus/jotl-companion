@@ -84,7 +84,7 @@ function ScenarioCard({ campaignId, scenario, scenarioStatus }: ScenarioCardProp
     <div
       className={cn(
         'relative flex flex-col overflow-hidden rounded-lg border transition-all',
-        (isLocked || isClosed) && 'border-zinc-800 bg-zinc-900/50 opacity-60',
+        (isLocked || isClosed) && 'border-zinc-800 bg-zinc-900/50',
         isUnlocked && 'border-zinc-600 bg-zinc-800 hover:border-amber-500/50',
         isCompleted && 'border-emerald-900/50 bg-emerald-950/30'
       )}
@@ -114,7 +114,7 @@ function ScenarioCard({ campaignId, scenario, scenarioStatus }: ScenarioCardProp
             <span
               className={cn(
                 'text-xs font-bold uppercase tracking-wider',
-                (isLocked || isClosed) && 'text-zinc-600',
+                (isLocked || isClosed) && 'text-zinc-500',
                 isUnlocked && 'text-amber-500',
                 isCompleted && 'text-emerald-500'
               )}
@@ -135,11 +135,11 @@ function ScenarioCard({ campaignId, scenario, scenarioStatus }: ScenarioCardProp
                 >
                   {scenario.name}
                 </span>
-                <span className="mt-0.5 text-xs text-zinc-600">{scenario.location}</span>
+                <span className="mt-0.5 text-xs text-zinc-500">{scenario.location}</span>
               </>
             )}
             {isClosed && (
-              <span className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-zinc-600">
+              <span className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-zinc-500">
                 Closed
               </span>
             )}
@@ -148,7 +148,7 @@ function ScenarioCard({ campaignId, scenario, scenarioStatus }: ScenarioCardProp
           {/* Checkbox / Icon */}
           <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900">
             {isCompleted && <span className="text-sm font-bold text-emerald-500">✓</span>}
-            {isClosed && <span className="text-xs font-bold text-zinc-600">✕</span>}
+            {isClosed && <span className="text-xs font-bold text-zinc-500">✕</span>}
           </div>
         </button>
 
@@ -174,14 +174,14 @@ function ScenarioCard({ campaignId, scenario, scenarioStatus }: ScenarioCardProp
                 setConfirming(false)
                 void applyStatus('completed')
               }}
-              className="rounded-md bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-amber-500"
+              className="min-h-11 rounded-md bg-amber-700 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-amber-500"
             >
               Confirm
             </button>
             <button
               type="button"
               onClick={() => setConfirming(false)}
-              className="rounded-md bg-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-300 transition-colors hover:bg-zinc-600"
+              className="min-h-11 rounded-md bg-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-300 transition-colors hover:bg-zinc-600"
             >
               Cancel
             </button>
@@ -204,7 +204,7 @@ function ScenarioCard({ campaignId, scenario, scenarioStatus }: ScenarioCardProp
             <button
               type="button"
               onClick={() => setSpoilersShown(true)}
-              className="mt-3 rounded-md border border-zinc-600 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400 transition-colors hover:border-amber-500/50 hover:text-amber-400"
+              className="min-h-11 mt-3 rounded-md border border-zinc-600 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400 transition-colors hover:border-amber-500/50 hover:text-amber-400"
             >
               Reveal spoilers
             </button>
@@ -247,7 +247,7 @@ function SpoilerList({ label, values, source }: { label: string; values: string[
         <span className="font-semibold text-zinc-500">{label}: </span>
         {values.length > 0 ? values.join(', ') : 'none'}
       </p>
-      <p className="mt-0.5 text-[10px] text-zinc-600">{formatSource(source)}</p>
+      <p className="mt-0.5 text-[10px] text-zinc-500">{formatSource(source)}</p>
     </div>
   )
 }
