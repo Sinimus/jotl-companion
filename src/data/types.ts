@@ -45,14 +45,24 @@ export interface Scenario {
   name: string
   /** City-map grid reference (e.g. "B1"). */
   location: string
-  /** Plain-language victory condition. */
+  /** Goal as printed on the scenario page. */
   goal: string
-  /** Scenario ID that unlocks this one, or null for the campaign start. */
-  unlockedBy: number | null
   /** Scenario IDs that are unlocked upon completing this scenario. */
   unlocks: number[]
   /** Scenario IDs this one blocks: completing this scenario closes them (Glossary p.18). */
   blocks: number[]
+  /** Monster sets of the scenario key (spoiler). */
+  monsters: string[]
+  /** Numbers of the treasure tiles on the map (spoiler). */
+  treasures: number[]
+  /** Rewards of the conclusion (spoiler). */
+  rewards: string[]
+  /** Source of name, location, goal and monsters. */
+  source: string
+  unlocksSource: string
+  blocksSource: string
+  rewardsSource: string
+  treasuresSource: string
 }
 
 export type ItemSlot = 'head' | 'body' | 'feet' | 'hand' | 'small'

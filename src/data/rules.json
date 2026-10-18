@@ -1,479 +1,706 @@
 {
   "glossary": [
     {
-      "term": "Advantage",
-      "description": "Rolling two attack dice and using the higher result. Occurs when attacking from an elevated hex or when specific abilities grant it.",
-      "category": "Combat"
+      "term": "A (Level)",
+      "category": "Character",
+      "description": "Each character starts Scenario 1 with six level A cards. Two are replaced by level B cards after Scenario 1, and all A and B cards are replaced by the full set of level 1 cards after Scenario 3.",
+      "source": "Glossary p.2"
+    },
+    {
+      "term": "Ability Card (Character)",
+      "category": "Ability",
+      "description": "A character starts each scenario with a hand-limit number of ability cards chosen from the pool; each round two are selected and one is the initiative card. Played cards go to the discard pile, active area or lost pile, and discarded cards return to hand by resting.",
+      "source": "Glossary p.2"
+    },
+    {
+      "term": "Ability Card (Monster)",
+      "category": "AI",
+      "description": "A monster set's ability deck holds eight cards (the first scenarios use four-card basic decks). Each round one card is revealed for every set on the map; it gives the set's initiative and the abilities, written as changes to base stats, that each monster of the set performs on its own turn. A monster does only what its card says, so without a Move ability it does not move.",
+      "source": "LtP p.17, Glossary p.2"
+    },
+    {
+      "term": "Action (Top, Bottom)",
+      "category": "Ability",
+      "description": "The whole top or bottom half of a character ability card, performed as one unit; a character normally performs the top action of one card and the bottom action of the other. An action containing an Attack ability counts as an Attack action, and one containing a Move ability as a Move action.",
+      "source": "Glossary p.3"
     },
     {
       "term": "Adjacent",
-      "description": "Hexes that share a single edge. Hexes sharing only a corner are not adjacent.",
-      "category": "Positioning"
+      "category": "Positioning",
+      "description": "Two hexes are adjacent when they share a border, and figures in such hexes are adjacent to each other. Hexes separated by a wall line are not adjacent.",
+      "source": "Glossary p.3"
+    },
+    {
+      "term": "Advantage",
+      "category": "Combat",
+      "description": "The attacker reveals two attack modifier cards and applies the better one; if it is unclear which is better, the player chooses. Strengthen and some other effects grant it. An attack never has more than one instance of Advantage, and Advantage and Disadvantage on the same attack cancel out.",
+      "source": "LtP p.8, Glossary p.3"
+    },
+    {
+      "term": "Ally",
+      "category": "General",
+      "description": "A figure fighting on the same side: characters are allies of other characters, and monsters of other monsters. A figure is not an ally of itself.",
+      "source": "Glossary p.3"
+    },
+    {
+      "term": "Area Effect",
+      "category": "Combat",
+      "description": "Depicts which hexes an ability can affect: figures in the red hexes can be targeted, and attacks still cannot target allies. A grey hex is the user's own hex and makes the ability melee; with no grey hex the ability has a Range, and one red hex within range is enough. The pattern may be rotated or mirrored.",
+      "source": "LtP p.15, Glossary p.3"
     },
     {
       "term": "Attack",
-      "description": "An ability targeting an enemy to deal damage or apply effects. Most attacks consume an action.",
-      "category": "Combat"
+      "category": "Combat",
+      "description": "An Attack X ability makes each target suffer a base X damage, adjusted in order by attack bonuses, one attack modifier card and the target's Shield. Targets must be enemies in line of sight, and a ranged attack also needs the target within Range. Conditions and other effects still apply at 0 damage, but conditions and forced movement are skipped if the target dies.",
+      "source": "LtP p.8, Glossary p.3"
     },
     {
-      "term": "Attribute",
-      "description": "Character statistics: Health (HP), Max HP (for healing cap), and Experience (XP).",
-      "category": "Character"
+      "term": "Attack Modifier Card",
+      "category": "Combat",
+      "description": "Each attack reveals one card from the attacker's attack modifier deck, one per target, which usually adds or subtracts a number; 2x doubles the attack value and null sets it to 0. Characters have their own decks and monsters share one; the 2x and null cards cause a reshuffle at the end of the round, and a starting deck has 20 cards.",
+      "source": "LtP p.8, Glossary p.4"
     },
     {
-      "term": "Blood",
-      "description": "Effect from certain abilities causing the target to suffer 1 damage at the start of every turn.",
-      "category": "Condition"
+      "term": "B (Level)",
+      "category": "Character",
+      "description": "Level B cards are used in the second and third scenarios. Two level A cards are replaced by B cards after Scenario 1, and all A and B cards give way to level 1 cards after Scenario 3.",
+      "source": "Glossary p.4"
     },
     {
-      "term": "Bone",
-      "description": "Effect from certain abilities that modifies attack behavior or damage.",
-      "category": "Mechanic"
+      "term": "Basic Action",
+      "category": "Ability",
+      "description": "Any ability card can instead give Attack 2 as its top action or Move 2 as its bottom action, replacing the printed abilities. The card is then discarded, and no effects of the printed action, such as experience or element infusion, happen.",
+      "source": "LtP p.15, Glossary p.4"
     },
     {
       "term": "Battle Goal",
-      "description": "Secret objective drawn at the start of each scenario. Completing grants a checkmark.",
-      "category": "Scenario"
+      "category": "Scenario",
+      "description": "At the start of each scenario (from Scenario 4) every character is dealt two battle goals at random, keeps one and discards the other. If the scenario is won and the kept goal is met, the character earns one check mark; a lost scenario gives nothing.",
+      "source": "LtP p.25, Glossary p.4"
     },
     {
-      "term": "Bonus",
-      "description": "Additional benefits granted by abilities, items, or scenario rules.",
-      "category": "General"
+      "term": "Bless",
+      "category": "Condition",
+      "description": "Positive condition: shuffle one Bless card into the figure's attack modifier deck. It acts like a 2x card and is removed when drawn, or at the end of the scenario if never drawn. There are 10 Bless cards.",
+      "source": "LtP p.22, Glossary p.4"
+    },
+    {
+      "term": "Boss",
+      "category": "Monster",
+      "description": "A monster that is neither normal nor elite, with its own stat card and the shared Boss ability deck, whose cards mostly trigger Special 1 or Special 2 from the stat card. Boss stats often scale with C, and a boss is immune to the conditions shown on its stat card.",
+      "source": "LtP p.28, Glossary p.5"
+    },
+    {
+      "term": "C",
+      "category": "Scenario",
+      "description": "Shorthand for the number of characters that started the scenario, used in formulas for boss and objective hit points, for example C+1. Characters who become exhausted still count.",
+      "source": "LtP p.27, Glossary p.5"
+    },
+    {
+      "term": "Card Selection",
+      "category": "Combat",
+      "description": "The first step of every round: each character secretly selects two cards from hand and picks one as the initiative card. A character with at least two discarded cards may declare a long rest instead, and a character who can do neither is exhausted. Players may talk about plans in general terms but must not reveal card details.",
+      "source": "LtP p.6, Glossary p.5"
     },
     {
       "term": "Character",
-      "description": "One of the player-controlled heroes in the party.",
-      "category": "General"
+      "category": "General",
+      "description": "One of the four playable heroes: Red Guard, Demolitionist, Hatchet or Voidwarden. Each has their own cards, miniature, mat and character sheet for the whole campaign.",
+      "source": "Glossary p.5"
     },
     {
       "term": "Checkmark",
-      "description": "Reward earned by completing a battle goal. 3 checkmarks = 1 perk.",
-      "category": "Progression"
-    },
-    {
-      "term": "Coin",
-      "description": "Loot tokens collected during scenarios. 1 coin = 1 gold (scenario level dependent).",
-      "category": "Loot"
+      "category": "Progression",
+      "description": "Earned by meeting a battle goal while also winning the scenario, or through some scenario rewards. Every three check marks give one perk, up to 18 check marks and six perks.",
+      "source": "LtP p.25, Glossary p.6"
     },
     {
       "term": "Condition",
-      "description": "Ongoing effect on a figure such as Poison, Wound, Stun, etc.",
-      "category": "Mechanic"
+      "category": "Mechanic",
+      "description": "An effect on a figure that changes how it functions. There are nine: Bless, Curse, Disarm, Immobilize, Muddle, Poison, Strengthen, Stun and Wound. Most end with the figure's next full turn, Poison and Wound only when it is healed, Bless and Curse when their card is drawn, and all of them when the scenario ends.",
+      "source": "Glossary p.6"
     },
     {
-      "term": "Consumable",
-      "description": "Item that is used up when activated (e.g., potions).",
-      "category": "Items"
+      "term": "Consumed",
+      "category": "Items",
+      "description": "Item usage icon meaning the item can be used once per scenario; after use the card is flipped over. Nothing is lost for good, because every item is refreshed at the end of the scenario, even potions.",
+      "source": "LtP p.19, Glossary p.12"
     },
     {
-      "term": "Core Box",
-      "description": "The base Gloomhaven game. Jaws of the Lion is a standalone spinoff.",
-      "category": "General"
+      "term": "Curse",
+      "category": "Condition",
+      "description": "Negative condition: shuffle one Curse card into the figure's attack modifier deck. It acts like a null card, setting the attack value to 0, and is removed when drawn or at the end of the scenario. A deck can hold at most 10 Curse cards.",
+      "source": "LtP p.22, Glossary p.7"
     },
     {
       "term": "Damage",
-      "description": "Reduction of HP. Reduces a figure to 0 HP = exhausted/stunned.",
-      "category": "Combat"
+      "category": "Combat",
+      "description": "Damage lowers a figure's current hit points: a monster gets damage tokens on its stat envelope section, a character rotates the hit point dial. A monster at 0 or less is killed, a character at 0 or less is exhausted.",
+      "source": "Glossary p.7"
     },
     {
-      "term": "Disadvantage",
-      "description": "Rolling two attack dice and using the lower result. Occurs when attacking from a lower hex or when adjacent to an enemy as a ranged attacker.",
-      "category": "Combat"
+      "term": "Destroy Obstacle",
+      "category": "Ability",
+      "description": "An ability that removes an obstacle: one destruction token goes on each hex it occupied and those hexes become empty. For an obstacle of several hexes, only one needs to be in range and in line of sight.",
+      "source": "LtP p.10, Glossary p.7"
     },
     {
-      "term": "Door",
-      "description": "Map feature that can be opened to reveal new areas or provide shortcuts.",
-      "category": "Map"
+      "term": "Difficult Terrain",
+      "category": "Map",
+      "description": "Hexes with a purple border: each move into one costs 2 movement points, and monsters count that extra cost when finding their focus. Push, Pull and Jump movement ignore it.",
+      "source": "LtP p.20, Glossary p.7"
     },
     {
       "term": "Difficulty",
-      "description": "Adjustable scenario modifier: Easy (-1), Normal (+0), Hard (+1), Very Hard (+2).",
-      "category": "Scenario"
+      "category": "Scenario",
+      "description": "Scenario level can be moved from its normal value (average character level divided by 2, rounded up): Easy is 1 lower, Hard 1 higher, Very Hard 2 higher. Monster level, trap damage, gold per money token and bonus experience all follow the scenario level.",
+      "source": "LtP p.29, Glossary p.7"
     },
     {
-      "term": "Enemy",
-      "description": "Any non-friendly figure, including monsters and hostile NPCs.",
-      "category": "General"
+      "term": "Disadvantage",
+      "category": "Combat",
+      "description": "The attacker reveals two attack modifier cards and applies the worse one; if it is unclear which is worse, the first card drawn is used. Muddle, a ranged attack on an adjacent target and some other effects cause it. Advantage and Disadvantage on the same attack cancel out.",
+      "source": "LtP p.8, Glossary p.3"
+    },
+    {
+      "term": "Disarm",
+      "category": "Condition",
+      "description": "Negative condition: the figure cannot perform Attack abilities. It is removed at the end of the figure's next full turn.",
+      "source": "LtP p.16, Glossary p.7"
+    },
+    {
+      "term": "Discard Pile",
+      "category": "Recovery",
+      "description": "Where resolved cards go. For a character it holds the used ability cards that resting returns to hand, while an attack modifier or monster ability deck's discard pile is shuffled back after a card with a shuffle icon is revealed.",
+      "source": "Glossary p.8"
+    },
+    {
+      "term": "Door",
+      "category": "Map",
+      "description": "Blue-bordered hexes that separate rooms. The first time a character moves onto a door hex it opens, the room beyond is revealed and its monsters are set up; until then a door counts as a wall for line of sight and monster movement, afterwards as an empty hex.",
+      "source": "LtP p.14, Glossary p.8"
+    },
+    {
+      "term": "Dot",
+      "category": "Components",
+      "description": "The small dots next to abilities on character ability cards have no purpose in this game and are ignored. They exist only so the characters work in the larger Gloomhaven game.",
+      "source": "Glossary p.8"
     },
     {
       "term": "Element",
-      "description": "Game element: Fire, Ice, Air, Earth, Light, Dark. Can be infused by abilities for bonuses.",
-      "category": "Mechanic"
+      "category": "Mechanic",
+      "description": "One of six elements (Fire, Ice, Air, Earth, Light, Dark) on the element board. An action with an element icon infuses it to Strong at the end of the turn; Strong wanes to Waning and then Inert at the end of each round, and Strong or Waning elements can be consumed to boost certain abilities.",
+      "source": "LtP p.26, Glossary p.8"
     },
     {
-      "term": "Elevated",
-      "description": "Position on a map feature (boulder, wall, table) that grants Advantage on melee attacks.",
-      "category": "Positioning"
+      "term": "Elite (Monster)",
+      "category": "Monster",
+      "description": "Elite monsters stand in gold stands, use the gold right side of the stat card and are placed on the gold icons for the character count. They are about twice as strong as a normal monster of the same set and act before the normal ones.",
+      "source": "LtP p.10, Glossary p.9"
     },
     {
-      "term": "Exhausted",
-      "description": "A character at 0 HP is exhausted and cannot act until revived.",
-      "category": "Condition"
+      "term": "Empty Hex",
+      "category": "Map",
+      "description": "A hex within the scenario walls that has no figure, obstacle, objective, trap or difficult terrain. Open doors and destroyed obstacles and objectives count as empty unless they contain a figure or trap.",
+      "source": "LtP p.30, Glossary p.9"
+    },
+    {
+      "term": "End of Round",
+      "category": "Combat",
+      "description": "The last step of every round: the discard pile of each attack modifier or monster ability deck that revealed a shuffle card is shuffled back, every infused element moves down one step, and characters may short rest. A scenario whose goal was met officially ends here.",
+      "source": "Glossary p.9"
+    },
+    {
+      "term": "End-of-Turn Looting",
+      "category": "Loot",
+      "description": "At the end of each character's turn the character automatically loots its own hex, taking any money tokens there and resolving any treasure tile.",
+      "source": "LtP p.15, Glossary p.9"
+    },
+    {
+      "term": "Enemy",
+      "category": "General",
+      "description": "A figure on the opposite side: characters and monsters are enemies of each other. What counts as an enemy depends on whose card is read, and objectives count as enemies of characters.",
+      "source": "LtP p.27, Glossary p.9"
+    },
+    {
+      "term": "Event",
+      "category": "Scenario",
+      "description": "After each successful scenario (from Scenario 3) the party draws an event card, reads its introduction and collectively chooses Option A or B, then reads that outcome and applies all its effects. Some options are available only if specific characters are in play.",
+      "source": "LtP p.24, Glossary p.9"
+    },
+    {
+      "term": "Exhaustion",
+      "category": "Character",
+      "description": "A character is exhausted when hit points drop to 0 or lower, or when at card selection it can neither play two cards nor declare a long rest. The figure leaves the map at once and takes no further part in the scenario; if all characters are exhausted the scenario is lost. Exhaustion is not death, since characters are fully restored after the scenario.",
+      "source": "LtP p.12, Glossary p.9"
     },
     {
       "term": "Experience",
-      "description": "Points earned by defeating enemies and completing scenarios. Used to level up.",
-      "category": "Progression"
+      "category": "Progression",
+      "description": "Gained from actions that show an experience value, as soon as at least part of the action is performed, or when a token leaves a persistent use slot marked with it. It is tracked on the right side of the dial. Killing a monster gives no experience by itself.",
+      "source": "LtP p.20, Glossary p.9"
     },
     {
       "term": "Figure",
-      "description": "Any character or monster on the map.",
-      "category": "General"
+      "category": "General",
+      "description": "Any character or monster, that is, anything that takes a turn in a round.",
+      "source": "Glossary p.10"
     },
     {
       "term": "Focus",
-      "description": "The enemy a monster prioritizes. Determined by shortest path to attack at start of monster turn.",
-      "category": "AI"
-    },
-    {
-      "term": "Fire",
-      "description": "Element that can inflict Wound condition.",
-      "category": "Element"
-    },
-    {
-      "term": "Fly",
-      "description": "Monster ability to ignore figures and obstacles when moving.",
-      "category": "Movement"
-    },
-    {
-      "term": "Gold",
-      "description": "Currency used to buy items at the shop between scenarios.",
-      "category": "Loot"
+      "category": "AI",
+      "description": "At the start of its turn a monster finds a focus: the enemy it can attack using the least movement, even if it cannot reach the attack hex this turn. Paths with the fewest traps come first, then shorter paths, then the enemy earlier in initiative order. If no attack hex can be reached, the monster has no focus and neither moves nor attacks.",
+      "source": "LtP p.11, Glossary p.26"
     },
     {
       "term": "Goal",
-      "description": "Victory condition for a scenario.",
-      "category": "Scenario"
+      "category": "Scenario",
+      "description": "What must be achieved to win a scenario. The scenario then ends at the end of that round, unless all characters were exhausted after the goal was reached, in which case it is still lost.",
+      "source": "Glossary p.10"
     },
     {
-      "term": "Guard",
-      "description": "Defensive ability granting Shield or damage reduction.",
-      "category": "Combat"
+      "term": "Gold",
+      "category": "Loot",
+      "description": "Currency for buying items between scenarios, mainly earned by converting money tokens at the end of a scenario. Buying costs the item's price, selling returns half rounded up, and gold cannot be transferred between characters.",
+      "source": "Glossary p.10"
     },
     {
-      "term": "Hex",
-      "description": "One space on the hex-based map grid.",
-      "category": "Map"
+      "term": "Grant Action",
+      "category": "Ability",
+      "description": "An ability that lets another figure perform an action, as the Voidwarden's does. The target must be in line of sight; an ally chooses whether and how to use it, an enemy must perform it as the granter decides. The recipient uses its own attack modifier deck and takes no extra turn.",
+      "source": "LtP p.10, Glossary p.10"
     },
     {
-      "term": "Health",
-      "description": "Current hit points. At 0, the figure is exhausted.",
-      "category": "Character"
+      "term": "Hand",
+      "category": "Character",
+      "description": "The cards a character can choose from at the start of each round. The hand limit, shown at the top right of the mat, is how many cards the character starts a scenario with; selected cards leave the hand at once, and cards mainly return to it by resting.",
+      "source": "Glossary p.10"
     },
     {
       "term": "Heal",
-      "description": "Restoring HP. Cannot exceed Max HP.",
-      "category": "Combat"
+      "category": "Combat",
+      "description": "A Heal X ability restores X hit points to one ally in range or to the user, never above the maximum. The target must be in line of sight, and a figure at full hit points can still be targeted.",
+      "source": "LtP p.10, Glossary p.11"
     },
     {
-      "term": "Hide",
-      "description": "Effect preventing a monster from moving or attacking.",
-      "category": "Status"
+      "term": "Hex",
+      "category": "Map",
+      "description": "A single hexagon of the scenario map: one space a figure can enter and occupy, and the unit of distance in the game.",
+      "source": "Glossary p.11"
     },
     {
-      "term": "Initiative",
-      "description": "Turn order marker. Lower = earlier in the round.",
-      "category": "Combat"
+      "term": "Hit Points",
+      "category": "Character",
+      "description": "Track a figure's life: damage lowers them, healing raises them, never above the maximum. Monsters track damage tokens against their maximum, characters use the hit point dial, and a figure at 0 or less is removed from the scenario.",
+      "source": "Glossary p.11"
+    },
+    {
+      "term": "Immobilize",
+      "category": "Condition",
+      "description": "Negative condition: the figure cannot perform Move abilities. It is removed at the end of the figure's next full turn.",
+      "source": "LtP p.9, Glossary p.11"
     },
     {
       "term": "Immune",
-      "description": "Cannot be affected by a specific condition or element.",
-      "category": "Mechanic"
+      "category": "Mechanic",
+      "description": "A figure that is immune to a condition cannot gain it. Bosses are immune to the conditions shown on their stat card, and objectives are immune to all conditions and to forced movement.",
+      "source": "LtP p.28, Glossary p.15"
     },
     {
       "term": "Infusion",
-      "description": "Creating an element on the element board to grant bonuses to abilities.",
-      "category": "Mechanic"
+      "category": "Mechanic",
+      "description": "A figure that performs an action showing an element icon infuses that element: its token moves to Strong at the end of the turn. It cannot be consumed in the same turn, and at the end of each round it wanes one step (Strong to Waning to Inert).",
+      "source": "LtP p.26, Glossary p.8"
+    },
+    {
+      "term": "Initiative",
+      "category": "Combat",
+      "description": "Sets the order of play in a round, lowest value first. A character's value is the number on the card chosen as initiative card, a monster set's value is on the ability card revealed for it. A character acts before a monster on a tie, and two characters tie-break on their second card.",
+      "source": "LtP p.7, Glossary p.11"
     },
     {
       "term": "Item",
-      "description": "Equipment or consumable that provides abilities or bonuses.",
-      "category": "Items"
+      "category": "Items",
+      "description": "A card owned by a character that gives bonuses in certain situations, usually with limited uses. Using items is free and comes in addition to the normal actions of the turn, and no item is permanently lost when used.",
+      "source": "Glossary p.12"
     },
     {
-      "term": "Invisible",
-      "description": "Figure cannot be targeted or affected.",
-      "category": "Status"
+      "term": "Jump",
+      "category": "Movement",
+      "description": "A Move ability with Jump ignores enemies, obstacles, objectives, difficult terrain and traps along the way, but not walls. It must still end in an unoccupied hex, and a trap in that final hex is sprung.",
+      "source": "LtP p.21, Glossary p.15"
     },
     {
-      "term": "Level",
-      "description": "Character strength (1-9). Higher level = more HP and better abilities.",
-      "category": "Character"
+      "term": "Kill",
+      "category": "Combat",
+      "description": "A monster is killed when its hit points drop to 0 or lower. Its standee is replaced by a money token, the tokens on its envelope section are cleared, and the standee can be set out again if more of that set appear later.",
+      "source": "Glossary p.12"
+    },
+    {
+      "term": "Kill Credit",
+      "category": "Scenario",
+      "description": "Battle goals can depend on who killed a monster. A monster forced into a trap by push, pull or a granted move credits the character who forced it, while one that steps in itself or dies of wound damage credits nobody. A kill by an attack granted to a character credits that character, and by one granted to another monster credits nobody.",
+      "source": "Glossary p.13"
+    },
+    {
+      "term": "L",
+      "category": "Scenario",
+      "description": "Shorthand for the scenario level, used in formulas for the maximum hit points of many objectives.",
+      "source": "Glossary p.13"
+    },
+    {
+      "term": "Level (Character)",
+      "category": "Character",
+      "description": "After a scenario, a character whose total experience reaches the next threshold (45, 95, 150, 210, 275, 345, 420, 500 for levels 2 to 9) levels up. It gains one ability card of up to the new level, one perk and the new maximum hit points; experience is never reset or lost.",
+      "source": "LtP p.29, Glossary p.13"
+    },
+    {
+      "term": "Level (Scenario)",
+      "category": "Scenario",
+      "description": "Normal scenario level is the average character level divided by 2, rounded up, changed by difficulty. It sets monster level, trap damage (level + 2), gold per money token and bonus experience for completing a scenario. For levels 0 to 7 the gold per token is 2, 2, 3, 3, 4, 4, 5, 6 and the bonus experience 4, 6, 8, 10, 12, 14, 16, 18.",
+      "source": "LtP p.29, Glossary p.13"
     },
     {
       "term": "Line of Sight",
-      "description": "Requirement for targeted abilities. Drawn from any part of attacker hex to any part of target hex without touching a wall.",
-      "category": "Positioning"
-    },
-    {
-      "term": "Loot",
-      "description": "Collecting coins, treasure tiles, or other rewards during a scenario.",
-      "category": "Loot"
+      "category": "Positioning",
+      "description": "A targeted ability needs line of sight: a line must be drawable from any part of the user's hex to any part of the target's hex without touching a wall line. Only walls block it; obstacles, objectives and other figures do not.",
+      "source": "LtP p.9, Glossary p.13"
     },
     {
       "term": "Long Rest",
-      "description": "Skipping a turn to recover HP, remove conditions, and discard cards.",
-      "category": "Recovery"
+      "category": "Recovery",
+      "description": "Declared at card selection instead of playing two cards, and only with at least two cards in the discard pile. It is the character's whole turn, on initiative 99: first one discarded card goes to the lost pile and the rest return to hand, then the character heals 2 on itself, then all spent items are readied. Monsters still act that round.",
+      "source": "LtP p.22, Glossary p.17"
     },
     {
-      "term": "Monster",
-      "description": "Enemy figure controlled by AI rules.",
-      "category": "General"
+      "term": "Loot",
+      "category": "Loot",
+      "description": "A Loot X ability picks up all money tokens and treasure tiles in the user's hex and every hex within Range X; a treasure tile is resolved at once. The ability cannot be performed if it would collect nothing.",
+      "source": "LtP p.15, Glossary p.14"
     },
     {
-      "term": "Monster Ability",
-      "description": "Action on monster stat card: Attack, Move, Shield, etc.",
-      "category": "AI"
+      "term": "Lost (Character Ability Card)",
+      "category": "Recovery",
+      "description": "Lost cards cannot be used for the rest of the scenario and all return at its end. A card is lost by performing an action with the lost icon, by negating damage (one hand card or two discards), or by resting (one discard, random on a short rest and chosen on a long rest).",
+      "source": "LtP p.15, Glossary p.14"
     },
     {
-      "term": "Movement",
-      "description": "Reducing the movement stat to enter new hexes.",
-      "category": "Movement"
-    },
-    {
-      "term": "Muddle",
-      "description": "Status causing the figure to turn around before acting.",
-      "category": "Condition"
+      "term": "Lost (Scenario)",
+      "category": "Scenario",
+      "description": "A scenario is lost when all characters are exhausted or a loss condition in its special rules triggers, and a loss beats a goal completed in the same round. It is replayed from the start, with money tokens and experience earned so far carried over.",
+      "source": "LtP p.16, Glossary p.14"
     },
     {
       "term": "Melee",
-      "description": "An attack where Range is not used; targets must be adjacent.",
-      "category": "Combat"
+      "category": "Combat",
+      "description": "An attack that does not use the word Range. Its targets must be adjacent unless an area effect or other text says otherwise.",
+      "source": "Glossary p.14"
     },
     {
       "term": "Money Token",
-      "description": "Tokens placed on the map to be converted into gold after a scenario.",
-      "category": "Loot"
+      "category": "Loot",
+      "description": "Placed on the map at setup and wherever a monster dies; figures collect them by looting. At scenario end each token a character holds converts to gold by scenario level (2 gold each in the first five scenarios), while tokens left on the map or looted by monsters are lost.",
+      "source": "LtP p.18, Glossary p.14"
+    },
+    {
+      "term": "Monster",
+      "category": "General",
+      "description": "A figure that is an enemy of the characters. Each monster set has standees, an ability deck and a stat card; a white stand marks a normal monster, a gold stand an elite one, and bosses are neither.",
+      "source": "Glossary p.14"
+    },
+    {
+      "term": "Monster Movement",
+      "category": "AI",
+      "description": "A monster moves the minimum needed to get in range of its focus and maximize its attack, then stops, and it takes the path with the fewest traps. A ranged monster moves away from an adjacent focus until it can shoot without Disadvantage, but gains nothing from moving if it has Muddle or another source of Disadvantage.",
+      "source": "LtP p.18, Glossary p.14"
+    },
+    {
+      "term": "Move",
+      "category": "Movement",
+      "description": "A Move X ability gives X movement points, 1 per hex entered; a figure need not spend them all. It can pass through allies but not through enemies, obstacles, objectives or walls, must end in an unoccupied hex, and springs any trap it enters; difficult terrain costs 2 points.",
+      "source": "LtP p.7, Glossary p.15"
+    },
+    {
+      "term": "Muddle",
+      "category": "Condition",
+      "description": "Negative condition: all of the figure's attacks have Disadvantage. It is removed at the end of the figure's next full turn.",
+      "source": "LtP p.9, Glossary p.15"
     },
     {
       "term": "Negating Damage",
-      "description": "Characters can lose one card from their hand or two from discard to prevent all damage from one source.",
-      "category": "Combat"
+      "category": "Combat",
+      "description": "When a character would suffer damage from any source, they may instead lose one card from hand or two from the discard pile to cancel it completely, however large it is. The two cards selected for the current round are neither in hand nor in the discard pile yet, so they cannot be lost this way.",
+      "source": "LtP p.16, Glossary p.15"
     },
     {
       "term": "Normal (Monster)",
-      "description": "Standard rank monsters in white stands.",
-      "category": "Monster"
+      "category": "Monster",
+      "description": "Normal monsters stand in white stands, use the white left side of the stat card and are placed on the white icons for the character count. They are about half as strong as an elite of the same set.",
+      "source": "Glossary p.15"
     },
     {
       "term": "Objective",
-      "description": "Yellow-bordered hexes that must be destroyed or protected.",
-      "category": "Map"
+      "category": "Map",
+      "description": "A yellow-bordered hex important to the scenario goal that must be destroyed or protected. It has hit points set by the scenario's special rules, counts as an enemy of characters, is immune to all conditions and forced movement, and is not an obstacle; once destroyed it becomes an empty hex marked with a destruction token.",
+      "source": "LtP p.27, Glossary p.15"
     },
     {
       "term": "Obstacle",
-      "description": "Green-bordered hexes that cannot be moved through unless using Jump.",
-      "category": "Map"
+      "category": "Map",
+      "description": "A green-bordered hex that cannot be moved through unless the movement has Jump. When destroyed, destruction tokens go on every hex it occupied and those hexes can be entered normally.",
+      "source": "Glossary p.15"
     },
     {
       "term": "Occupied",
-      "description": "A hex containing a figure.",
-      "category": "Map"
+      "category": "Map",
+      "description": "A hex that contains a figure. Two figures can never share a hex.",
+      "source": "Glossary p.16"
     },
     {
       "term": "Order of Round",
-      "description": "Sequence: 1) Card Selection, 2) Ordering of Initiative, 3) Turns, 4) End of Round.",
-      "category": "Combat"
+      "category": "Combat",
+      "description": "Every round runs in four steps: 1) card selection, 2) ordering of initiative, 3) character and monster turns, 4) end of round.",
+      "source": "LtP p.6, Glossary p.16"
     },
     {
       "term": "Perk",
-      "description": "Permanent attack modifier deck improvements gained by leveling up or check marks.",
-      "category": "Progression"
-    },
-    {
-      "term": "Poison",
-      "description": "Condition causing all attacks against the figure to gain +1 Attack. Prevents healing from increasing HP.",
-      "category": "Condition"
-    },
-    {
-      "term": "Potion",
-      "description": "Consumable item granting healing or other effects.",
-      "category": "Items"
-    },
-    {
-      "term": "Push",
-      "description": "Forcing a figure to move in a specific direction.",
-      "category": "Movement"
-    },
-    {
-      "term": "Pull",
-      "description": "Forcing an enemy up to X hexes closer to the figure using the ability.",
-      "category": "Movement"
+      "category": "Progression",
+      "description": "A permanent change to a character's attack modifier deck, gained each time the character earns three check marks and each time it levels up. The player ticks one box on the perk list and adds or removes the listed cards; the number of boxes shows how often a perk can be taken.",
+      "source": "LtP p.24, Glossary p.16"
     },
     {
       "term": "Persistent (Ability)",
-      "description": "Active bonuses kept in the active area for a specified time or number of uses.",
-      "category": "Ability"
+      "category": "Ability",
+      "description": "A card with a persistent ability goes to the active area and gives a bonus for a limited time. With a round icon it lasts until the end of the round; with the permanent icon it lasts for the rest of the scenario or until its use slots run out, tracked with a token. The card can be moved out of the active area at any time, which ends the bonus.",
+      "source": "Glossary p.16"
+    },
+    {
+      "term": "Players Decide Ambiguity",
+      "category": "General",
+      "description": "If the rules leave two or more equally valid outcomes and give no answer, the players decide among themselves. It comes up most often on a monster's turn, for example when two paths to its focus are equally long.",
+      "source": "LtP p.11, Glossary p.1"
+    },
+    {
+      "term": "Poison",
+      "category": "Condition",
+      "description": "Negative condition: all attacks against the figure get +1 Attack, applied before the modifier card. It is removed only by a heal, and that heal does not raise hit points; a figure cannot have Poison twice.",
+      "source": "LtP p.22, Glossary p.16"
+    },
+    {
+      "term": "Pull",
+      "category": "Movement",
+      "description": "Pull X forces the target up to X hexes toward the user, each step bringing it closer. It can pass through allies but not through enemies, obstacles, objectives or walls, springs traps it enters, and ignores difficult terrain.",
+      "source": "LtP p.16, Glossary p.17"
+    },
+    {
+      "term": "Push",
+      "category": "Movement",
+      "description": "Push X forces the target up to X hexes away from the user, each step taking it farther away, under the same movement limits as Pull. A character that pushes or pulls decides how far and which way; for a monster the players choose the direction, but the target moves as far as possible.",
+      "source": "LtP p.16, Glossary p.17"
     },
     {
       "term": "Range",
-      "description": "Maximum hexes an attack can reach.",
-      "category": "Combat"
+      "category": "Combat",
+      "description": "A Range X ability is ranged: the target may be anywhere within X hexes if it is in line of sight, counting from an adjacent hex so that Range 1 reaches a neighbour. Range cannot be counted through a wall, and a ranged attack on an adjacent enemy has Disadvantage.",
+      "source": "LtP p.8, Glossary p.17"
     },
     {
-      "term": "Retaliate",
-      "description": "Dealing damage when attacked.",
-      "category": "Combat"
-    },
-    {
-      "term": "Revive",
-      "description": "Bringing an exhausted character back into the scenario.",
-      "category": "Recovery"
-    },
-    {
-      "term": "Round",
-      "description": "Full cycle of all figures taking a turn.",
-      "category": "Combat"
-    },
-    {
-      "term": "Resting",
-      "description": "Returning cards from discard to hand. Short Rest: done at end of round, lose one random card. Long Rest: declared during card selection, initiative 99, player chooses card to lose and heals 2.",
-      "category": "Recovery"
+      "term": "Rest",
+      "category": "Recovery",
+      "description": "Resting returns discarded ability cards to hand and needs at least two cards in the discard pile. A short rest happens at the end of a round and uses no turn; a long rest is declared at card selection and is the character's turn. Every rest sends one discarded card to the lost pile.",
+      "source": "Glossary p.17"
     },
     {
       "term": "Revealing a Room",
-      "description": "Opening a door to set up monsters and determine their initiative.",
-      "category": "Scenario"
+      "category": "Scenario",
+      "description": "Happens when a character first moves onto a door hex: the room's monsters are set up and act in that same round. A set with no card yet this round plays one at once, sets with lower initiative than the revealing character act right after that character's turn, and the character then resumes its turn with its remaining movement.",
+      "source": "LtP p.14, Glossary p.17"
     },
     {
       "term": "Rewards",
-      "description": "Benefits (gold, XP, items) received for completing a scenario.",
-      "category": "Scenario"
+      "category": "Scenario",
+      "description": "The part of a scenario that lists the effects of winning, such as gold, experience, items, new scenarios or closed scenarios. A reward marked \"each\" goes to every participating character, exhausted or not; otherwise one character gets it, chosen by the players.",
+      "source": "Glossary p.18"
     },
     {
       "term": "Room",
-      "description": "Discrete areas separated by doors and walls.",
-      "category": "Map"
+      "category": "Map",
+      "description": "A discrete area separated from others by doors and walls. Only monsters in the starting room are set up at the beginning; other rooms are set up when a door into them is opened, and a door hex belongs to neither room.",
+      "source": "Glossary p.18"
     },
     {
-      "term": "Scenario",
-      "description": "Individual mission with objectives, monsters, and rewards.",
-      "category": "Scenario"
+      "term": "Round",
+      "category": "Combat",
+      "description": "A structural unit of a scenario in which every figure on the map takes one turn. It ends when all have acted, then a new round begins.",
+      "source": "Glossary p.18"
     },
     {
-      "term": "Shield",
-      "description": "Reducing damage by a specified amount.",
-      "category": "Combat"
-    },
-    {
-      "term": "Short Rest",
-      "description": "Done at end of round; discard 2 cards, remove one condition, keep active card.",
-      "category": "Recovery"
-    },
-    {
-      "term": "Summon",
-      "description": "Creating a temporary ally figure.",
-      "category": "Summon"
-    },
-    {
-      "term": "Spawn",
-      "description": "Monsters appearing via scenario rules; they act in the round they are spawned.",
-      "category": "Scenario"
-    },
-    {
-      "term": "Special Rules",
-      "description": "Additional rules unique to a specific scenario.",
-      "category": "Scenario"
-    },
-    {
-      "term": "Standee",
-      "description": "Cardboard representation of a monster.",
-      "category": "Components"
-    },
-    {
-      "term": "Stat Card",
-      "description": "Card providing base monster stats for different levels and ranks.",
-      "category": "Components"
-    },
-    {
-      "term": "Stat Envelope",
-      "description": "Holder for stat cards that tracks damage and conditions for a monster set.",
-      "category": "Components"
-    },
-    {
-      "term": "Sticker",
-      "description": "Used on the map board to track scenario availability and progress.",
-      "category": "Components"
-    },
-    {
-      "term": "Strengthen",
-      "description": "Condition causing Advantage on all attacks.",
-      "category": "Condition"
-    },
-    {
-      "term": "Stun",
-      "description": "Condition preventing a figure from performing any abilities on its turn.",
-      "category": "Condition"
-    },
-    {
-      "term": "Suffer Damage",
-      "description": "Directly reducing HP; cannot be reduced by Shield.",
-      "category": "Combat"
-    },
-    {
-      "term": "Supplemental Scenario Book",
-      "description": "Book containing extra map areas or text for larger scenarios.",
-      "category": "Components"
+      "term": "Round Bonus",
+      "category": "Ability",
+      "description": "A persistent ability with a round icon: its bonus lasts until the end of the round, then the card goes to the discard or lost pile depending on the lost icon. The card can be moved out of the active area earlier, which ends the bonus at once.",
+      "source": "LtP p.21, Glossary p.16"
     },
     {
       "term": "Saving",
-      "description": "Storing character data and map progress between sessions.",
-      "category": "General"
+      "category": "General",
+      "description": "Campaign progress is saved with the stickers on the city map board and on each character sheet. Between sessions the character's sheet, mat, attack modifier deck, available ability cards and items go into its zip bag, and the decks of available and encountered events and of available and unavailable items stay separate.",
+      "source": "Glossary p.18"
+    },
+    {
+      "term": "Scenario",
+      "category": "Scenario",
+      "description": "A self-contained game session of the campaign with a map, a goal and its own texts, lasting about 1 to 2 hours. It ends at the end of the round in which the goal is met or all characters are exhausted.",
+      "source": "LtP p.12, Glossary p.18"
     },
     {
       "term": "Section Break",
-      "description": "Pause points in scenario text read only when specific conditions are met.",
-      "category": "Scenario"
+      "category": "Scenario",
+      "description": "A marker in the scenario text where reading stops at the start. The text after it is read later, when the door with the matching number is opened or the stated condition is met, and may be followed by more special rules, another section break or the conclusion.",
+      "source": "Glossary p.18"
     },
     {
       "term": "Self",
-      "description": "An ability targeting only the figure using it.",
-      "category": "Ability"
+      "category": "Ability",
+      "description": "An ability with the target Self can only affect the figure using it.",
+      "source": "LtP p.10, Glossary p.19"
+    },
+    {
+      "term": "Shield",
+      "category": "Combat",
+      "description": "Shield X is an active bonus that reduces each attack's damage the figure suffers by X, applied after attack bonuses and the modifier card. Several shield bonuses stack, and they do not reduce trap damage or other damage that is not from an attack.",
+      "source": "LtP p.21, Glossary p.19"
     },
     {
       "term": "Shop",
-      "description": "Deck of available items characters can purchase.",
-      "category": "Items"
+      "category": "Items",
+      "description": "The deck of items characters can buy between scenarios. New items join it as the campaign progresses and sold items go into it; items not yet available sit in a separate deck.",
+      "source": "Glossary p.19"
+    },
+    {
+      "term": "Short Rest",
+      "category": "Recovery",
+      "description": "Possible at the end of a round with at least two cards in the discard pile, and uses no turn. The player shuffles the discard pile, moves one card at random to the lost pile and returns the rest to hand. Once per short rest the player may instead suffer 1 damage to lose a different random discarded card.",
+      "source": "LtP p.12, Glossary p.17"
     },
     {
       "term": "Shuffle",
-      "description": "Icon indicating a deck discard pile is shuffled back in at the end of the round.",
-      "category": "Mechanic"
+      "category": "Mechanic",
+      "description": "A shuffle icon on certain attack modifier cards (2x and null) and monster ability cards means that, if the card was revealed this round, the deck's discard pile is shuffled back into the deck at the end of the round.",
+      "source": "LtP p.8, Glossary p.19"
+    },
+    {
+      "term": "Slot Restrictions",
+      "category": "Items",
+      "description": "A character may own any number of items but can bring only one head, one body, one feet and two hand items into a scenario, plus small items equal to half the character's level rounded up. The limit is checked only at the start, so an item found during a scenario can be used even if it exceeds it.",
+      "source": "LtP p.19, Glossary p.12"
+    },
+    {
+      "term": "Spawn",
+      "category": "Scenario",
+      "description": "Special rules may spawn monsters during a scenario. A spawned monster is placed on the empty hex closest to its spawn point and is treated like one from a revealed room, so it acts in the round it appears.",
+      "source": "LtP p.25, Glossary p.19"
+    },
+    {
+      "term": "Special Rules",
+      "category": "Scenario",
+      "description": "Scenario text with rules not covered by the general rules, read directly after the introduction or after a section break.",
+      "source": "Glossary p.19"
+    },
+    {
+      "term": "Spent",
+      "category": "Items",
+      "description": "Item usage icon meaning the item can be used once per long rest. After use the card is rotated 90 degrees, and a long rest rotates it back; all items are also refreshed at the end of a scenario.",
+      "source": "LtP p.19, Glossary p.12"
+    },
+    {
+      "term": "Standee",
+      "category": "Components",
+      "description": "Cardboard figure of a monster, set in a white or gold stand. Its number points to the section of the stat envelope where its damage and conditions are tracked, and numbers are randomized at setup.",
+      "source": "Glossary p.19"
+    },
+    {
+      "term": "Stat Card",
+      "category": "Components",
+      "description": "Monster card with the base maximum hit points, move and attack of normal and elite ranks for levels 0 to 7. Only the section for the scenario level shows in the envelope; bonuses at its sides apply permanently to every monster of that rank, and a condition there applies to all their attacks.",
+      "source": "Glossary p.19"
+    },
+    {
+      "term": "Stat Envelope",
+      "category": "Components",
+      "description": "Holds a stat card so that only the section for the current level is visible. Its outer edge has 6 or 10 numbered sections, matching the standee numbers, where damage and condition tokens are placed.",
+      "source": "Glossary p.20"
+    },
+    {
+      "term": "Sticker",
+      "category": "Components",
+      "description": "Every scenario has a sticker that goes on the city map board when the scenario unlocks, lined up with the map art; completed or closed scenarios are marked off on it. Players who do not want permanent stickers can track availability another way.",
+      "source": "LtP p.3, Glossary p.20"
+    },
+    {
+      "term": "Strengthen",
+      "category": "Condition",
+      "description": "Positive condition: all of the figure's attacks have Advantage. It is removed at the end of the figure's next full turn.",
+      "source": "LtP p.9, Glossary p.20"
+    },
+    {
+      "term": "Stun",
+      "category": "Condition",
+      "description": "Negative condition: the figure cannot perform any abilities on its turn, including moving and attacking. It is removed at the end of the figure's next full turn.",
+      "source": "LtP p.9, Glossary p.20"
+    },
+    {
+      "term": "Suffer Damage",
+      "category": "Combat",
+      "description": "An ability that says figures suffer damage deals it directly: the damage is not modified, cannot be reduced in any way and needs no line of sight. A character may still cancel it by losing cards.",
+      "source": "LtP p.9, Glossary p.20"
+    },
+    {
+      "term": "Supplemental Scenario Book",
+      "category": "Components",
+      "description": "Extra book for scenarios that do not fit the two-page spread, holding either more map area or more text. The Scenario Book shows which page to open, folded so that only that page is visible, and a map page is laid next to the spread so the art lines up.",
+      "source": "Glossary p.20"
     },
     {
       "term": "Target",
-      "description": "The figure(s) an ability is performed on. Must be in line-of-sight.",
-      "category": "Combat"
+      "category": "Combat",
+      "description": "The figure an ability is performed on, which must be in line of sight. Target X lets the ability affect X different figures, none of them twice by the same ability, and it still works if at least one target is available.",
+      "source": "LtP p.9, Glossary p.21"
     },
     {
       "term": "Trap",
-      "description": "Map features that apply damage or conditions when a figure moves into them.",
-      "category": "Map"
+      "category": "Map",
+      "description": "Placed on the map at setup; the scenario key says what each type does, damage (equal to scenario level + 2) and/or conditions. A figure that moves into the hex without Jump springs it, takes its effects, and the trap is removed; traps are not obstacles.",
+      "source": "LtP p.14, Glossary p.21"
     },
     {
       "term": "Treasure Tile",
-      "description": "Map features acquired via looting to receive unique rewards.",
-      "category": "Loot"
+      "category": "Loot",
+      "description": "Placed on the map at setup and collected by looting. The character removes the tile, notes its number and gets the reward listed under that number in the Treasure Index; tiles left on the map or looted by monsters are lost.",
+      "source": "LtP p.14, Glossary p.21"
     },
     {
       "term": "Turn",
-      "description": "A figure specific action period within a round.",
-      "category": "Combat"
+      "category": "Combat",
+      "description": "Each figure on the map gets one turn per round when its place in the initiative order comes up. A character plays the top action of one selected card and the bottom of the other in either order, or long rests; a monster performs the abilities on its set's card.",
+      "source": "Glossary p.21"
     },
     {
       "term": "Wall",
-      "description": "Thick dark lines on the map that cannot be crossed and block line-of-sight.",
-      "category": "Map"
+      "category": "Map",
+      "description": "The thick dark border lines of the scenario map. They cannot be crossed, block line of sight, and range cannot be counted through them.",
+      "source": "LtP p.8, Glossary p.21"
     },
     {
       "term": "Wound",
-      "description": "Condition causing the figure to suffer 1 damage at the start of each of its turns.",
-      "category": "Condition"
+      "category": "Condition",
+      "description": "Negative condition: the figure suffers 1 damage at the start of each of its turns. It is removed only when the figure is healed, and that heal still restores hit points; if the figure also has Poison, one heal removes both and restores nothing.",
+      "source": "LtP p.22, Glossary p.21"
     },
     {
       "term": "X (Level)",
-      "description": "Extra character cards providing deck-building flexibility.",
-      "category": "Character"
+      "category": "Character",
+      "description": "Extra ability cards of level X, added to a character's pool after Scenario 4, that give more flexibility. They tend to be more complicated and situational than level 1 cards, and the hand limit still applies.",
+      "source": "LtP p.27, Glossary p.21"
     }
   ],
   "guides": [
@@ -481,77 +708,90 @@
       "id": "monster_movement",
       "title": "Monster Movement",
       "content": [
-        "At the start of its turn, a monster finds a focus, which is the enemy it can get in range to attack using the least movement.",
-        "This is independent of line-of-sight or current attack ability.",
-        "Monsters calculate paths through the fewest possible traps.",
-        "Tie-breakers for focus use the earliest initiative order.",
-        "",
-        "**Movement Rules:**",
-        "Monsters move to get in range for their focus and maximize their attack.",
-        "They move the minimum amount required to maximize this attack.",
-        "Ranged monsters move away from their focus to avoid Disadvantage from adjacency if possible.",
-        "If a monster is already in range and lacks Disadvantage, it will not move.",
-        "Players decide movement for any equal viable options."
-      ]
+        "Movement is part of step 3 of a monster turn: abilities are performed from top to bottom (Glossary p.27).",
+        "A monster moves only if its ability card has a Move ability; its value is the base move changed by the card (LtP p.17).",
+        "Goal: move the minimum needed to get in range of the focus and maximize the attack, then stop (Glossary p.14).",
+        "It must end the move with a shorter path to its attack hex, otherwise it does not move (LtP p.11, Glossary p.27).",
+        "It takes the path that springs the fewest traps, even if that path is longer. Traps count as obstacles unless a trap is the only way to the focus (LtP p.17, Glossary p.27).",
+        "Melee attack, or no attack because of Disarm or a missing Attack ability: it moves to be adjacent to its focus (LtP p.18, Glossary p.26).",
+        "Ranged attack: it moves only as far as needed to get in range (LtP p.18).",
+        "A ranged monster next to its focus moves away, up to its full Move, until it is no longer adjacent and can shoot without Disadvantage (LtP p.18, Glossary p.27).",
+        "With Muddle or another source of Disadvantage, stepping away gains nothing, so it does not move away (LtP p.18, Glossary p.27).",
+        "Already in range of its focus and not able to lose Disadvantage: it does not move (Glossary p.15).",
+        "If it can attack several enemies, it also moves to reach as many additional targets as possible (Glossary p.27).",
+        "With several hexes to attack the focus from, it prefers: 1) no Disadvantage on the focus, 2) the most additional enemies attacked, 3) the fewest additional enemies attacked with Disadvantage (Glossary p.27).",
+        "Movement limits: it can pass allies but not enemies, obstacles, objectives or walls; difficult terrain costs 2 points; it must end on an unoccupied hex (Glossary p.7, Glossary p.15).",
+        "Immobilize: it ignores all Move abilities. Stun: it does nothing at all (Glossary p.26).",
+        "Equally good options: the players decide (Glossary p.15)."
+      ],
+      "source": "LtP p.11, LtP p.17, LtP p.18, Glossary p.7, Glossary p.14, Glossary p.15, Glossary p.26, Glossary p.27"
     },
     {
       "id": "monster_focus",
       "title": "Finding Focus",
       "content": [
-        "At the start of its turn, each monster must find a focus.",
-        "The focus is the enemy it can get in range to attack using the least movement, ignoring line-of-sight.",
-        "",
-        "**Tie-breakers (in order):**",
-        "1. Closest enemy (fewest hexes to reach)",
-        "2. Enemy with the lowest initiative value",
-        "3. If still tied, players choose",
-        "",
-        "**Important:** Focus calculation considers the monster current attack ability, but ignores whether it can actually attack this round (e.g., due to card abilities)."
-      ]
+        "Before doing anything else on its turn, every monster finds a focus, even if it will not attack this turn (LtP p.11, Glossary p.10).",
+        "The focus is the enemy it can attack using the least movement. A ranged monster uses its Range to decide where it can attack from; otherwise it needs a hex adjacent to the enemy (Glossary p.10).",
+        "Measure a path to an unoccupied hex from which an attack is possible; that hex needs line of sight to the target (Glossary p.26).",
+        "The monster itself needs no line of sight to the enemy, and it does not matter whether it can reach the hex this turn (LtP p.11).",
+        "Priority: 1) the path that springs the fewest traps, 2) the shorter path, 3) the enemy earlier in initiative order (Glossary p.26).",
+        "Difficult terrain adds its extra cost when paths are measured (Glossary p.10).",
+        "Equal initiative between characters: the card that was not the initiative card breaks the tie, then the players decide; a long-resting character counts as last, in an order the players choose (LtP p.7, Glossary p.26).",
+        "If the attack hits several targets, the monster first finds its primary focus, then adds foci by looking for the closest hex from which it can attack the primary focus and as many others as the attack allows (LtP p.22, Glossary p.10).",
+        "No usable hex: the monster has no focus and neither moves nor attacks (LtP p.11, Glossary p.10).",
+        "Disarm or no Attack ability: it behaves as if it had a melee attack on one enemy. Stun: no focus and no abilities (Glossary p.26).",
+        "Equally good options: the players decide (Glossary p.1)."
+      ],
+      "source": "LtP p.7, LtP p.11, LtP p.22, Glossary p.1, Glossary p.10, Glossary p.26"
     },
     {
       "id": "line_of_sight",
-      "title": "Line of Sight (LoS)",
+      "title": "Line of Sight",
       "content": [
-        "**Targeted abilities** require the target to be in line-of-sight.",
-        "",
-        "**Drawing LoS:**",
-        "LoS exists if a line can be drawn from any part of the attacker hex to any part of the target hex without touching a wall line.",
-        "",
-        "**What blocks LoS:**",
-        "- Walls (thick dark lines on the map)",
-        "- Closed doors (act as walls until opened)",
-        "",
-        "**What does NOT block LoS:**",
-        "- Obstacles",
-        "- Objectives",
-        "- Other figures",
-        "",
-        "**Edge cases:**",
-        "- Corners touching walls do NOT block LoS (the line must touch a wall, not just a corner)"
-      ]
+        "Every targeted ability needs its target in line of sight (Glossary p.21).",
+        "Line of sight exists if a line can be drawn from any part of the user's hex to any part of the target's hex without touching a wall line (LtP p.9, Glossary p.13).",
+        "Only walls block it. Obstacles, objectives and other figures do not (LtP p.9, Glossary p.13).",
+        "A closed door counts as a wall; an opened door is an empty hex (Glossary p.8).",
+        "Range cannot be counted through a wall (LtP p.8).",
+        "For an area effect, only figures in hexes the user has line of sight to can be targeted (LtP p.15).",
+        "Suffer-damage abilities do not need line of sight (LtP p.9, Glossary p.20).",
+        "Monsters: the attack hex needs line of sight to its target, but the monster itself needs none to its focus (Glossary p.26, LtP p.11)."
+      ],
+      "source": "LtP p.8, LtP p.9, LtP p.11, LtP p.15, Glossary p.8, Glossary p.13, Glossary p.20, Glossary p.21, Glossary p.26"
     },
     {
       "id": "advantage_disadvantage",
-      "title": "Advantage & Disadvantage",
+      "title": "Advantage and Disadvantage",
       "content": [
-        "**Advantage:** Roll two attack dice and use the higher result.",
-        "",
-        "**When to apply Advantage:**",
-        "- Attacking from an elevated position (on a boulder, table, wall)",
-        "- Specific abilities grant it",
-        "- Shield spell on the attacker",
-        "",
-        "**Disadvantage:** Roll two attack dice and use the lower result.",
-        "",
-        "**When to apply Disadvantage:**",
-        "- Attacking from a lower position",
-        "- Ranged attack while adjacent to an enemy",
-        "- Target is Invisible",
-        "- Specific abilities grant it",
-        "",
-        "**Important:** Both conditions can apply simultaneously, canceling each other out (normal roll)."
-      ]
+        "Both work on attack modifier cards, not on dice (LtP p.8).",
+        "Advantage: reveal two attack modifier cards and apply the better one. If it is unclear which is better, the player picks (LtP p.8, Glossary p.3).",
+        "Disadvantage: reveal two cards and apply the worse one. If it is unclear which is worse, apply the first card drawn (LtP p.24, Glossary p.3).",
+        "An attack never has more than one Advantage or more than one Disadvantage (LtP p.8).",
+        "If an attack has both, they cancel out and it is a normal attack (LtP p.8).",
+        "Sources of Advantage: Strengthen, and some abilities and item cards such as Eagle-Eye Goggles (LtP p.9, LtP p.19).",
+        "Sources of Disadvantage: Muddle, a ranged attack on an adjacent enemy, and some other effects (LtP p.8, LtP p.9).",
+        "A ranged area attack on an adjacent enemy still has Disadvantage (LtP p.15)."
+      ],
+      "source": "LtP p.8, LtP p.9, LtP p.15, LtP p.19, LtP p.24, Glossary p.3"
+    },
+    {
+      "id": "round_structure",
+      "title": "Round Structure",
+      "content": [
+        "1. Card selection: each character secretly selects two cards from hand and picks one as the initiative card, or declares a long rest (needs at least two cards in the discard pile). A character who can do neither is exhausted (LtP p.6, Glossary p.5).",
+        "2. Ordering of initiative: reveal the selected cards with the initiative card on top, and flip one ability card for each monster set on the map. Order tokens run from the lowest initiative to the highest; a long rest counts as 99 (Glossary p.16).",
+        "Ties: a character acts before a monster. Two characters tie-break on their second card, and several long-resting characters choose their order (LtP p.7, Glossary p.16).",
+        "3. Turns, in initiative order. A character performs the top action of one card and the bottom action of the other in either order, or a long rest (LtP p.7, Glossary p.21).",
+        "A monster set acts as a whole on its initiative: elites first in standee number order, then normals, and each monster finishes its turn before the next begins (LtP p.10).",
+        "A door opened during a turn reveals a room whose monsters act in that same round (Glossary p.17).",
+        "4. End of round, once every figure has taken its turn (Glossary p.18).",
+        "Shuffle the discard pile of any attack modifier or monster ability deck that revealed a shuffle card (LtP p.12, Glossary p.9).",
+        "Move every infused element down one step: Strong to Waning, Waning to Inert (LtP p.26, Glossary p.9).",
+        "Round-bonus cards go to the discard or lost pile (LtP p.21).",
+        "Characters with at least two cards in the discard pile may short rest (LtP p.12, Glossary p.9).",
+        "If the goal was met this round, the scenario ends now. If all characters are exhausted, it is lost (Glossary p.10, Glossary p.14)."
+      ],
+      "source": "LtP p.6, LtP p.7, LtP p.10, LtP p.12, LtP p.21, LtP p.26, Glossary p.5, Glossary p.9, Glossary p.10, Glossary p.14, Glossary p.16, Glossary p.17, Glossary p.18, Glossary p.21"
     }
   ]
 }

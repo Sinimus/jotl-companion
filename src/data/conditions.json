@@ -4,62 +4,71 @@
     "name": "Poison",
     "type": "negative",
     "removal": "on_heal",
-    "description": "All attacks against this figure gain +1 Attack. A heal removes poison but does not restore HP."
+    "description": "All attacks against the figure get +1 Attack, applied before the attack modifier card. Only a heal removes Poison, and that heal does not raise hit points; a figure cannot have Poison twice. If the figure also has Wound, one heal removes both and restores nothing.",
+    "source": "LtP p.22, Glossary p.16"
   },
   {
     "id": "wound",
     "name": "Wound",
     "type": "negative",
     "removal": "on_heal",
-    "description": "This figure suffers 1 damage at the start of each turn. A heal removes wound but does not restore HP."
+    "description": "The figure suffers 1 damage at the start of each of its turns. Only a heal removes Wound, and that heal still raises hit points, unless the figure also has Poison: then one heal removes both and restores nothing. A figure cannot have Wound twice.",
+    "source": "LtP p.22, Glossary p.21"
   },
   {
     "id": "stun",
     "name": "Stun",
     "type": "negative",
     "removal": "end_of_turn",
-    "description": "Cannot perform any abilities. Removed at end of next turn."
+    "description": "The figure cannot perform any abilities on its turn, including moving and attacking. It is removed at the end of the figure's next full turn, in the same round if it has not acted yet, otherwise in the next round.",
+    "source": "LtP p.9, Glossary p.20"
   },
   {
     "id": "disarm",
     "name": "Disarm",
     "type": "negative",
     "removal": "end_of_turn",
-    "description": "Cannot perform Attack abilities. Removed at end of next turn."
+    "description": "The figure cannot perform Attack abilities. It is removed at the end of the figure's next full turn.",
+    "source": "LtP p.16, Glossary p.7"
   },
   {
     "id": "immobilize",
     "name": "Immobilize",
     "type": "negative",
     "removal": "end_of_turn",
-    "description": "Cannot perform Move abilities. Removed at end of next turn."
+    "description": "The figure cannot perform Move abilities. It is removed at the end of the figure's next full turn, in the same round if it has not acted yet, otherwise in the next round.",
+    "source": "LtP p.9, Glossary p.11"
   },
   {
     "id": "muddle",
     "name": "Muddle",
     "type": "negative",
     "removal": "end_of_turn",
-    "description": "Disadvantage on all attacks. Removed at end of next turn."
+    "description": "All of the figure's attacks have Disadvantage. It is removed at the end of the figure's next full turn, in the same round if it has not acted yet, otherwise in the next round.",
+    "source": "LtP p.9, Glossary p.15"
   },
   {
     "id": "curse",
     "name": "Curse",
     "type": "negative",
     "removal": "on_reveal",
-    "description": "A Curse card (null) is shuffled into the attack modifier deck. Removed when revealed, or at end of scenario."
+    "description": "Shuffle one Curse card into the figure's attack modifier deck; when drawn it sets the attack value to 0 and is removed. A deck holds at most 10 Curse cards, and any still in the deck are removed at the end of the scenario.",
+    "source": "LtP p.22, Glossary p.7"
   },
   {
     "id": "strengthen",
     "name": "Strengthen",
     "type": "positive",
     "removal": "end_of_turn",
-    "description": "Advantage on all attacks. Removed at end of next turn."
+    "description": "All of the figure's attacks have Advantage. It is removed at the end of the figure's next full turn, in the same round if it has not acted yet, otherwise in the next round.",
+    "source": "LtP p.9, Glossary p.20"
   },
   {
     "id": "bless",
     "name": "Bless",
     "type": "positive",
     "removal": "on_reveal",
-    "description": "A Bless card (2x) is shuffled into the attack modifier deck. Removed when revealed, or at end of scenario."
+    "description": "Shuffle one Bless card into the figure's attack modifier deck; when drawn it doubles the attack value and is removed. There are 10 Bless cards, and any still in a deck are removed at the end of the scenario.",
+    "source": "LtP p.22, Glossary p.4"
   }
 ]
