@@ -26,7 +26,7 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
       
       return matchesSlot && matchesSearch
     })
-  }, [selectedSlot, searchQuery, scenarioStatus, showHidden, ownedItemIds])
+  }, [selectedSlot, searchQuery])
 
   // Track revealed spoilers per session
   const [revealedIds, setRevealedIds] = useState<number[]>([])

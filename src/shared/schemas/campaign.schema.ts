@@ -1,4 +1,4 @@
-import * as z from 'zod'
+import * as z from 'zod/mini'
 import { UuidSchema, ScenarioStatusSchema, TimestampSchema } from './common.schema.ts'
 import { CharacterProgressSchema } from './character.schema.ts'
 import { TOTAL_SCENARIOS } from '@/data'
@@ -6,20 +6,20 @@ import { TOTAL_SCENARIOS } from '@/data'
 export const CampaignSchema = z.object({
   id: UuidSchema,
   /** Player-given campaign name (1-100 chars). */
-  name: z.string().min(1).max(100),
+  name: z.string().check(z.minLength(1), z.maxLength(100)),
   createdAt: TimestampSchema,
   updatedAt: TimestampSchema,
   /** Active party — at most 4 characters. */
-  characters: z.array(CharacterProgressSchema).max(4),
+  characters: z.array(CharacterProgressSchema).check(z.maxLength(4)),
   /** Scenario ID (1-TOTAL_SCENARIOS) → current status.  Keys are coerced from strings. */
   scenarioStatus: z.record(
-    z.coerce.number().int().min(1).max(TOTAL_SCENARIOS),
+    z.coerce.number().check(z.int(), z.minimum(1), z.maximum(TOTAL_SCENARIOS)),
     ScenarioStatusSchema,
   ),
   /** Ordered list of city-event IDs already drawn this campaign. */
-  cityEventsDrawn: z.array(z.number().int()),
+  cityEventsDrawn: z.array(z.int()),
   /** IDs of treasure chests looted (1-16). */
-  lootedTreasureIds: z.array(z.number().int()),
+  lootedTreasureIds: z.array(z.int()),
 })
 
 export type Campaign = z.infer<typeof CampaignSchema>
@@ -29,7 +29,7 @@ export type Campaign = z.infer<typeof CampaignSchema>
 // ---------------------------------------------------------------------------
 
 export const CreateCampaignSchema = z.object({
-  name: z.string().min(1).max(100),
+  name: z.string().check(z.minLength(1), z.maxLength(100)),
 })
 
 export type CreateCampaign = z.infer<typeof CreateCampaignSchema>

@@ -1,25 +1,25 @@
-import * as z from 'zod'
+import * as z from 'zod/mini'
 import { CharacterTypeSchema, UuidSchema } from './common.schema.ts'
 
 export const CharacterProgressSchema = z.object({
   id: UuidSchema,
   type: CharacterTypeSchema,
   /** Player-given display name (1-50 chars). */
-  name: z.string().min(1).max(50),
+  name: z.string().check(z.minLength(1), z.maxLength(50)),
   /** Cumulative experience; never resets. */
-  experience: z.number().int().min(0),
+  experience: z.int().check(z.minimum(0)),
   /** Current gold balance. */
-  gold: z.number().int(),
+  gold: z.int(),
   /** Check marks earned via battle goals (0-18; every 3 → 1 perk). */
-  checkmarks: z.number().int().min(0).max(18),
+  checkmarks: z.int().check(z.minimum(0), z.maximum(18)),
   /** IDs of perks taken — references perks.json. */
   perkIds: z.array(z.string()),
   /** IDs of owned items — references items.json. */
-  itemIds: z.array(z.number().int()),
+  itemIds: z.array(z.int()),
   /** IDs of selected ability cards (for optional tracking). */
   selectedAbilityIds: z.array(z.string()),
   /** Bonus perks earned from scenario rewards or other sources. */
-  bonusPerks: z.number().int().min(0).default(0),
+  bonusPerks: z._default(z.int().check(z.minimum(0)), 0),
 })
 
 export type CharacterProgress = z.infer<typeof CharacterProgressSchema>

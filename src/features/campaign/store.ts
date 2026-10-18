@@ -10,7 +10,7 @@ import {
   type Campaign,
   type CreateCampaign,
 } from '@/shared/schemas'
-import * as z from 'zod'
+import * as z from 'zod/mini'
 
 // ---------------------------------------------------------------------------
 // localStorage key for the currently active campaign ID
