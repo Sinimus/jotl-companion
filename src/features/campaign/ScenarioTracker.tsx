@@ -12,6 +12,10 @@ export function ScenarioTracker({ campaignId, scenarioStatus }: ScenarioTrackerP
   const setScenarioStatus = useCampaignStore((s) => s.setScenarioStatus)
 
   const handleToggle = (scenarioId: number, currentStatus: ScenarioStatus) => {
+    // A closed scenario is out of the campaign's reach — only reopening the
+    // completed alternative brings it back.
+    if (currentStatus === 'closed') return
+
     // If locked, toggle to unlocked.
     if (currentStatus === 'locked') {
       void setScenarioStatus(campaignId, scenarioId, 'unlocked')
@@ -31,13 +35,16 @@ export function ScenarioTracker({ campaignId, scenarioStatus }: ScenarioTrackerP
         const isLocked = status === 'locked'
         const isCompleted = status === 'completed'
         const isUnlocked = status === 'unlocked'
+        const isClosed = status === 'closed'
 
         return (
           <div
             key={scenario.id}
             className={cn(
-              'relative flex items-center justify-between overflow-hidden rounded-lg border px-4 py-3 transition-all cursor-pointer',
+              'relative flex items-center justify-between overflow-hidden rounded-lg border px-4 py-3 transition-all',
+              !isClosed && 'cursor-pointer',
               isLocked && 'border-zinc-800 bg-zinc-900/50 opacity-60 hover:border-zinc-700',
+              isClosed && 'border-zinc-800 bg-zinc-900/50 opacity-60',
               isUnlocked && 'border-zinc-600 bg-zinc-800 hover:border-amber-500/50',
               isCompleted && 'border-emerald-900/50 bg-emerald-950/30'
             )}
@@ -47,7 +54,7 @@ export function ScenarioTracker({ campaignId, scenarioStatus }: ScenarioTrackerP
             <div
               className={cn(
                 'absolute left-0 top-0 bottom-0 w-1',
-                isLocked && 'bg-zinc-800',
+                (isLocked || isClosed) && 'bg-zinc-800',
                 isUnlocked && 'bg-amber-500',
                 isCompleted && 'bg-emerald-500'
               )}
@@ -57,7 +64,7 @@ export function ScenarioTracker({ campaignId, scenarioStatus }: ScenarioTrackerP
               <span
                 className={cn(
                   'text-xs font-bold uppercase tracking-wider',
-                  isLocked && 'text-zinc-600',
+                  (isLocked || isClosed) && 'text-zinc-600',
                   isUnlocked && 'text-amber-500',
                   isCompleted && 'text-emerald-500'
                 )}
@@ -68,6 +75,7 @@ export function ScenarioTracker({ campaignId, scenarioStatus }: ScenarioTrackerP
                 className={cn(
                   'font-medium leading-tight',
                   isLocked && 'text-zinc-500',
+                  isClosed && 'text-zinc-500 line-through decoration-zinc-600',
                   isUnlocked && 'text-zinc-200',
                   isCompleted && 'text-zinc-400 line-through decoration-zinc-600'
                 )}
@@ -82,6 +90,9 @@ export function ScenarioTracker({ campaignId, scenarioStatus }: ScenarioTrackerP
             <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900">
               {isCompleted && (
                 <span className="text-sm font-bold text-emerald-500">✓</span>
+              )}
+              {isClosed && (
+                <span className="text-xs font-bold text-zinc-600">✕</span>
               )}
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { rules } from '@/data'
+import { treasures } from '@/data'
 import { useCampaignStore } from './store'
 import { cn } from '@/shared/lib/utils'
 
@@ -12,7 +12,7 @@ export function TreasureTracker({ campaignId, lootedTreasureIds }: TreasureTrack
 
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {rules.treasures.map((treasure) => {
+      {treasures.map((treasure) => {
         const isLooted = lootedTreasureIds.includes(treasure.id)
 
         return (

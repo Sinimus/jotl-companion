@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { type CharacterProgress } from '@/shared/schemas'
-import { abilities } from '@/data'
+import { abilities, type AbilityLevel } from '@/data'
 import { cn } from '@/shared/lib/utils'
 
 interface AbilityManagerProps {
@@ -8,9 +8,14 @@ interface AbilityManagerProps {
   onUpdateAbilities: (abilityIds: string[]) => void
 }
 
+// A and B are the starting-hand alternatives, X replaces a level 1 card.
+const LEVEL_ORDER: AbilityLevel[] = ['A', 'B', '1', 'X', '2', '3', '4', '5', '6', '7', '8', '9']
+
 export function AbilityManager({ character, onUpdateAbilities }: AbilityManagerProps) {
   const [isExpanded, setIsExpanded] = useState(false)
-  const charAbilities = (abilities as Record<string, Record<string, string[]>>)[character.type] || {}
+  const charAbilities = abilities.filter((a) => a.characterId === character.type)
+
+  const levels = LEVEL_ORDER.filter((level) => charAbilities.some((a) => a.level === level))
 
   const toggleAbility = (abilityId: string) => {
     const current = new Set(character.selectedAbilityIds)
@@ -54,35 +59,31 @@ export function AbilityManager({ character, onUpdateAbilities }: AbilityManagerP
       </div>
 
       <div className="space-y-6">
-        {Object.entries(charAbilities)
-          .sort(([a], [b]) => {
-            if (a === 'X') return -1
-            if (b === 'X') return 1
-            return parseInt(a) - parseInt(b)
-          })
-          .map(([level, cards]) => (
+        {levels.map((level) => (
           <div key={level}>
             <h4 className="mb-2 text-[10px] font-bold uppercase tracking-wider text-zinc-500">
               Level {level}
             </h4>
             <div className="flex flex-wrap gap-2">
-              {cards.map((cardName) => {
-                const isSelected = character.selectedAbilityIds.includes(cardName)
-                return (
-                  <button
-                    key={cardName}
-                    onClick={() => toggleAbility(cardName)}
-                    className={cn(
-                      'rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors',
-                      isSelected
-                        ? 'border-amber-500/50 bg-amber-500/10 text-amber-400'
-                        : 'border-zinc-700 bg-zinc-800 text-zinc-400 hover:border-zinc-600'
-                    )}
-                  >
-                    {cardName}
-                  </button>
-                )
-              })}
+              {charAbilities
+                .filter((a) => a.level === level)
+                .map((card) => {
+                  const isSelected = character.selectedAbilityIds.includes(card.id)
+                  return (
+                    <button
+                      key={card.id}
+                      onClick={() => toggleAbility(card.id)}
+                      className={cn(
+                        'rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors',
+                        isSelected
+                          ? 'border-amber-500/50 bg-amber-500/10 text-amber-400'
+                          : 'border-zinc-700 bg-zinc-800 text-zinc-400 hover:border-zinc-600'
+                      )}
+                    >
+                      {card.name}
+                    </button>
+                  )
+                })}
             </div>
           </div>
         ))}

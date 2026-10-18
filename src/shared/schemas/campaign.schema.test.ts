@@ -33,6 +33,14 @@ describe('CampaignSchema', () => {
     expect(parsed.scenarioStatus).toEqual({ 1: 'unlocked', 25: 'locked' })
   })
 
+  it('accepts a closed scenario status', () => {
+    const parsed = CampaignSchema.parse({
+      ...campaign,
+      scenarioStatus: { '1': 'completed', '2': 'closed' },
+    })
+    expect(parsed.scenarioStatus[2]).toBe('closed')
+  })
+
   it.each([
     ['an empty name', { name: '' }],
     ['a name over 100 characters', { name: 'x'.repeat(101) }],
@@ -51,6 +59,10 @@ describe('CampaignSchema', () => {
 describe('CharacterProgressSchema', () => {
   it('defaults bonusPerks to 0', () => {
     expect(CharacterProgressSchema.parse(character).bonusPerks).toBe(0)
+  })
+
+  it('defaults equippedItemIds to an empty list', () => {
+    expect(CharacterProgressSchema.parse(character).equippedItemIds).toEqual([])
   })
 
   it('allows negative gold', () => {

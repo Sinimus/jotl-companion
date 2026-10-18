@@ -5,7 +5,10 @@
     "location": "B1",
     "goal": "Kill all enemies",
     "unlockedBy": null,
-    "unlocks": [2]
+    "unlocks": [
+      2
+    ],
+    "blocks": []
   },
   {
     "id": 2,
@@ -13,7 +16,10 @@
     "location": "B1",
     "goal": "Kill all enemies",
     "unlockedBy": 1,
-    "unlocks": [3]
+    "unlocks": [
+      3
+    ],
+    "blocks": []
   },
   {
     "id": 3,
@@ -21,7 +27,10 @@
     "location": "D5",
     "goal": "Kill all enemies",
     "unlockedBy": 2,
-    "unlocks": [4]
+    "unlocks": [
+      4
+    ],
+    "blocks": []
   },
   {
     "id": 4,
@@ -29,7 +38,10 @@
     "location": "C2",
     "goal": "Destroy all summoning stones and kill all enemies",
     "unlockedBy": 3,
-    "unlocks": [5]
+    "unlocks": [
+      5
+    ],
+    "blocks": []
   },
   {
     "id": 5,
@@ -37,7 +49,10 @@
     "location": "C2",
     "goal": "Kill the Blood Tumor",
     "unlockedBy": 4,
-    "unlocks": [6]
+    "unlocks": [
+      6
+    ],
+    "blocks": []
   },
   {
     "id": 6,
@@ -45,7 +60,11 @@
     "location": "B4",
     "goal": "Kill all enemies",
     "unlockedBy": 5,
-    "unlocks": [7, 8]
+    "unlocks": [
+      7,
+      8
+    ],
+    "blocks": []
   },
   {
     "id": 7,
@@ -53,7 +72,12 @@
     "location": "D2",
     "goal": "Kill the Blood Tumor",
     "unlockedBy": 6,
-    "unlocks": [9]
+    "unlocks": [
+      9
+    ],
+    "blocks": [
+      8
+    ]
   },
   {
     "id": 8,
@@ -61,7 +85,12 @@
     "location": "C4",
     "goal": "Kill the Blood Tumor",
     "unlockedBy": 6,
-    "unlocks": [9]
+    "unlocks": [
+      9
+    ],
+    "blocks": [
+      7
+    ]
   },
   {
     "id": 9,
@@ -69,7 +98,10 @@
     "location": "D2 / C4",
     "goal": "Kill the Blood Horror",
     "unlockedBy": 7,
-    "unlocks": [10]
+    "unlocks": [
+      10
+    ],
+    "blocks": []
   },
   {
     "id": 10,
@@ -77,7 +109,11 @@
     "location": "E2",
     "goal": "Kill all enemies",
     "unlockedBy": 9,
-    "unlocks": [11, 12]
+    "unlocks": [
+      11,
+      12
+    ],
+    "blocks": []
   },
   {
     "id": 11,
@@ -85,7 +121,13 @@
     "location": "D2",
     "goal": "All characters escape",
     "unlockedBy": 10,
-    "unlocks": [13, 19]
+    "unlocks": [
+      13,
+      19
+    ],
+    "blocks": [
+      12
+    ]
   },
   {
     "id": 12,
@@ -93,7 +135,13 @@
     "location": "B5",
     "goal": "Destroy all pillars",
     "unlockedBy": 10,
-    "unlocks": [14, 18]
+    "unlocks": [
+      14,
+      18
+    ],
+    "blocks": [
+      11
+    ]
   },
   {
     "id": 13,
@@ -101,7 +149,10 @@
     "location": "D3",
     "goal": "Destroy all alchemy tables",
     "unlockedBy": 11,
-    "unlocks": [15]
+    "unlocks": [
+      15
+    ],
+    "blocks": []
   },
   {
     "id": 14,
@@ -109,7 +160,10 @@
     "location": "B4",
     "goal": "Kill all enemies",
     "unlockedBy": 12,
-    "unlocks": [15]
+    "unlocks": [
+      15
+    ],
+    "blocks": []
   },
   {
     "id": 15,
@@ -117,7 +171,10 @@
     "location": "C4",
     "goal": "Destroy all alchemy tables",
     "unlockedBy": 13,
-    "unlocks": [16]
+    "unlocks": [
+      16
+    ],
+    "blocks": []
   },
   {
     "id": 16,
@@ -125,7 +182,10 @@
     "location": "B4",
     "goal": "Kill all enemies",
     "unlockedBy": 15,
-    "unlocks": [17]
+    "unlocks": [
+      17
+    ],
+    "blocks": []
   },
   {
     "id": 17,
@@ -133,7 +193,8 @@
     "location": "C6",
     "goal": "Kill the First of the Order",
     "unlockedBy": 16,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": []
   },
   {
     "id": 18,
@@ -141,7 +202,8 @@
     "location": "A5",
     "goal": "Loot two treasure tiles and escape",
     "unlockedBy": 12,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": []
   },
   {
     "id": 19,
@@ -149,7 +211,8 @@
     "location": "A5",
     "goal": "Destroy all nests and loot all treasure tiles",
     "unlockedBy": 11,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": []
   },
   {
     "id": 20,
@@ -157,7 +220,8 @@
     "location": "C5",
     "goal": "Find all goods and kill all revealed enemies",
     "unlockedBy": null,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": []
   },
   {
     "id": 21,
@@ -165,7 +229,8 @@
     "location": "C9",
     "goal": "Kill four Chaos Demons",
     "unlockedBy": null,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": []
   },
   {
     "id": 22,
@@ -173,7 +238,8 @@
     "location": "D1",
     "goal": "Kill the Stone Golem",
     "unlockedBy": null,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": []
   },
   {
     "id": 23,
@@ -181,7 +247,8 @@
     "location": "B5",
     "goal": "Kill all enemies",
     "unlockedBy": null,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": []
   },
   {
     "id": 24,
@@ -189,7 +256,8 @@
     "location": "A3",
     "goal": "Kill all enemies and protect all wards",
     "unlockedBy": null,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": []
   },
   {
     "id": 25,
@@ -197,6 +265,7 @@
     "location": "C7",
     "goal": "Destroy all pillars",
     "unlockedBy": null,
-    "unlocks": []
+    "unlocks": [],
+    "blocks": []
   }
 ]

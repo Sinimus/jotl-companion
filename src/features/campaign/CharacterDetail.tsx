@@ -13,6 +13,8 @@ export function CharacterDetail() {
 
   const { isLoaded, campaign } = useLoadedCampaign(campaignId)
   const updateCharacter = useCampaignStore((s) => s.updateCharacter)
+  const buyItem = useCampaignStore((s) => s.buyItem)
+  const sellItem = useCampaignStore((s) => s.sellItem)
 
   const character = campaign?.characters.find((c) => c.id === characterId)
 
@@ -82,11 +84,21 @@ export function CharacterDetail() {
     }
   }
 
-  const handleUpdateItems = async (updates: { itemIds: number[]; gold: number }) => {
+  const handleBuyItem = async (itemId: number) => {
+    if (!campaignId || !characterId) return
     try {
-      await updateCharacter(campaignId!, characterId!, { itemIds: updates.itemIds, gold: updates.gold })
+      await buyItem(campaignId, characterId, itemId)
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Failed to update items')
+      toast.error(e instanceof Error ? e.message : 'Failed to buy item')
+    }
+  }
+
+  const handleSellItem = async (itemId: number) => {
+    if (!campaignId || !characterId) return
+    try {
+      await sellItem(campaignId, characterId, itemId)
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Failed to sell item')
     }
   }
 
@@ -256,7 +268,9 @@ export function CharacterDetail() {
           <ItemManager
             character={character}
             scenarioStatus={campaign.scenarioStatus}
-            onUpdateItems={handleUpdateItems}
+            lootedTreasureIds={campaign.lootedTreasureIds}
+            onBuy={handleBuyItem}
+            onSell={handleSellItem}
           />
         )}
       </div>

@@ -7,12 +7,10 @@ export interface Character {
   id: string
   name: string
   race: string
-  role: string
   handLimit: number
   /** Level (1-9) mapped to maximum hit-point value. */
   hitPoints: Record<string, number>
-  /** Ordered list of perk IDs available to this character. */
-  perkIds: string[]
+  source: string
 }
 
 export interface Perk {
@@ -21,6 +19,7 @@ export interface Perk {
   description: string
   /** How many copies of this perk exist in the physical deck (always 1 here — duplicates are separate entries). */
   count: number
+  source: string
 }
 
 export type ConditionType = 'positive' | 'negative'
@@ -52,10 +51,19 @@ export interface Scenario {
   unlockedBy: number | null
   /** Scenario IDs that are unlocked upon completing this scenario. */
   unlocks: number[]
+  /** Scenario IDs this one blocks: completing this scenario closes them (Glossary p.18). */
+  blocks: number[]
 }
 
 export type ItemSlot = 'head' | 'body' | 'feet' | 'hand' | 'small'
 export type ItemUsageType = 'consumed' | 'spent' | 'passive'
+
+/** How an item enters the game — shop stock, scenario reward, treasure or misplaced goods. */
+export type ItemUnlock =
+  | { type: 'shop'; scenario: number; source: string }
+  | { type: 'scenario'; scenario: number; source: string }
+  | { type: 'treasure'; treasure: number; source: string }
+  | { type: 'misplacedGoods'; token: string; scenario: number; source: string }
 
 export interface Item {
   id: number
@@ -68,10 +76,31 @@ export interface Item {
   effect: string
   /** Total physical copies of this item in the game box. */
   copies: number
-  /** Key identifying when the item is added to the shop. */
-  unlockedBy?: 'start' | 'scenario_2' | 'scenario_9' | 'scenario_15' | 'solo'
-  /** For hand items: 1 (default) or 2. */
-  hands?: number
+  /** Conditions under which the item is available; any satisfied entry unlocks it. */
+  unlock: ItemUnlock[]
+  source: string
+}
+
+/** Card levels: A/B are the starting hand alternatives, X replaces a level 1 card. */
+export type AbilityLevel = 'A' | 'B' | 'X' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+
+export interface AbilityCard {
+  id: string
+  characterId: string
+  name: string
+  level: AbilityLevel
+  initiative: number
+  source: string
+}
+
+export interface Treasure {
+  id: number
+  /** Reward printed on the treasure list (Glossary p.31). */
+  reward: string
+  /** Scenario the treasure chest appears in. */
+  scenario: number
+  source: string
+  scenarioSource: string
 }
 
 // ---------------------------------------------------------------------------
@@ -87,14 +116,10 @@ export interface ScenarioLevelRow {
   bonusXp: number
 }
 
-export type ItemSlotLimitKey = 'head' | 'body' | 'feet' | 'hand' | 'small'
-
 export interface Tables {
   /** Level (1-9) as string key → cumulative XP required to reach that level. */
   levelThresholds: Record<string, number>
   scenarioLevelTable: ScenarioLevelRow[]
-  /** Per-slot equip limits.  "half_level" means ceil(characterLevel / 2). */
-  itemSlotLimits: Record<ItemSlotLimitKey, number | 'half_level'>
 }
 
 
@@ -114,13 +139,7 @@ export interface RuleSection {
   content: string[]
 }
 
-export interface TreasureReward {
-  id: number
-  reward: string
-}
-
 export interface RulesData {
   glossary: GlossaryEntry[]
   guides: RuleSection[]
-  treasures: TreasureReward[]
 }

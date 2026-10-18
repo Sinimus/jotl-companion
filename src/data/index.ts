@@ -11,7 +11,8 @@ import scenariosRaw from './scenarios.json'
 import tablesRaw from './tables.json'
 import itemsRaw from './items.json'
 import rulesRaw from './rules.json'
-import abilities from './abilities.json'
+import abilitiesRaw from './abilities.json'
+import treasuresRaw from './treasures.json'
 
 import type {
   Character,
@@ -22,6 +23,8 @@ import type {
   Tables,
   Item,
   RulesData,
+  AbilityCard,
+  Treasure,
 } from './types.ts'
 
 const characters = charactersRaw as Character[]
@@ -32,16 +35,17 @@ const scenarios = scenariosRaw as Scenario[]
 const tables = tablesRaw as Tables
 const items = itemsRaw as Item[]
 const rules = rulesRaw as RulesData
+const abilities = abilitiesRaw as AbilityCard[]
+const treasures = treasuresRaw as Treasure[]
 
 export const TOTAL_SCENARIOS = scenarios.length
 
-export { characters, perks, conditions, elements, scenarios, tables, items, rules, abilities }
+export { characters, perks, conditions, elements, scenarios, tables, items, rules, abilities, treasures }
 
 export type {
   Character,
   GlossaryEntry,
   RuleSection,
-  TreasureReward,
   RulesData,
   Perk,
   Condition,
@@ -52,6 +56,10 @@ export type {
   Item,
   ItemSlot,
   ItemUsageType,
+  ItemUnlock,
+  AbilityCard,
+  AbilityLevel,
+  Treasure,
   Tables,
   ScenarioLevelRow,
 } from './types.ts'

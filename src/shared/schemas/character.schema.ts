@@ -16,7 +16,9 @@ export const CharacterProgressSchema = z.object({
   perkIds: z.array(z.string()),
   /** IDs of owned items — references items.json. */
   itemIds: z.array(z.int()),
-  /** IDs of selected ability cards (for optional tracking). */
+  /** Items brought into the next scenario — a subset of itemIds. */
+  equippedItemIds: z._default(z.array(z.int()), []),
+  /** IDs of selected ability cards — references abilities.json. */
   selectedAbilityIds: z.array(z.string()),
   /** Bonus perks earned from scenario rewards or other sources. */
   bonusPerks: z._default(z.int().check(z.minimum(0)), 0),

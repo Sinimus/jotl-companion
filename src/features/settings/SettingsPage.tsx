@@ -49,7 +49,10 @@ export function SettingsPage() {
       const content = await file.text()
       const result = await importData(content)
       if (result.success) {
-        setStatus({ type: 'success', message: `Import successful! ${result.count} campaign(s) imported.` })
+        const changes = result.notes && result.notes.length > 0
+          ? ` ${result.notes.length} change${result.notes.length === 1 ? '' : 's'} applied during the import.`
+          : ''
+        setStatus({ type: 'success', message: `Import successful! ${result.count} campaign(s) imported.${changes}` })
       } else {
         setStatus({ type: 'error', message: result.error || 'Import failed' })
       }

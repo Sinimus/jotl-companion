@@ -1,29 +1,43 @@
 import { useState, useMemo } from 'react'
-import { items, type ItemSlot } from '@/data'
+import { items, type Item, type ItemSlot } from '@/data'
 import { type ScenarioStatus } from '@/shared/schemas'
 
 interface ItemShopProps {
   ownedItemIds: number[]
   scenarioStatus: Record<number, ScenarioStatus>
-  onEquip: (itemId: number) => void
+  /** Treasures the party has looted — some items enter the game through them. */
+  lootedTreasureIds: number[]
+  onBuy: (itemId: number) => void
   onClose: () => void
 }
 
-export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: ItemShopProps) {
+/** An item is available when any of its unlock conditions is satisfied. */
+function isAvailable(
+  item: Item,
+  scenarioStatus: Record<number, ScenarioStatus>,
+  lootedTreasureIds: number[]
+): boolean {
+  return item.unlock.some((unlock) => {
+    if (unlock.type === 'treasure') return lootedTreasureIds.includes(unlock.treasure)
+    if (unlock.type === 'misplacedGoods') return scenarioStatus[unlock.scenario] !== 'locked'
+    // shop and scenario unlocks need the scenario completed
+    return scenarioStatus[unlock.scenario] === 'completed'
+  })
+}
+
+export function ItemShop({ ownedItemIds, scenarioStatus, lootedTreasureIds, onBuy, onClose }: ItemShopProps) {
   const [selectedSlot, setSelectedSlot] = useState<ItemSlot | 'all'>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [showHidden, setShowHidden] = useState(false)
 
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
-      // 1. Progress check - REMOVED (we show all items now)
-      
-      // 2. Slot filter
+      // 1. Slot filter
       const matchesSlot = selectedSlot === 'all' || item.slot === selectedSlot
-      
-      // 3. Search filter
+
+      // 2. Search filter
       const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase())
-      
+
       return matchesSlot && matchesSearch
     })
   }, [selectedSlot, searchQuery])
@@ -46,7 +60,7 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <button 
+            <button
               onClick={() => setShowHidden(!showHidden)}
               className={`text-xs font-medium transition-colors ${showHidden ? 'text-amber-500' : 'text-zinc-500 hover:text-zinc-300'}`}
             >
@@ -89,13 +103,8 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
           <div className="grid gap-3 sm:grid-cols-2">
             {filteredItems.map((item) => {
               const isOwned = ownedItemIds.includes(item.id)
-              const isScenarioCompleted = (id: number) => scenarioStatus[id] === 'completed'
-              
-              let isLocked = false
-              if (item.unlockedBy === 'scenario_2' && !isScenarioCompleted(2)) isLocked = true
-              else if (item.unlockedBy === 'scenario_9' && !isScenarioCompleted(9)) isLocked = true
-              else if (item.unlockedBy === 'scenario_15' && !isScenarioCompleted(15)) isLocked = true
-              else if (item.unlockedBy === 'solo') isLocked = true
+
+              let isLocked = !isAvailable(item, scenarioStatus, lootedTreasureIds)
 
               if (isOwned) isLocked = false
 
@@ -103,7 +112,7 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
               if (showHidden) isLocked = false
               // Local reveal
               const isRevealed = revealedIds.includes(item.id)
-              
+
               // If locked and not revealed, we obscure it
               const isObscured = isLocked && !isRevealed
 
@@ -136,9 +145,6 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
                         </span>
                         <div className="flex gap-2">
                            <span className="text-[10px] uppercase text-zinc-500">{item.slot}</span>
-                           {item.hands === 2 && (
-                             <span className="text-[10px] font-bold uppercase text-amber-600">2 Hands</span>
-                           )}
                         </div>
                       </div>
                     </div>
@@ -146,7 +152,7 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
                       {item.effect}
                     </p>
                   </div>
-                  
+
                   <div className="flex items-center justify-between border-t border-zinc-700/50 pt-2">
                     <span className="text-xs font-medium text-amber-500">
                       {item.cost} Gold
@@ -157,10 +163,10 @@ export function ItemShop({ ownedItemIds, scenarioStatus, onEquip, onClose }: Ite
                       </span>
                     ) : (
                       <button
-                        onClick={() => onEquip(item.id)}
+                        onClick={() => onBuy(item.id)}
                         className="rounded px-3 py-1 text-xs font-medium transition-colors bg-zinc-700 text-zinc-200 hover:bg-amber-600 hover:text-white"
                       >
-                        {isLocked ? 'Unlock & Buy' : 'Buy'}
+                        Buy
                       </button>
                     )}
                   </div>

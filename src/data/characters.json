@@ -3,7 +3,6 @@
     "id": "demolitionist",
     "name": "Demolitionist",
     "race": "Quatryl",
-    "role": "Melee Damage, Obstacle Destruction",
     "handLimit": 9,
     "hitPoints": {
       "1": 8,
@@ -16,27 +15,12 @@
       "8": 18,
       "9": 20
     },
-    "perkIds": [
-      "demolitionist_1",
-      "demolitionist_2",
-      "demolitionist_3",
-      "demolitionist_4a",
-      "demolitionist_4b",
-      "demolitionist_5",
-      "demolitionist_6a",
-      "demolitionist_6b",
-      "demolitionist_7",
-      "demolitionist_8a",
-      "demolitionist_8b",
-      "demolitionist_9a",
-      "demolitionist_9b"
-    ]
+    "source": "card"
   },
   {
     "id": "red_guard",
     "name": "Red Guard",
     "race": "Valrath",
-    "role": "Protection, Monster Manipulation",
     "handLimit": 10,
     "hitPoints": {
       "1": 10,
@@ -49,27 +33,13 @@
       "8": 24,
       "9": 26
     },
-    "perkIds": [
-      "red_guard_1",
-      "red_guard_2",
-      "red_guard_3",
-      "red_guard_4a",
-      "red_guard_4b",
-      "red_guard_5",
-      "red_guard_6",
-      "red_guard_7a",
-      "red_guard_7b",
-      "red_guard_8",
-      "red_guard_9",
-      "red_guard_10"
-    ]
+    "source": "card"
   },
   {
     "id": "hatchet",
     "name": "Hatchet",
     "race": "Inox",
-    "role": "Ranged Damage, Looting",
-    "handLimit": 11,
+    "handLimit": 10,
     "hitPoints": {
       "1": 8,
       "2": 9,
@@ -81,24 +51,12 @@
       "8": 18,
       "9": 20
     },
-    "perkIds": [
-      "hatchet_1",
-      "hatchet_2",
-      "hatchet_3",
-      "hatchet_4",
-      "hatchet_5",
-      "hatchet_6",
-      "hatchet_7a",
-      "hatchet_7b",
-      "hatchet_8",
-      "hatchet_9"
-    ]
+    "source": "card"
   },
   {
     "id": "voidwarden",
     "name": "Voidwarden",
     "race": "Human",
-    "role": "Healing, Support",
     "handLimit": 11,
     "hitPoints": {
       "1": 6,
@@ -111,19 +69,6 @@
       "8": 13,
       "9": 14
     },
-    "perkIds": [
-      "voidwarden_1",
-      "voidwarden_2",
-      "voidwarden_3a",
-      "voidwarden_3b",
-      "voidwarden_4a",
-      "voidwarden_4b",
-      "voidwarden_5",
-      "voidwarden_6",
-      "voidwarden_7",
-      "voidwarden_8",
-      "voidwarden_9a",
-      "voidwarden_9b"
-    ]
+    "source": "card"
   }
 ]
