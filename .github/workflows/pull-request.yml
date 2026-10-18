@@ -1,0 +1,78 @@
+name: Pull request
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+  # Builds the production image without pushing it, so a broken Dockerfile or
+  # nginx.conf fails on the pull request instead of in the deploy after the merge
+  docker-build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: jotl-companion:ci
+
+      - name: Smoke test the image
+        run: |
+          docker run --detach --name smoke --publish 8080:80 jotl-companion:ci
+          for i in $(seq 1 30); do
+            if curl --silent --fail --output page.html http://localhost:8080/; then
+              echo "Container answered on attempt ${i}"
+              break
+            fi
+            sleep 2
+          done
+          set -e
+          trap 'docker logs smoke; docker rm --force smoke' EXIT
+          curl --silent --fail --output page.html http://localhost:8080/
+          grep --quiet '<title>Gloomhaven: Jaws of the Lion: Unofficial Companion App</title>' page.html
+          curl --silent --fail --head http://localhost:8080/ | grep --quiet --ignore-case '^cache-control: no-cache'
+          curl --silent --fail --head http://localhost:8080/manifest.webmanifest | grep --quiet --ignore-case '^content-type: application/manifest+json'
+          curl --silent --fail --head http://localhost:8080/sw.js | grep --quiet --ignore-case '^cache-control: no-cache'
+          curl --silent --fail --head http://localhost:8080/ | grep --quiet --ignore-case '^x-content-type-options: nosniff'
+          asset=$(grep --only-matching '/assets/index-[A-Za-z0-9_-]*\.js' page.html | head -n 1)
+          curl --silent --fail --head "http://localhost:8080${asset}" | grep --quiet --ignore-case '^cache-control: public, immutable'
+          docker exec smoke wget -q --spider http://127.0.0.1/
+          # the shell must reference a content-hashed bundle, the version marker of the deploy check
+          test -n "${asset}"
+          echo "Smoke test passed"
