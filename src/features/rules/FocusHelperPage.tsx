@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { useCampaignStore } from '@/features/campaign'
 
 interface Target {
@@ -11,41 +11,42 @@ interface Target {
 
 type TieBreaker = 'movement' | 'proximity' | 'initiative' | 'none'
 
+const EXAMPLE_TARGETS: Target[] = [
+  { id: '1', name: 'Character 1', initiative: 10, movementToReach: 3, proximity: 4 },
+  { id: '2', name: 'Character 2', initiative: 25, movementToReach: 3, proximity: 2 },
+  { id: '3', name: 'Character 3', initiative: 40, movementToReach: 5, proximity: 6 },
+]
+
+function targetsFromParty(characters: ReadonlyArray<{ id: string; name: string }>): Target[] {
+  return characters.map(char => ({
+    id: char.id,
+    name: char.name,
+    initiative: 99, // Standard default for characters
+    movementToReach: 0,
+    proximity: 0,
+  }))
+}
+
 export function FocusHelperPage() {
   const campaigns = useCampaignStore((s) => s.campaigns)
   const activeId = useCampaignStore((s) => s.activeCampaignId)
   const activeCampaign = useMemo(() => campaigns.find(c => c.id === activeId), [campaigns, activeId])
 
-  const [targets, setTargets] = useState<Target[]>([
-    { id: '1', name: 'Character 1', initiative: 10, movementToReach: 3, proximity: 4 },
-    { id: '2', name: 'Character 2', initiative: 25, movementToReach: 3, proximity: 2 },
-    { id: '3', name: 'Character 3', initiative: 40, movementToReach: 5, proximity: 6 },
-  ])
+  // Seeds the target list from the active party when the page opens; user edits override it after that.
+  const [targets, setTargets] = useState<Target[]>(() =>
+    activeCampaign && activeCampaign.characters.length > 0
+      ? targetsFromParty(activeCampaign.characters)
+      : EXAMPLE_TARGETS,
+  )
 
   const [result, setResult] = useState<{ target: Target | null; tieBreaker: TieBreaker }>({
     target: null,
     tieBreaker: 'none',
   })
 
-  // Sync with active campaign characters on mount
-  useEffect(() => {
-    if (activeCampaign && activeCampaign.characters.length > 0) {
-      syncWithCampaign()
-    }
-    // Mount-only: seeds target list from active party; user edits override after this.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const syncWithCampaign = () => {
     if (!activeCampaign) return
-    const campaignTargets: Target[] = activeCampaign.characters.map(char => ({
-      id: char.id,
-      name: char.name,
-      initiative: 99, // Standard default for characters
-      movementToReach: 0,
-      proximity: 0,
-    }))
-    setTargets(campaignTargets)
+    setTargets(targetsFromParty(activeCampaign.characters))
     setResult({ target: null, tieBreaker: 'none' })
   }
 
@@ -57,15 +58,12 @@ export function FocusHelperPage() {
     }
 
     const remaining = [...targets]
-    let tieBreaker: TieBreaker = 'none'
-
     // Step 1: Filter by lowest movement
     const minMovement = Math.min(...remaining.map(t => t.movementToReach))
     const afterMovement = remaining.filter(t => t.movementToReach === minMovement)
 
     if (afterMovement.length === 1) {
-      tieBreaker = 'movement'
-      setResult({ target: afterMovement[0], tieBreaker })
+      setResult({ target: afterMovement[0], tieBreaker: 'movement' })
       return
     }
 
@@ -74,8 +72,7 @@ export function FocusHelperPage() {
     const afterProximity = afterMovement.filter(t => t.proximity === minProximity)
 
     if (afterProximity.length === 1) {
-      tieBreaker = 'proximity'
-      setResult({ target: afterProximity[0], tieBreaker })
+      setResult({ target: afterProximity[0], tieBreaker: 'proximity' })
       return
     }
 
@@ -83,8 +80,7 @@ export function FocusHelperPage() {
     const minInitiative = Math.min(...afterProximity.map(t => t.initiative))
     const afterInitiative = afterProximity.filter(t => t.initiative === minInitiative)
 
-    tieBreaker = 'initiative'
-    setResult({ target: afterInitiative[0], tieBreaker })
+    setResult({ target: afterInitiative[0], tieBreaker: 'initiative' })
   }
 
   const updateTarget = (id: string, field: keyof Target, value: number | string) => {
