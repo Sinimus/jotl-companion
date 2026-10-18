@@ -103,7 +103,7 @@ type SetCampaignState = (
 
 // ---------------------------------------------------------------------------
 // Domain helper — initial scenarioStatus for a brand-new campaign.
-// Scenario 1 (unlockedBy === null) is always the entry point.
+// Scenario 1 is always the entry point; every other scenario starts locked.
 // ---------------------------------------------------------------------------
 function buildInitialScenarioStatus(): Record<number, 'locked' | 'unlocked' | 'completed'> {
   const status: Record<number, 'locked' | 'unlocked' | 'completed'> = {}

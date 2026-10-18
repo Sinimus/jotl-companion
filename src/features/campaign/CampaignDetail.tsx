@@ -180,6 +180,7 @@ export function CampaignDetail() {
           <TreasureTracker
             campaignId={campaign.id}
             lootedTreasureIds={campaign.lootedTreasureIds}
+            scenarioStatus={campaign.scenarioStatus}
           />
         )}
       </div>
