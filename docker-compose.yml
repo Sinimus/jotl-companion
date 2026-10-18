@@ -1,9 +1,0 @@
-version: '3.8'
-
-services:
-  jotl-companion:
-    image: ghcr.io/sinimus/jotl-companion:latest
-    container_name: jotl-companion
-    ports:
-      - "8080:80"
-    restart: unless-stopped

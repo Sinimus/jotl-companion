@@ -6,7 +6,6 @@ dist
 docs
 *.md
 Dockerfile
-docker-compose.yml
 .env*
 *.log
 coverage
