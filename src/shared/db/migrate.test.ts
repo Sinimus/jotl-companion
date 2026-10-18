@@ -115,7 +115,7 @@ describe('migrateCampaignRecord', () => {
       campaignName: 'Friday group',
       characterName: 'Hatchet',
       kind: 'ability_dropped',
-      detail: 'Void Walk',
+      detail: 'Void Walk: no such card for this class, removed',
     })
     expect(notes).toContainEqual({
       campaignName: 'Friday group',

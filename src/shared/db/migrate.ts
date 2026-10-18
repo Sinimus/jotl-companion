@@ -205,7 +205,7 @@ function migrateCharacter(
       note('ability_renamed', `${label} → ${cardId}`)
       if (!keptAbilityIds.includes(cardId)) keptAbilityIds.push(cardId)
     } else {
-      note('ability_dropped', label)
+      note('ability_dropped', `${label}: no such card for this class, removed`)
     }
   }
   migrated.selectedAbilityIds = keptAbilityIds
