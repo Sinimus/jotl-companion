@@ -1,4 +1,5 @@
-import { conditions, elements, rules, type ConditionRemoval } from '@/data'
+import { type ConditionRemoval } from '@/data'
+import { conditions, elements, rules } from '@/data/rules-data'
 import { formatSource } from '@/shared/lib/source'
 
 /** When a condition token comes off the figure (LtP p.22). */

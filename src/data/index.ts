@@ -5,42 +5,33 @@
 
 import charactersRaw from './characters.json'
 import perksRaw from './perks.json'
-import conditionsRaw from './conditions.json'
-import elementsRaw from './elements.json'
 import scenariosRaw from './scenarios.json'
 import tablesRaw from './tables.json'
 import itemsRaw from './items.json'
-import rulesRaw from './rules.json'
 import abilitiesRaw from './abilities.json'
 import treasuresRaw from './treasures.json'
 
 import type {
   Character,
   Perk,
-  Condition,
-  Element,
   Scenario,
   Tables,
   Item,
-  RulesData,
   AbilityCard,
   Treasure,
 } from './types.ts'
 
 const characters = charactersRaw as Character[]
 const perks = perksRaw as Perk[]
-const conditions = conditionsRaw as Condition[]
-const elements = elementsRaw as Element[]
 const scenarios = scenariosRaw as Scenario[]
 const tables = tablesRaw as Tables
 const items = itemsRaw as Item[]
-const rules = rulesRaw as RulesData
 const abilities = abilitiesRaw as AbilityCard[]
 const treasures = treasuresRaw as Treasure[]
 
 export const TOTAL_SCENARIOS = scenarios.length
 
-export { characters, perks, conditions, elements, scenarios, tables, items, rules, abilities, treasures }
+export { characters, perks, scenarios, tables, items, abilities, treasures }
 
 export type {
   Character,

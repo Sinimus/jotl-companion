@@ -2,15 +2,13 @@ import { describe, expect, it } from 'vitest'
 import {
   abilities,
   characters,
-  conditions,
-  elements,
   items,
   perks,
-  rules,
   scenarios,
   treasures,
   type AbilityCard,
 } from '@/data'
+import { conditions, elements, rules } from '@/data/rules-data'
 
 // Integrity of the game data: every entry carries its source, the sets match
 // the printed game (52 item cards, Glossary p.29) and the character sheets.

@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { rules } from '@/data'
+import { rules } from '@/data/rules-data'
 import { formatSource } from '@/shared/lib/source'
 
 export function GlossaryPage() {
