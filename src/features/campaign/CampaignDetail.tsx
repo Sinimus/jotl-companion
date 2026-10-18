@@ -1,23 +1,31 @@
-import { useState } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useCampaignStore } from './store'
 import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { cn } from '@/shared/lib/utils'
+import { TabNav, type TabItem } from '@/shared/components/TabNav'
+import { useTabParam } from '@/shared/hooks/useTabParam'
+import { useDocumentTitle } from '@/shared/hooks/useDocumentTitle'
 import { CharacterCard } from './CharacterCard'
 import { CharacterForm } from './CharacterForm'
 import { ScenarioTracker } from './ScenarioTracker'
 import { TreasureTracker } from './TreasureTracker'
 import { scenarios, TOTAL_SCENARIOS } from '@/data'
 
+const TABS = [
+  { id: 'party', label: 'Party' },
+  { id: 'scenarios', label: 'Scenarios' },
+  { id: 'treasures', label: 'Treasures' },
+] as const satisfies readonly TabItem<string>[]
+const TAB_IDS = TABS.map((tab) => tab.id)
+
 export function CampaignDetail() {
   const { id } = useParams<{ id: string }>()
-  const [activeTab, setActiveTab] = useState<'party' | 'scenarios' | 'treasures'>('party')
+  const activeTab = useTabParam(TAB_IDS, 'party')
 
   const { isLoaded, campaign } = useLoadedCampaign(id)
+  useDocumentTitle(TABS.find((tab) => tab.id === activeTab)?.label, campaign?.name ?? 'Campaign')
   const addCharacter = useCampaignStore((s) => s.addCharacter)
   const removeCharacter = useCampaignStore((s) => s.removeCharacter)
-
-  const navigate = useNavigate()
 
   // ---------------------------------------------------------------------------
   // Loading gate — Dexie hydration may not have finished on a deep-link entry
@@ -56,7 +64,7 @@ export function CampaignDetail() {
       {/* Sticky header — copy the structure from CharacterDetail exactly */}
       <div className="sticky top-0 z-40 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur">
         <div className="px-4 py-3">
-          <Link to="/" className="mb-1 block text-xs font-medium text-zinc-500 hover:text-zinc-300">← Campaigns</Link>
+          <Link to="/" className="-mb-1 inline-flex min-h-11 items-center text-xs font-medium text-zinc-400 hover:text-zinc-200">← Campaigns</Link>
           <h1 className="text-xl font-bold text-zinc-100">{campaign.name}</h1>
 
           {/* Progress bar */}
@@ -72,17 +80,7 @@ export function CampaignDetail() {
           </div>
         </div>
 
-        {/* Tab row */}
-        <div className="flex border-t border-zinc-800">
-          {(['party', 'scenarios', 'treasures'] as const).map((tab) => (
-            <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-3 text-sm font-medium transition-colors capitalize ${
-                activeTab === tab ? 'border-b-2 border-amber-500 text-amber-500' : 'text-zinc-500 hover:text-zinc-300'
-              }`}>
-              {tab}
-            </button>
-          ))}
-        </div>
+        <TabNav tabs={TABS} active={activeTab} fallback="party" label="Campaign sections" />
       </div>
 
       <div className="mx-auto max-w-lg px-4 py-4">
@@ -104,7 +102,7 @@ export function CampaignDetail() {
                     <CharacterCard
                       key={char.id}
                       character={char}
-                      onSelect={() => navigate(`/campaign/${campaign.id}/character/${char.id}`)}
+                      to={`/campaign/${campaign.id}/character/${char.id}`}
                       onDelete={() => removeCharacter(campaign.id, char.id)}
                     />
                   ))}

@@ -6,7 +6,17 @@ import { computeLevelFromXp, handLimitFor } from './rules'
 import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { characters, tables } from '@/data'
 import { PerkList } from './PerkList'
+import { TabNav, type TabItem } from '@/shared/components/TabNav'
+import { useTabParam } from '@/shared/hooks/useTabParam'
+import { useDocumentTitle } from '@/shared/hooks/useDocumentTitle'
 import { ItemManager, AbilityManager } from '@/features/characters'
+
+const TABS = [
+  { id: 'stats', label: 'Stats' },
+  { id: 'perks', label: 'Perks' },
+  { id: 'items', label: 'Items' },
+] as const satisfies readonly TabItem<string>[]
+const TAB_IDS = TABS.map((tab) => tab.id)
 
 export function CharacterDetail() {
   const { campaignId, characterId } = useParams<{ campaignId: string; characterId: string }>()
@@ -24,7 +34,12 @@ export function CharacterDetail() {
   const [xp, setXp] = useState(character?.experience ?? 0)
   const [gold, setGold] = useState(character?.gold ?? 0)
   const [checkmarks, setCheckmarks] = useState(character?.checkmarks ?? 0)
-  const [activeTab, setActiveTab] = useState<'stats' | 'perks' | 'items'>('stats')
+  const activeTab = useTabParam(TAB_IDS, 'stats')
+  useDocumentTitle(
+    TABS.find((tab) => tab.id === activeTab)?.label,
+    character?.name ?? 'Character',
+    campaign?.name,
+  )
 
   // ---------------------------------------------------------------------------
   // Sync local input state when the store-backed character changes externally
@@ -162,7 +177,7 @@ export function CharacterDetail() {
         <div className="px-4 py-3">
           <Link
             to={`/campaign/${campaignId}`}
-            className="mb-2 block text-xs font-medium text-zinc-500 hover:text-zinc-300"
+            className="-mb-1 inline-flex min-h-11 items-center text-xs font-medium text-zinc-400 hover:text-zinc-200"
           >
             ← {campaign.name}
           </Link>
@@ -200,22 +215,7 @@ export function CharacterDetail() {
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="flex border-t border-zinc-800">
-          {(['stats', 'perks', 'items'] as const).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-3 text-sm font-medium transition-colors ${
-                activeTab === tab
-                  ? 'border-b-2 border-amber-500 text-amber-500'
-                  : 'text-zinc-500 hover:text-zinc-300'
-              }`}
-            >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            </button>
-          ))}
-        </div>
+        <TabNav tabs={TABS} active={activeTab} fallback="stats" label="Character sections" />
       </div>
 
       <div className="p-4">
@@ -224,27 +224,29 @@ export function CharacterDetail() {
             {/* Stats Grid */}
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-                <label className="mb-1 block text-xs font-medium uppercase text-zinc-500">Current XP</label>
+                <label htmlFor="character-xp" className="mb-1 block text-xs font-medium uppercase text-zinc-500">Current XP</label>
                 <input
+                  id="character-xp"
                   type="number"
                   min={0}
                   value={xp}
                   onChange={(e) => setXp(Math.max(0, parseInt(e.target.value, 10) || 0))}
                   onBlur={(e) => commit({ experience: Math.max(0, parseInt(e.target.value, 10) || 0) })}
                   onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
-                  className="w-full bg-transparent text-3xl font-bold text-zinc-100 focus:outline-none"
+                  className="min-h-11 w-full bg-transparent text-3xl font-bold text-zinc-100 focus:outline-none"
                 />
               </div>
               <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-                <label className="mb-1 block text-xs font-medium uppercase text-zinc-500">Gold</label>
+                <label htmlFor="character-gold" className="mb-1 block text-xs font-medium uppercase text-zinc-500">Gold</label>
                 <input
+                  id="character-gold"
                   type="number"
                   min={0}
                   value={gold}
                   onChange={(e) => setGold(Math.max(0, parseInt(e.target.value, 10) || 0))}
                   onBlur={(e) => commit({ gold: Math.max(0, parseInt(e.target.value, 10) || 0) })}
                   onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
-                  className="w-full bg-transparent text-3xl font-bold text-amber-400 focus:outline-none"
+                  className="min-h-11 w-full bg-transparent text-3xl font-bold text-amber-400 focus:outline-none"
                 />
               </div>
             </div>
@@ -252,35 +254,39 @@ export function CharacterDetail() {
             {/* Battle Goals */}
             <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
               <div className="mb-4 flex items-center justify-between">
-                <label className="text-xs font-medium uppercase text-zinc-500">Battle Goal Checkmarks</label>
+                <h2 className="text-xs font-medium uppercase text-zinc-500">Battle Goal Checkmarks</h2>
                 <span className="text-xs text-amber-500">
                   {perksFromCheckmarks} Perk{perksFromCheckmarks !== 1 ? 's' : ''} Earned
                 </span>
               </div>
               <div className="flex items-center gap-4">
                 <button
+                  type="button"
+                  aria-label="Remove a checkmark"
                   onClick={() => {
                     const newValue = Math.max(0, checkmarks - 1)
                     setCheckmarks(newValue)
                     commit({ checkmarks: newValue })
                   }}
-                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-700 bg-zinc-800 text-xl text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200"
+                  className="flex h-11 w-11 items-center justify-center rounded-lg border border-zinc-700 bg-zinc-800 text-xl text-zinc-300 hover:bg-zinc-700 hover:text-zinc-100"
                 >
                   -
                 </button>
                 <span className="flex-1 text-center text-3xl font-bold text-zinc-100">{checkmarks}</span>
                 <button
+                  type="button"
+                  aria-label="Add a checkmark"
                   onClick={() => {
                     const newValue = Math.min(18, checkmarks + 1)
                     setCheckmarks(newValue)
                     commit({ checkmarks: newValue })
                   }}
-                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-700 bg-zinc-800 text-xl text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200"
+                  className="flex h-11 w-11 items-center justify-center rounded-lg border border-zinc-700 bg-zinc-800 text-xl text-zinc-300 hover:bg-zinc-700 hover:text-zinc-100"
                 >
                   +
                 </button>
               </div>
-              <p className="mt-2 text-center text-xs text-zinc-600">Max 18 checkmarks</p>
+              <p className="mt-2 text-center text-xs text-zinc-500">Max 18 checkmarks</p>
             </div>
 
             <AbilityManager character={character} onUpdateAbilities={handleUpdateAbilities} />
