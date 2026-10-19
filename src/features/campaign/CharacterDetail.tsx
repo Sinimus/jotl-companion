@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { useCampaignStore, type UpdateCharacterInput } from './store'
 import { computeLevelFromXp, handLimitFor } from './rules'
 import { learningStage } from './progression'
+import { changedStats } from './statSync'
 import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { characters, tables } from '@/data'
 import { PerkList } from './PerkList'
@@ -46,19 +47,19 @@ export function CharacterDetail() {
   )
 
   // ---------------------------------------------------------------------------
-  // Sync local input state when the store-backed character changes externally
-  // (e.g. after update or navigation).
+  // Sync local input state when the store-backed character changes (after a
+  // save or navigation) — only the fields whose stored value changed, so a
+  // field still being typed in survives the save of another one.
   // ---------------------------------------------------------------------------
-  const [syncedCharacterId, setSyncedCharacterId] = useState<string | undefined>(character?.id)
   const [syncedCharacterRef, setSyncedCharacterRef] = useState(character)
 
-  if (character?.id !== syncedCharacterId || character !== syncedCharacterRef) {
-    setSyncedCharacterId(character?.id)
+  if (character !== syncedCharacterRef) {
     setSyncedCharacterRef(character)
     if (character) {
-      setXp(character.experience)
-      setGold(character.gold)
-      setCheckmarks(character.checkmarks)
+      const changed = changedStats(syncedCharacterRef, character)
+      if (changed.experience !== undefined) setXp(changed.experience)
+      if (changed.gold !== undefined) setGold(changed.gold)
+      if (changed.checkmarks !== undefined) setCheckmarks(changed.checkmarks)
     }
   }
 
