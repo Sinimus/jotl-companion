@@ -543,3 +543,57 @@ describe('cards gained at level-up', () => {
     expect(character.selectedAbilityIds).toEqual([])
   })
 })
+
+describe('writes in quick succession', () => {
+  let campaignId: string
+  let characterId: string
+
+  beforeEach(async () => {
+    await useCampaignStore.getState().createCampaign({ name: 'Quick hands' })
+    campaignId = useCampaignStore.getState().campaigns[0].id
+    await useCampaignStore.getState().addCharacter(campaignId, { type: 'hatchet', name: 'Axe' })
+    characterId = useCampaignStore.getState().campaigns[0].characters[0].id
+  })
+
+  it('keeps both of two character edits confirmed before the first one is saved', async () => {
+    // Experience confirmed with Enter, gold confirmed right after: neither call
+    // waits for the other, as on the character sheet (S4 finding).
+    const store = useCampaignStore.getState()
+    await Promise.all([
+      store.updateCharacter(campaignId, characterId, { experience: 100 }),
+      store.updateCharacter(campaignId, characterId, { gold: 25 }),
+    ])
+
+    const [inState] = useCampaignStore.getState().campaigns[0].characters
+    expect(inState).toMatchObject({ experience: 100, gold: 25 })
+    const [stored] = await db.campaigns.toArray()
+    expect(stored.characters[0]).toMatchObject({ experience: 100, gold: 25 })
+  })
+
+  it('applies a sale, a scenario change and a perk toggle issued together', async () => {
+    const store = useCampaignStore.getState()
+    await store.updateCharacter(campaignId, characterId, { gold: 30, experience: 45 })
+    await store.gainItem(campaignId, characterId, 1)
+    await Promise.all([
+      store.sellItem(campaignId, characterId, 1),
+      store.setScenarioStatus(campaignId, 2, 'unlocked'),
+      store.setPerk(campaignId, characterId, 'hatchet_1a', true),
+      store.setPerk(campaignId, characterId, 'hatchet_2', true),
+    ])
+
+    const [campaign] = await db.campaigns.toArray()
+    expect(campaign.characters[0]).toMatchObject({ gold: 45, itemIds: [], perkIds: ['hatchet_1a', 'hatchet_2'] })
+    expect(campaign.scenarioStatus[2]).toBe('unlocked')
+    expect(useCampaignStore.getState().campaigns[0]).toEqual(campaign)
+  })
+
+  it('keeps the queue running after a refused write', async () => {
+    const store = useCampaignStore.getState()
+    const results = await Promise.allSettled([
+      store.buyItem(campaignId, characterId, 1), // no gold yet
+      store.updateCharacter(campaignId, characterId, { gold: 40 }),
+    ])
+    expect(results.map((r) => r.status)).toEqual(['rejected', 'fulfilled'])
+    expect(useCampaignStore.getState().campaigns[0].characters[0].gold).toBe(40)
+  })
+})

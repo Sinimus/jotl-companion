@@ -24,6 +24,7 @@ export function CharacterDetail() {
 
   const { isLoaded, campaign } = useLoadedCampaign(campaignId)
   const updateCharacter = useCampaignStore((s) => s.updateCharacter)
+  const setPerk = useCampaignStore((s) => s.setPerk)
   const buyItem = useCampaignStore((s) => s.buyItem)
   const gainItem = useCampaignStore((s) => s.gainItem)
   const sellItem = useCampaignStore((s) => s.sellItem)
@@ -158,16 +159,9 @@ export function CharacterDetail() {
   }
 
   const handleTogglePerk = async (perkId: string, isSelected: boolean) => {
-    const currentIds = new Set(character.perkIds)
-    if (isSelected) {
-      currentIds.add(perkId)
-    } else {
-      currentIds.delete(perkId)
-    }
     try {
-      await updateCharacter(campaignId!, characterId!, {
-        perkIds: Array.from(currentIds),
-      })
+      // The store applies the toggle to the saved perks, so two quick taps both count.
+      await setPerk(campaignId!, characterId!, perkId, isSelected)
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Failed to update perk')
     }
