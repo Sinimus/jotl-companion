@@ -92,7 +92,7 @@ export function HandbookPage() {
             <li><strong className="font-semibold text-zinc-200">Checkmarks:</strong> Track battle goal checkmarks. Every 3 checkmarks grant a Perk.</li>
             <li><strong className="font-semibold text-zinc-200">Perks:</strong> Select perks as you earn them. The app validates that you don't exceed your earned perks.</li>
             <li><strong className="font-semibold text-zinc-200">Ability Cards:</strong> Choose the hand for the next scenario from the cards available at this point of the campaign, within the hand size. After a level-up, add one card of that level or lower; the panel opens by itself when a card is waiting.</li>
-            <li><strong className="font-semibold text-zinc-200">Items:</strong> Browse the Shop to buy items or manage your Inventory. Slot limits are enforced.</li>
+            <li><strong className="font-semibold text-zinc-200">Items:</strong> Browse the Shop to buy items or manage your Inventory. Slot limits are enforced. A sold item goes into the shop and can be bought there again, a reward item too (Rules Glossary p.19).</li>
           </ul>
         </section>
 

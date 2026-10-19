@@ -133,18 +133,20 @@ export type ItemAvailability = 'shop' | 'reward' | 'locked'
 
 /**
  * How an item can enter the campaign right now.  A satisfied `shop` unlock
- * (that scenario completed, LtP p.19) puts it in the shop; otherwise any
+ * (that scenario completed, LtP p.19) or a copy sold to the shop (any sold item
+ * goes into the available item deck, Glossary p.19) puts it in the shop; otherwise any
  * satisfied reward entry — a scenario reward completed, a looted treasure
  * (Glossary p.31) or misplaced goods of an unlocked scenario — makes it a
  * reward; otherwise it is locked.
  */
 export function itemAvailability(
   item: Item,
-  campaign: { scenarioStatus: Record<number, ScenarioStatus>; lootedTreasureIds: number[] }
+  campaign: { scenarioStatus: Record<number, ScenarioStatus>; lootedTreasureIds: number[]; soldItemIds: number[] }
 ): ItemAvailability {
   if (item.unlock.some((unlock) => unlock.type === 'shop' && campaign.scenarioStatus[unlock.scenario] === 'completed')) {
     return 'shop'
   }
+  if (campaign.soldItemIds.includes(item.id)) return 'shop'
   const rewardEarned = item.unlock.some((unlock) => {
     if (unlock.type === 'scenario') return campaign.scenarioStatus[unlock.scenario] === 'completed'
     if (unlock.type === 'treasure') return campaign.lootedTreasureIds.includes(unlock.treasure)

@@ -4,8 +4,9 @@ import { computeLevelFromXp, itemSlotLimits } from '@/features/campaign/rules'
 
 // ---------------------------------------------------------------------------
 // Pure content migration of a stored campaign record to the current data
-// model: the S3 content fixes (database version 2) and the S5 card pool and
-// scenario log (database version 3).
+// model: the S3 content fixes (database version 2), the S5 card pool and
+// scenario log (database version 3) and the S6 list of items sold to the
+// shop (database version 4).
 // No Dexie, no clock, no mutation of the input — new objects are built and
 // every change is reported as a MigrationNote.  Works on any input: a
 // version-1 record, an already migrated record, or garbage (returned
@@ -288,6 +289,7 @@ export function migrateCampaignRecord(raw: unknown): { record: unknown; notes: M
   if (!Array.isArray(migrated.lootedTreasureIds)) migrated.lootedTreasureIds = []
   if (!Array.isArray(migrated.cityEventsDrawn)) migrated.cityEventsDrawn = []
   if (!Array.isArray(migrated.scenarioLog)) migrated.scenarioLog = []
+  if (!Array.isArray(migrated.soldItemIds)) migrated.soldItemIds = []
   migrated.characters = Array.isArray(raw.characters)
     ? raw.characters.filter(isRecord).map((character) => migrateCharacter(character, campaignName, notes))
     : []

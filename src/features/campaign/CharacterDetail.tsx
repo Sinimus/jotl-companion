@@ -314,6 +314,7 @@ export function CharacterDetail() {
             party={campaign.characters}
             scenarioStatus={campaign.scenarioStatus}
             lootedTreasureIds={campaign.lootedTreasureIds}
+            soldItemIds={campaign.soldItemIds}
             onBuy={handleBuyItem}
             onGain={handleGainItem}
             onSell={handleSellItem}

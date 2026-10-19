@@ -83,12 +83,13 @@ describe('spoilers stay out of the DOM', () => {
         party={[hero]}
         scenarioStatus={status}
         lootedTreasureIds={[]}
+        soldItemIds={[]}
         onBuy={() => undefined}
         onGain={() => undefined}
         onClose={() => undefined}
       />,
     )
-    const campaign = { scenarioStatus: status, lootedTreasureIds: [] }
+    const campaign = { scenarioStatus: status, lootedTreasureIds: [], soldItemIds: [] }
     const locked = items.filter((item) => itemAvailability(item, campaign) === 'locked')
     expect(locked.length).toBeGreaterThan(0)
     for (const item of locked) {

@@ -10,7 +10,9 @@
 //   v3 — S5: level 2+ cards of the card list become `unlockedAbilityIds`
 //        (gained at level-up), the list itself stays the hand; empty
 //        `scenarioLog` on every campaign.
+//   v4 — S6: empty `soldItemIds` on every campaign (items sold to the shop
+//        stay in it, Glossary p.19).  Nothing else changes.
 // ---------------------------------------------------------------------------
 
 /** Current Dexie schema version. */
-export const DB_VERSION = 3
+export const DB_VERSION = 4

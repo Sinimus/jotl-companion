@@ -11,6 +11,8 @@ interface ItemManagerProps {
   scenarioStatus: Record<number, ScenarioStatus>
   /** Treasures the party has looted — passed down to the shop lock logic. */
   lootedTreasureIds: number[]
+  /** Items sold to the shop — they stay available there (Glossary p.19). */
+  soldItemIds: number[]
   onBuy: (itemId: number) => void
   onGain: (itemId: number) => void
   onSell: (itemId: number) => void
@@ -24,6 +26,7 @@ export function ItemManager({
   party,
   scenarioStatus,
   lootedTreasureIds,
+  soldItemIds,
   onBuy,
   onGain,
   onSell,
@@ -186,6 +189,7 @@ export function ItemManager({
           party={party}
           scenarioStatus={scenarioStatus}
           lootedTreasureIds={lootedTreasureIds}
+          soldItemIds={soldItemIds}
           onBuy={onBuy}
           onGain={onGain}
           onClose={() => setIsShopOpen(false)}

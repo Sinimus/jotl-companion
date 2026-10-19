@@ -74,7 +74,7 @@ interface CampaignActions {
   buyItem: (campaignId: string, characterId: string, itemId: number) => Promise<void>
   /** Gain an item without paying (scenario or treasure reward). */
   gainItem: (campaignId: string, characterId: string, itemId: number) => Promise<void>
-  /** Sell an owned item for half its gold value, rounded up (LtP p.19). */
+  /** Sell an owned item for half its gold value, rounded up (LtP p.19); it goes into the shop (Glossary p.19). */
   sellItem: (campaignId: string, characterId: string, itemId: number) => Promise<void>
   /** Record a scenario result on the campaign sheet (Finish Scenario). Throws on an invalid result. */
   recordScenarioResult: (campaignId: string, input: ScenarioResultInput) => Promise<ScenarioResult>
@@ -273,6 +273,7 @@ export const useCampaignStore = create<CampaignStore>((set, get) => {
         scenarioStatus: buildInitialScenarioStatus(),
         cityEventsDrawn: [],
         lootedTreasureIds: [],
+        soldItemIds: [],
         scenarioLog: [],
       })
 
@@ -469,17 +470,24 @@ export const useCampaignStore = create<CampaignStore>((set, get) => {
     },
 
     async sellItem(campaignId: string, characterId: string, itemId: number) {
-      await updateCharacterItems(campaignId, characterId, (_campaign, character) => {
-        const item = requireItem(itemId)
-        if (!character.itemIds.includes(itemId)) {
-          throw new Error(`${item.name} is not owned by this character`)
-        }
-        return {
-          itemIds: character.itemIds.filter((id) => id !== itemId),
-          equippedItemIds: character.equippedItemIds.filter((id) => id !== itemId),
-          gold: character.gold + Math.ceil(item.cost / 2),
-        }
-      })
+      const campaign = get().campaigns.find((c) => c.id === campaignId)
+      if (!campaign) throw new Error('Campaign not found')
+      const character = campaign.characters.find((c) => c.id === characterId)
+      if (!character) throw new Error('Character not found')
+      const item = requireItem(itemId)
+      if (!character.itemIds.includes(itemId)) {
+        throw new Error(`${item.name} is not owned by this character`)
+      }
+      // The sold copy goes into the available item deck (Glossary p.19), so a
+      // reward item can be bought from the shop afterwards.
+      const soldItemIds = campaign.soldItemIds.includes(itemId)
+        ? campaign.soldItemIds
+        : [...campaign.soldItemIds, itemId]
+      await commitCharacter({ ...campaign, soldItemIds }, characterId, {
+        itemIds: character.itemIds.filter((id) => id !== itemId),
+        equippedItemIds: character.equippedItemIds.filter((id) => id !== itemId),
+        gold: character.gold + Math.ceil(item.cost / 2),
+      }, set)
     },
 
     async recordScenarioResult(campaignId: string, input: ScenarioResultInput) {

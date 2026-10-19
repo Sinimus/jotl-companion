@@ -124,8 +124,9 @@ describe('itemAvailability', () => {
   }
   const campaign = (
     scenarioStatus: Record<number, 'locked' | 'unlocked' | 'completed'>,
-    lootedTreasureIds: number[] = []
-  ) => ({ scenarioStatus, lootedTreasureIds })
+    lootedTreasureIds: number[] = [],
+    soldItemIds: number[] = []
+  ) => ({ scenarioStatus, lootedTreasureIds, soldItemIds })
 
   it('keeps item 1 out of the shop until scenario 2 is completed (LtP p.19)', () => {
     expect(itemAvailability(item(1), campaign({ 2: 'locked' }))).toBe('locked')
@@ -143,6 +144,12 @@ describe('itemAvailability', () => {
     expect(itemAvailability(item(32), campaign({ 20: 'locked' }))).toBe('locked')
     expect(itemAvailability(item(32), campaign({ 20: 'unlocked' }))).toBe('reward')
     expect(itemAvailability(item(32), campaign({ 20: 'completed' }))).toBe('reward')
+  })
+
+  it('puts a sold reward item in the shop (Glossary p.19)', () => {
+    expect(itemAvailability(item(14), campaign({ 4: 'completed' }, [], [14]))).toBe('shop')
+    expect(itemAvailability(item(28), campaign({}, [], [28]))).toBe('shop')
+    expect(itemAvailability(item(28), campaign({}, [], [14]))).toBe('locked')
   })
 
   it('puts item 15 in the shop after scenario 9 is completed', () => {

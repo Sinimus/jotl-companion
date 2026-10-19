@@ -1,0 +1,106 @@
+[
+  {
+    "id": "c5b23341-dccd-47c4-b647-2444ce258ad1",
+    "name": "Friday group",
+    "createdAt": "2026-10-19T19:04:50.630Z",
+    "updatedAt": "2026-10-19T19:04:53.895Z",
+    "characters": [
+      {
+        "id": "7c24b0a4-ecbd-449a-979b-041377f5e801",
+        "type": "hatchet",
+        "name": "Axe",
+        "experience": 100,
+        "gold": 4,
+        "checkmarks": 0,
+        "perkIds": [],
+        "itemIds": [
+          14
+        ],
+        "equippedItemIds": [],
+        "selectedAbilityIds": [],
+        "unlockedAbilityIds": [
+          "hatchet-2-repeat-shot"
+        ],
+        "bonusPerks": 0
+      },
+      {
+        "id": "74226708-57eb-4c54-89e7-9e555ea3f9f7",
+        "type": "red_guard",
+        "name": "Guard",
+        "experience": 6,
+        "gold": 0,
+        "checkmarks": 0,
+        "perkIds": [],
+        "itemIds": [],
+        "equippedItemIds": [],
+        "selectedAbilityIds": [],
+        "unlockedAbilityIds": [],
+        "bonusPerks": 0
+      }
+    ],
+    "scenarioStatus": {
+      "1": "completed",
+      "2": "completed",
+      "3": "completed",
+      "4": "completed",
+      "5": "unlocked",
+      "6": "locked",
+      "7": "locked",
+      "8": "locked",
+      "9": "locked",
+      "10": "locked",
+      "11": "locked",
+      "12": "locked",
+      "13": "locked",
+      "14": "locked",
+      "15": "locked",
+      "16": "locked",
+      "17": "locked",
+      "18": "locked",
+      "19": "locked",
+      "20": "locked",
+      "21": "locked",
+      "22": "locked",
+      "23": "locked",
+      "24": "locked",
+      "25": "locked"
+    },
+    "cityEventsDrawn": [],
+    "lootedTreasureIds": [],
+    "scenarioLog": [
+      {
+        "id": "6d955a4c-4b3d-4094-8953-596cc4d07b24",
+        "scenarioId": 4,
+        "success": true,
+        "scenarioLevel": 1,
+        "recordedAt": "2026-10-19T19:04:52.812Z",
+        "characters": [
+          {
+            "characterId": "7c24b0a4-ecbd-449a-979b-041377f5e801",
+            "name": "Axe",
+            "gold": 4,
+            "experience": 6,
+            "checkmarks": 0,
+            "perks": 0,
+            "itemIds": [
+              14
+            ],
+            "levelBefore": 1,
+            "levelAfter": 1
+          },
+          {
+            "characterId": "74226708-57eb-4c54-89e7-9e555ea3f9f7",
+            "name": "Guard",
+            "gold": 0,
+            "experience": 6,
+            "checkmarks": 0,
+            "perks": 0,
+            "itemIds": [],
+            "levelBefore": 1,
+            "levelAfter": 1
+          }
+        ]
+      }
+    ]
+  }
+]
