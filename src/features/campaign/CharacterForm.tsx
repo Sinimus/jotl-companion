@@ -40,9 +40,11 @@ export function CharacterForm({ disabled, onAdd }: CharacterFormProps) {
         {characters.map((char) => (
           <button
             key={char.id}
+            type="button"
+            aria-pressed={selectedType === char.id}
             onClick={() => setSelectedType(char.id)}
             className={[
-              'rounded-lg border px-3 py-2 text-sm transition-colors',
+              'min-h-11 rounded-lg border px-3 py-2 text-sm transition-colors',
               selectedType === char.id
                 ? 'border-amber-500 bg-amber-500/10 text-amber-300'
                 : 'border-zinc-700 text-zinc-300 hover:border-zinc-500',
@@ -72,12 +74,12 @@ export function CharacterForm({ disabled, onAdd }: CharacterFormProps) {
           onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
           placeholder="Character name…"
           maxLength={50}
-          className="flex-1 rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-zinc-100 placeholder-zinc-500 focus:border-amber-500 focus:outline-none"
+          className="min-h-11 flex-1 rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-zinc-100 placeholder-zinc-500 focus:border-amber-500 focus:outline-none"
         />
         <button
           disabled={!selectedType || !name.trim()}
           onClick={handleAdd}
-          className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-zinc-900 disabled:opacity-40 hover:bg-amber-500"
+          className="min-h-11 rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-zinc-900 disabled:opacity-40 hover:bg-amber-500"
         >
           Add Character
         </button>

@@ -46,7 +46,7 @@ export function CampaignCard({ campaign, isActive, onSelect, onDelete }: Campaig
         <div className="min-w-0 flex-1">
           <button
             onClick={onSelect}
-            className="block w-full text-left"
+            className="block min-h-11 w-full text-left"
             aria-label={`Open campaign ${campaign.name}`}
           >
             <h3 className="truncate text-base font-semibold text-amber-400 hover:text-amber-300 transition-colors">
@@ -69,13 +69,13 @@ export function CampaignCard({ campaign, isActive, onSelect, onDelete }: Campaig
             <div className="flex shrink-0 gap-2">
               <button
                 onClick={onDelete}
-                className="text-xs text-red-400 hover:text-red-300"
+                className="min-h-11 px-2 text-xs text-red-400 hover:text-red-300"
               >
                 Confirm
               </button>
               <button
                 onClick={() => setConfirmDelete(false)}
-                className="text-xs text-zinc-500 hover:text-zinc-300"
+                className="min-h-11 px-2 text-xs text-zinc-400 hover:text-zinc-200"
               >
                 Cancel
               </button>
@@ -83,7 +83,7 @@ export function CampaignCard({ campaign, isActive, onSelect, onDelete }: Campaig
           ) : (
             <button
               onClick={() => setConfirmDelete(true)}
-              className="text-zinc-500 hover:text-red-400 transition-colors"
+              className="flex h-11 w-11 items-center justify-center text-xl text-zinc-400 transition-colors hover:text-red-400"
               aria-label={`Delete campaign ${campaign.name}`}
             >
               ×

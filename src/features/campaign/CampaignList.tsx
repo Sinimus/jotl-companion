@@ -6,6 +6,7 @@ import { ActiveCampaignCard } from './ActiveCampaignCard'
 import { CreateCampaignCard } from './CreateCampaignCard'
 import { MigrationNotes } from './MigrationNotes'
 import { TOTAL_SCENARIOS } from '@/data'
+import { useDocumentTitle } from '@/shared/hooks/useDocumentTitle'
 
 export function CampaignList() {
   const campaigns = useCampaignStore((s) => s.campaigns)
@@ -19,6 +20,7 @@ export function CampaignList() {
   const setActiveCampaign = useCampaignStore((s) => s.setActiveCampaign)
 
   const navigate = useNavigate()
+  useDocumentTitle('Campaigns')
 
   // Memoize campaign list derived states
   const { featuredCampaign, listCampaigns } = useMemo(() => {
@@ -96,7 +98,7 @@ export function CampaignList() {
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold text-amber-500">Gloomhaven: Jaws of the Lion</h1>
         {corruptedCampaigns.length > 0 && (
-          <Link to="/settings" className="text-[10px] font-bold uppercase tracking-tighter text-red-400 hover:text-red-300">
+          <Link to="/settings" className="inline-flex min-h-11 items-center text-[10px] font-bold uppercase tracking-tighter text-red-400 hover:text-red-300">
             ⚠️ Data Error
           </Link>
         )}

@@ -1,6 +1,7 @@
 import { type ConditionRemoval } from '@/data'
 import { conditions, elements, rules } from '@/data/rules-data'
 import { formatSource } from '@/shared/lib/source'
+import { useDocumentTitle } from '@/shared/hooks/useDocumentTitle'
 
 /** When a condition token comes off the figure (LtP p.22). */
 const REMOVAL_LABELS: Record<ConditionRemoval, string> = {
@@ -124,6 +125,7 @@ function GuideContent({ content }: { content: string[] }) {
 }
 
 export function ReferencePage() {
+  useDocumentTitle('Quick Reference')
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       {/* Header */}

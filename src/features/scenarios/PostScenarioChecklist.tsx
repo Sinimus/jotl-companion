@@ -13,10 +13,12 @@ import {
   postScenarioSummary,
   scenariosClosedByCompleting,
 } from '@/features/campaign/rules'
+import { useDocumentTitle } from '@/shared/hooks/useDocumentTitle'
 
 export function PostScenarioChecklist() {
   const { campaignId } = useParams<{ campaignId: string }>()
   const { isLoaded, campaign } = useLoadedCampaign(campaignId)
+  useDocumentTitle('Finish Scenario', campaign?.name)
   const setScenarioStatus = useCampaignStore((s) => s.setScenarioStatus)
 
   // Local state - does not persist to DB
@@ -106,7 +108,7 @@ export function PostScenarioChecklist() {
         {/* Back link */}
         <Link
           to={`/campaign/${campaignId}`}
-          className="text-sm text-zinc-500 hover:text-amber-400 transition-colors"
+          className="inline-flex min-h-11 items-center text-sm text-zinc-400 transition-colors hover:text-amber-400"
         >
           ← Back to campaign
         </Link>
@@ -126,8 +128,9 @@ export function PostScenarioChecklist() {
 
               {/* Scenario Selector */}
               <div className="mb-4">
-                <label className="mb-2 block text-xs text-zinc-500">Scenario</label>
+                <label htmlFor="checklist-scenario" className="mb-2 block text-xs text-zinc-500">Scenario</label>
                 <select
+                  id="checklist-scenario"
                   value={selected.id}
                   onChange={(e) => {
                     setPickedScenarioId(Number(e.target.value))
@@ -135,7 +138,7 @@ export function PostScenarioChecklist() {
                     setConfirmingComplete(false)
                     setCheckedSteps(new Set())
                   }}
-                  className="w-full rounded-md border border-zinc-600 bg-zinc-700 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500 focus:outline-none"
+                  className="min-h-11 w-full rounded-md border border-zinc-600 bg-zinc-700 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500 focus:outline-none"
                 >
                   {playable.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -147,8 +150,8 @@ export function PostScenarioChecklist() {
 
               {/* Outcome toggle */}
               <div className="mb-4">
-                <label className="mb-2 block text-xs text-zinc-500">Outcome</label>
-                <div className="flex gap-2">
+                <p id="checklist-outcome" className="mb-2 block text-xs text-zinc-500">Outcome</p>
+                <div role="group" aria-labelledby="checklist-outcome" className="flex gap-2">
                   <button
                     type="button"
                     onClick={() => {
@@ -157,10 +160,10 @@ export function PostScenarioChecklist() {
                       setCheckedSteps(new Set())
                     }}
                     className={cn(
-                      'flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                      'min-h-11 flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors',
                       outcome === 'success'
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-zinc-700 text-zinc-400 hover:bg-zinc-600'
+                        ? 'bg-emerald-700 text-white'
+                        : 'bg-zinc-700 text-zinc-300 hover:bg-zinc-600'
                     )}
                   >
                     Success (Won)
@@ -172,10 +175,10 @@ export function PostScenarioChecklist() {
                       setCheckedSteps(new Set())
                     }}
                     className={cn(
-                      'flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                      'min-h-11 flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors',
                       outcome === 'failure'
                         ? 'bg-red-600 text-white'
-                        : 'bg-zinc-700 text-zinc-400 hover:bg-zinc-600'
+                        : 'bg-zinc-700 text-zinc-300 hover:bg-zinc-600'
                     )}
                   >
                     Failure (Lost)
@@ -185,12 +188,13 @@ export function PostScenarioChecklist() {
 
               {/* Scenario level selector */}
               <div className="mb-4">
-                <label className="mb-2 block text-xs text-zinc-500">Scenario Level</label>
+                <label htmlFor="checklist-level" className="mb-2 block text-xs text-zinc-500">Scenario Level</label>
                 <select
+                  id="checklist-level"
                   value={scenarioLevel}
                   onChange={(e) => setLevelOverride(Number(e.target.value))}
                   disabled={selected.id <= 5}
-                  className="w-full rounded-md border border-zinc-600 bg-zinc-700 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+                  className="min-h-11 w-full rounded-md border border-zinc-600 bg-zinc-700 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {tables.scenarioLevelTable.map((row) => (
                     <option key={row.level} value={row.level}>
@@ -207,13 +211,14 @@ export function PostScenarioChecklist() {
 
               {/* Money tokens */}
               <div className="flex items-center gap-3">
-                <label className="text-sm text-zinc-400">Money tokens (per character)</label>
+                <label htmlFor="checklist-money" className="text-sm text-zinc-400">Money tokens (per character)</label>
                 <input
+                  id="checklist-money"
                   type="number"
                   min={0}
                   value={moneyTokens}
                   onChange={(e) => setMoneyTokens(Math.max(0, parseInt(e.target.value, 10) || 0))}
-                  className="w-20 rounded-md border border-zinc-600 bg-zinc-700 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500 focus:outline-none"
+                  className="min-h-11 w-20 rounded-md border border-zinc-600 bg-zinc-700 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500 focus:outline-none"
                 />
                 <span className="text-sm text-zinc-500">×</span>
                 <span className="text-sm font-semibold text-amber-400">{summary.goldPerToken}</span>
@@ -269,7 +274,7 @@ export function PostScenarioChecklist() {
                         )}
                       >
                         {step.text}
-                        <span className="mt-0.5 block text-[10px] text-zinc-600">
+                        <span className="mt-0.5 block text-[10px] text-zinc-500">
                           {formatSource(step.source)}
                         </span>
                       </span>
@@ -291,7 +296,7 @@ export function PostScenarioChecklist() {
                         setConfirmingComplete(false)
                         void markComplete()
                       }}
-                      className="rounded-md bg-amber-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-amber-500"
+                      className="rounded-md bg-amber-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-amber-500"
                     >
                       Confirm
                     </button>
@@ -315,7 +320,7 @@ export function PostScenarioChecklist() {
                     }
                     void markComplete()
                   }}
-                  className="mt-4 w-full rounded-md bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="mt-4 min-h-11 w-full rounded-md bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {campaign.scenarioStatus[selected.id] === 'completed'
                     ? 'Scenario already completed'

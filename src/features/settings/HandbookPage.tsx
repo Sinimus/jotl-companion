@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom'
 import { scenarios } from '@/data'
+import { useDocumentTitle } from '@/shared/hooks/useDocumentTitle'
 
 export function HandbookPage() {
+  useDocumentTitle('User Handbook')
   return (
     <div className="mx-auto max-w-2xl px-4 py-8 pb-24">
       {/* Back link */}
       <Link
         to="/settings"
-        className="mb-6 block text-sm text-zinc-500 hover:text-amber-400 transition-colors"
+        className="mb-4 inline-flex min-h-11 items-center text-sm text-zinc-400 transition-colors hover:text-amber-400"
       >
         ← Back to settings
       </Link>
@@ -143,7 +145,7 @@ export function HandbookPage() {
 
         <footer className="mt-12 text-center">
           <p className="text-sm text-zinc-500">License: GNU GPLv3</p>
-          <p className="mt-4 text-xs text-zinc-600 italic">
+          <p className="mt-4 text-xs text-zinc-500 italic">
             Disclaimer: This is an unofficial fan project and is not affiliated with Cephalofair Games.
           </p>
         </footer>

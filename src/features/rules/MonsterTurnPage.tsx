@@ -1,4 +1,5 @@
 import { HexDiagram, type DiagramArrow, type DiagramHex } from './HexDiagram'
+import { useDocumentTitle } from '@/shared/hooks/useDocumentTitle'
 
 // ---------------------------------------------------------------------------
 // The monster turn as a step-by-step procedure with small hex diagrams,
@@ -205,6 +206,7 @@ function StepDiagramCard({ diagram }: { diagram: StepDiagram }) {
 }
 
 export function MonsterTurnPage() {
+  useDocumentTitle('Monster Turn')
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       {/* Header */}

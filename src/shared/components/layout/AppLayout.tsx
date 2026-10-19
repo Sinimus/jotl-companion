@@ -5,7 +5,7 @@ import { BottomNav } from './BottomNav'
 export function AppLayout() {
   return (
     <div className="flex min-h-screen flex-col bg-zinc-950 text-zinc-100">
-      <main className="flex-1 pb-24">
+      <main className="flex-1 pb-[calc(6rem+env(safe-area-inset-bottom))]">
         <Suspense
           fallback={
             <div className="flex min-h-screen items-center justify-center">

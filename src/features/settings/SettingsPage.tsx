@@ -4,8 +4,10 @@ import { useCampaignStore } from '@/features/campaign/store'
 import { MigrationNotes } from '@/features/campaign'
 import type { MigrationNote } from '@/shared/db'
 import { version } from '../../../package.json'
+import { useDocumentTitle } from '@/shared/hooks/useDocumentTitle'
 
 export function SettingsPage() {
+  useDocumentTitle('Settings')
   const [status, setStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null)
   const [importNotes, setImportNotes] = useState<MigrationNote[]>([])
   
@@ -194,7 +196,7 @@ export function SettingsPage() {
             href="https://github.com/Sinimus/jotl-companion"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-amber-500 hover:underline"
+            className="inline-flex min-h-11 items-center text-amber-500 hover:underline"
           >
             GitHub Repository
           </a>
