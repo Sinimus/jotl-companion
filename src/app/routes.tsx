@@ -25,6 +25,9 @@ const GlossaryPage = lazy(() =>
 const ReferencePage = lazy(() =>
   import('@/features/rules/ReferencePage').then((m) => ({ default: m.ReferencePage })),
 )
+const RoundCardPage = lazy(() =>
+  import('@/features/rules/RoundCardPage').then((m) => ({ default: m.RoundCardPage })),
+)
 const MonsterTurnPage = lazy(() =>
   import('@/features/rules/MonsterTurnPage').then((m) => ({ default: m.MonsterTurnPage })),
 )
@@ -49,6 +52,7 @@ export function AppRoutes() {
         <Route path="/rules" element={<RulesLayout />}>
           <Route index element={<GlossaryPage />} />
           <Route path="glossary" element={<GlossaryPage />} />
+          <Route path="round" element={<RoundCardPage />} />
           <Route path="reference" element={<ReferencePage />} />
           <Route path="monster-turn" element={<MonsterTurnPage />} />
           {/* Bookmarks to the removed focus calculator land on its successor. */}
