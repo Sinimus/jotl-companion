@@ -258,6 +258,62 @@ describe('computeScenarioResult and applyScenarioResult', () => {
     expect(after.characters[0]).toMatchObject({ experience: 58, gold: 6, checkmarks: 3 })
   })
 
+  it('records Scenario 9 at level 4: tokens × 4 gold, dial + 12 bonus + 20 reward XP, checkmark, shop, unlock, log', () => {
+    const before = campaign(
+      [hero({ experience: 150, gold: 7, checkmarks: 1 }), hero({ id: RED_GUARD_ID, type: 'red_guard', name: 'Red', experience: 140 })],
+      statusAfter([1, 2, 3, 4, 5, 6, 7], [9])
+    )
+    const result = computeScenarioResult(before, {
+      scenarioId: 9,
+      success: true,
+      scenarioLevel: 4,
+      characters: [
+        played(HATCHET_ID, { moneyTokens: 3, actionXp: 11, battleGoalMet: true }),
+        played(RED_GUARD_ID, { moneyTokens: 0, actionXp: 2, battleGoalMet: false }),
+      ],
+      itemRecipients: {},
+    })
+    // LtP p.29: level 4 converts at 4 gold per token and gives 12 bonus experience.
+    expect(result.rules).toMatchObject({ goldPerToken: 4, bonusXp: 12 })
+    expect(result.characters[0]).toMatchObject({ goldFromTokens: 12, rewardGold: 0, gold: 12 })
+    expect(result.characters[0]).toMatchObject({ actionXp: 11, bonusXp: 12, rewardXp: 20, experience: 43, checkmarks: 1 })
+    expect(result.characters[1]).toMatchObject({ gold: 0, experience: 34, checkmarks: 0 })
+    expect(result.shopItems).toEqual([15, 16, 17, 18, 19, 20])
+    expect(result.unlocks).toEqual([10])
+
+    const after = applyScenarioResult(before, result, meta)
+    expect(after.characters.map((c) => [c.gold, c.experience, c.checkmarks])).toEqual([[19, 193, 2], [0, 174, 0]])
+    expect(after.characters[0].experience).toBeGreaterThanOrEqual(150)
+    expect(after.scenarioStatus[9]).toBe('completed')
+    expect(after.scenarioStatus[10]).toBe('unlocked')
+    expect(after.scenarioLog).toEqual([
+      {
+        id: meta.logId,
+        scenarioId: 9,
+        success: true,
+        scenarioLevel: 4,
+        recordedAt: now,
+        characters: [
+          expect.objectContaining({ name: 'Hatchet', gold: 12, experience: 43, checkmarks: 1, levelBefore: 4, levelAfter: 4 }),
+          expect.objectContaining({ name: 'Red', gold: 0, experience: 34, checkmarks: 0, levelBefore: 3, levelAfter: 4 }),
+        ],
+      },
+    ])
+  })
+
+  it('adds the gold reward to the token gold (Scenario 15: 10 gold each at level 2)', () => {
+    const before = campaign([hero({ gold: 5 })], statusAfter([1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 13], [15]))
+    const result = computeScenarioResult(before, {
+      scenarioId: 15,
+      success: true,
+      scenarioLevel: 2,
+      characters: [played(HATCHET_ID, { moneyTokens: 5 })],
+      itemRecipients: {},
+    })
+    expect(result.characters[0]).toMatchObject({ goldFromTokens: 15, rewardGold: 10, gold: 25 })
+    expect(applyScenarioResult(before, result, meta).characters[0].gold).toBe(30)
+  })
+
   it('keeps tokens and experience on a loss but gives no rewards, bonus or checkmark (LtP p.16, p.25)', () => {
     const before = campaign([hero({ experience: 10 })], statusAfter([1, 2, 3, 4, 5], [6]))
     const result = computeScenarioResult(before, {
