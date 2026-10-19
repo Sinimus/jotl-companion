@@ -76,7 +76,7 @@ export function HandbookPage() {
           <p className="mb-4 text-zinc-400">This tab tracks the state of all {scenarios.length} scenarios in the game.</p>
           <ul className="list-disc space-y-2 pl-5 text-zinc-400">
             <li><strong className="font-semibold text-zinc-500">Locked (Gray):</strong> You cannot play this yet. Tap to manually unlock (e.g. from a City Event).</li>
-            <li><strong className="font-semibold text-amber-500">Unlocked (Amber):</strong> Available to play. Tap to mark as completed.</li>
+            <li><strong className="font-semibold text-amber-500">Unlocked (Amber):</strong> Available to play. Tap to mark as completed by hand; to record gold, experience and rewards as well, use Finish Scenario.</li>
             <li><strong className="font-semibold text-emerald-500">Completed (Green):</strong> Already finished. Tap to revert if needed.</li>
             <li><strong className="font-semibold text-zinc-200">Goals:</strong> Each card displays the scenario's objective (e.g., "Kill all enemies").</li>
           </ul>
@@ -91,6 +91,7 @@ export function HandbookPage() {
             <li><strong className="font-semibold text-zinc-200">Stats:</strong> Manage Level, Experience (XP), and Gold. Leveling up automatically increases HP and adjusts Perk count.</li>
             <li><strong className="font-semibold text-zinc-200">Checkmarks:</strong> Track battle goal checkmarks. Every 3 checkmarks grant a Perk.</li>
             <li><strong className="font-semibold text-zinc-200">Perks:</strong> Select perks as you earn them. The app validates that you don't exceed your earned perks.</li>
+            <li><strong className="font-semibold text-zinc-200">Ability Cards:</strong> Choose the hand for the next scenario from the cards available at this point of the campaign, within the hand size. After a level-up, add one card of that level or lower; the panel opens by itself when a card is waiting.</li>
             <li><strong className="font-semibold text-zinc-200">Items:</strong> Browse the Shop to buy items or manage your Inventory. Slot limits are enforced.</li>
           </ul>
         </section>
@@ -101,20 +102,22 @@ export function HandbookPage() {
           <h2 className="mb-4 text-xl font-bold text-amber-500">5. Tools & Utilities</h2>
           <p className="mb-4 text-zinc-400">The Campaign Dashboard provides quick access to essential tools.</p>
           
-          <h3 className="mb-2 text-lg font-semibold text-zinc-200">Scenario Level Calculator</h3>
-          <p className="mb-4 text-zinc-400 italic">Located in the "Tools" section of the Party tab.</p>
+          <h3 className="mb-2 text-lg font-semibold text-zinc-200">Learning Scenarios 1–5</h3>
           <ul className="mb-6 list-disc space-y-2 pl-5 text-zinc-400">
-            <li><strong className="font-semibold text-zinc-200">Party Overview:</strong> Shows everyone's level and the calculated average.</li>
-            <li><strong className="font-semibold text-zinc-200">Difficulty Selector:</strong> Choose Easy, Normal, Hard, or Very Hard.</li>
-            <li><strong className="font-semibold text-zinc-200">Results:</strong> Instantly see Monster Level, Trap Damage, Gold Conversion, and Bonus XP.</li>
+            <li>What the Learn to Play Guide introduces before each of the first five scenarios and what changes after it, with the cards of your party by name.</li>
           </ul>
 
-          <h3 className="mb-2 text-lg font-semibold text-zinc-200">Post-Scenario Checklist</h3>
-          <p className="mb-4 text-zinc-400 italic">Located in the "Tools" section of the Party tab.</p>
+          <h3 className="mb-2 text-lg font-semibold text-zinc-200">Set Up Scenario</h3>
+          <ul className="mb-6 list-disc space-y-2 pl-5 text-zinc-400">
+            <li><strong className="font-semibold text-zinc-200">Next scenario:</strong> level, trap damage, battle goals and whether every hand is ready; monsters and rewards only after you reveal them.</li>
+            <li><strong className="font-semibold text-zinc-200">Scenario level:</strong> party levels and difficulty give the monster level, trap damage, gold per token and bonus experience.</li>
+          </ul>
+
+          <h3 className="mb-2 text-lg font-semibold text-zinc-200">Finish Scenario</h3>
           <ul className="list-disc space-y-2 pl-5 text-zinc-400">
-            <li>Use this after finishing a game session to record XP and Gold.</li>
-            <li><strong className="font-semibold text-zinc-200">Gold Calculator:</strong> Enter looted tokens to calculate total gold based on scenario level.</li>
-            <li><strong className="font-semibold text-zinc-200">Step-by-Step Guide:</strong> Ensures you don't miss conclusion text, rewards, or record updates.</li>
+            <li>Enter the money tokens, the experience on each dial and the battle goals, choose who takes a reward item, then record: gold, experience, checkmarks, perks and items go onto the character sheets and the scenario is completed with its unlocks and closes.</li>
+            <li>A lost attempt records gold and experience only; the scenario stays open.</li>
+            <li>Afterwards a list of what is left at the table: stickers, shop items, card changes, level-ups, the city event and the refresh.</li>
           </ul>
         </section>
 
@@ -125,6 +128,7 @@ export function HandbookPage() {
           <p className="mb-4 text-zinc-400">Access the <strong className="font-semibold text-zinc-200">Rules</strong> section via the bottom navigation bar.</p>
           <ul className="list-disc space-y-2 pl-5 text-zinc-400">
             <li><strong className="font-semibold text-zinc-200">Glossary:</strong> A searchable dictionary of game terms.</li>
+            <li><strong className="font-semibold text-zinc-200">Round:</strong> The four steps of a round, rests, negating damage, exhaustion and elements on one screen.</li>
             <li><strong className="font-semibold text-zinc-200">Reference:</strong> Conditions, elements and the element board, and short guides (round structure, line of sight, advantage).</li>
             <li><strong className="font-semibold text-zinc-200">Monster Turn:</strong> The monster turn procedure step by step with diagrams (Rules Glossary p.26).</li>
           </ul>

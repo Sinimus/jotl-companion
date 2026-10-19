@@ -11,14 +11,15 @@ The app is unofficial. Every row of its game data names its source: a page of th
 ## Features
 
 - **Campaign management:** several campaigns, scenario unlocks and party progress.
-- **Character sheets:** HP, XP, gold, perks, ability cards (A/B, 1, X, 2 to 9, hand limit) and battle goal checkmarks; items owned and items brought into the next scenario are kept apart, the shop checks gold and the copies in the party.
+- **Character sheets:** HP, XP, gold, perks and battle goal checkmarks; the hand for the next scenario is chosen from the cards of the campaign stage (A/B, level 1, X, cards gained at level-up) within the hand size; items owned and items brought into the next scenario are kept apart, the shop checks gold and the copies in the party.
 - **Scenario tracker:** locked, unlocked, completed and closed scenarios (completing a branch closes its alternative); goal and location, with monsters, treasures and rewards behind a spoiler button.
 - **Tools:**
-  - scenario level calculator (party average and difficulty),
-  - post-scenario checklist (gold, bonus experience, battle goals, events, level up, closed scenarios and the one-time steps of scenarios 1 to 5).
-- **Rules reference:** glossary with page numbers, conditions, elements, short guides and the monster turn step by step.
+  - learning scenarios 1 to 5: what each introduces and what changes after it, bound to the campaign,
+  - set up scenario: briefing of the next scenario (spoilers behind a reveal) and the scenario level calculator,
+  - finish scenario: records gold, experience, checkmarks, reward perks and items, completes the scenario with its unlocks and closes, logs the result and lists what is left at the table.
+- **Rules reference:** glossary with page numbers, the round on one screen, conditions, elements, short guides and the monster turn step by step.
 - **Offline first:** a Progressive Web App; campaigns are stored in the browser (IndexedDB).
-- **Data portability:** export and import of campaign data as JSON backups. An old backup is converted on import like stored data (database version 2: items 37 to 52 refunded, card names to card ids).
+- **Data portability:** export and import of campaign data as JSON backups. An old backup is converted on import like stored data (database version 2: items 37 to 52 refunded, card names to card ids; version 3: cards of level 2 and above split off as cards gained at level-up, an empty scenario log).
 
 ## Tech stack
 
