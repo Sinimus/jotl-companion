@@ -489,3 +489,57 @@ describe('the version 3 database upgrade over S4 data', () => {
     expect(campaigns.flatMap((c) => c.characters).every((ch) => Array.isArray(ch.unlockedAbilityIds))).toBe(true)
   })
 })
+
+describe('recordScenarioResult', () => {
+  it('writes the gains, completes the scenario and logs it in the database', async () => {
+    const store = useCampaignStore.getState()
+    await store.createCampaign({ name: 'Record' })
+    const campaignId = useCampaignStore.getState().campaigns[0].id
+    await store.addCharacter(campaignId, { type: 'hatchet', name: 'Axe' })
+    const characterId = useCampaignStore.getState().campaigns[0].characters[0].id
+    await store.setScenarioStatus(campaignId, 1, 'completed')
+
+    await store.recordScenarioResult(campaignId, {
+      scenarioId: 2,
+      success: true,
+      scenarioLevel: 1,
+      characters: [{ characterId, played: true, moneyTokens: 3, actionXp: 0, battleGoalMet: false }],
+      itemRecipients: {},
+    })
+
+    const [stored] = await db.campaigns.toArray()
+    expect(stored.characters[0].gold).toBe(31)
+    expect(stored.scenarioStatus[2]).toBe('completed')
+    expect(stored.scenarioStatus[3]).toBe('unlocked')
+    expect(stored.scenarioLog).toHaveLength(1)
+    await expect(
+      store.recordScenarioResult(campaignId, {
+        scenarioId: 2,
+        success: true,
+        scenarioLevel: 1,
+        characters: [],
+        itemRecipients: {},
+      })
+    ).rejects.toThrow()
+  })
+})
+
+describe('cards gained at level-up', () => {
+  it('adds an allowed card, refuses one above the level and removes it from the hand too', async () => {
+    const store = useCampaignStore.getState()
+    await store.createCampaign({ name: 'Cards' })
+    const campaignId = useCampaignStore.getState().campaigns[0].id
+    await store.addCharacter(campaignId, { type: 'hatchet', name: 'Axe' })
+    const characterId = useCampaignStore.getState().campaigns[0].characters[0].id
+    await store.updateCharacter(campaignId, characterId, { experience: 45 })
+
+    await expect(store.unlockAbility(campaignId, characterId, 'hatchet-3-sharpened-blades')).rejects.toThrow()
+    await store.unlockAbility(campaignId, characterId, 'hatchet-2-repeat-shot')
+    await store.updateCharacter(campaignId, characterId, { selectedAbilityIds: ['hatchet-2-repeat-shot'] })
+    await store.removeUnlockedAbility(campaignId, characterId, 'hatchet-2-repeat-shot')
+
+    const [character] = useCampaignStore.getState().campaigns[0].characters
+    expect(character.unlockedAbilityIds).toEqual([])
+    expect(character.selectedAbilityIds).toEqual([])
+  })
+})

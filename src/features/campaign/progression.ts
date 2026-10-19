@@ -419,3 +419,94 @@ export function applyScenarioResult(
     updatedAt: meta.now,
   }
 }
+
+// ---------------------------------------------------------------------------
+// What is left to do by hand after a result is recorded
+// ---------------------------------------------------------------------------
+
+export interface FollowUpStep {
+  text: string
+  source: string
+}
+
+/** Item numbers as the cards print them: 1-13 → "01-13", one item → "14". */
+function itemRange(ids: number[]): string {
+  const pad = (id: number) => String(id).padStart(2, '0')
+  if (ids.length === 0) return ''
+  const first = ids[0]
+  const last = ids[ids.length - 1]
+  return first === last ? pad(first) : `${pad(first)}-${pad(last)}`
+}
+
+/**
+ * The steps that follow a recorded result: what the app cannot do for the
+ * players (stickers, cards, the event deck, refreshing the figures) and the
+ * level-ups and perks the result brought.  Checkmarks before are needed to see
+ * whether a third checkmark completed a perk.
+ */
+export function followUpSteps(
+  result: ScenarioResult,
+  checkmarksBefore: Record<string, number>
+): FollowUpStep[] {
+  const scenario = requireScenario(result.scenarioId)
+  const steps: FollowUpStep[] = []
+
+  if (!result.success) {
+    steps.push({
+      text: 'Set the scenario up again to retry it; looted treasure tiles stay looted',
+      source: 'LtP p.16',
+    })
+  } else {
+    if (result.unlocks.length > 0) {
+      steps.push({
+        text: `Place the stickers of the new locations: scenario ${result.unlocks.join(', ')}`,
+        source: scenario.unlocksSource,
+      })
+    }
+    if (result.closes.length > 0) {
+      steps.push({
+        text: `Cross off the closed scenario ${result.closes.join(', ')} on the map; it can no longer be played`,
+        source: `${scenario.blocksSource}, LtP p.30`,
+      })
+    }
+    if (result.shopItems.length > 0) {
+      steps.push({
+        text: `Move items ${itemRange(result.shopItems)} to the available side of the item deck`,
+        source: scenario.rewardsSource,
+      })
+    }
+    if (result.scenarioId <= 4) {
+      const cardPage: Record<number, string> = { 1: 'LtP p.13', 2: 'LtP p.19', 3: 'LtP p.24', 4: 'LtP p.27' }
+      steps.push({ text: 'Change the ability cards as listed below', source: cardPage[result.scenarioId] })
+    }
+  }
+
+  for (const c of result.characters) {
+    if (c.perks > 0) {
+      steps.push({ text: `${c.name}: take ${c.perks} perk${c.perks > 1 ? 's' : ''} from the reward`, source: 'LtP p.24' })
+    }
+    const before = checkmarksBefore[c.characterId] ?? 0
+    const newPerks = Math.floor((before + c.checkmarks) / 3) - Math.floor(before / 3)
+    if (newPerks > 0) {
+      steps.push({ text: `${c.name}: three checkmarks complete a perk; take it`, source: 'LtP p.25' })
+    }
+    if (c.levelAfter > c.levelBefore) {
+      steps.push({
+        text: `${c.name} reaches level ${c.levelAfter}: add one card of level ${c.levelAfter} or lower, take one perk, maximum HP ${c.hitPointsAfter}`,
+        source: 'LtP p.29',
+      })
+    }
+  }
+
+  if (result.rules.cityEvent) {
+    steps.push({ text: 'Draw a city event, choose option A or B together and apply the outcome', source: 'LtP p.24' })
+  }
+  steps.push({
+    text: 'Full refresh: all cards and items back, conditions removed, Bless and Curse cards removed, HP to maximum',
+    source: 'LtP p.13, LtP p.23',
+  })
+  if (result.scenarioId >= 2 || result.shopItems.length > 0) {
+    steps.push({ text: 'Buy, sell (half the price, rounded up) or trade items; gold cannot be traded', source: 'LtP p.19' })
+  }
+  return steps
+}

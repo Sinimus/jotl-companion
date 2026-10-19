@@ -10,7 +10,6 @@ import {
   itemAvailability,
   partyCopiesOwned,
   perkPoints,
-  postScenarioSummary,
   scenarioLevelRow,
   scenariosClosedByCompleting,
 } from './rules'
@@ -272,65 +271,6 @@ describe('abilityWarnings', () => {
 // Post-scenario checklist: scenario 1 rewards nothing (SB p.2, LtP p.13),
 // scenarios 2-5 pay a fixed 2 gold per money token (LtP pp.18, p.29), from
 // scenario 6 on the scenario level chart applies (LtP p.29).
-describe('postScenarioSummary', () => {
-  const summary = (overrides: Partial<Parameters<typeof postScenarioSummary>[0]> = {}) =>
-    postScenarioSummary({ scenarioId: 1, success: true, scenarioLevel: 1, moneyTokens: 0, ...overrides })
-  const textsOf = (result: ReturnType<typeof postScenarioSummary>) => result.steps.map((s) => s.text)
-
-  it('rewards no gold and no bonus experience for scenario 1', () => {
-    const result = summary({ scenarioId: 1, moneyTokens: 3 })
-    expect(result.goldPerToken).toBe(0)
-    expect(result.goldFromTokens).toBe(0)
-    expect(result.bonusXp).toBe(0)
-    expect(result.battleGoals).toBe(false)
-    expect(result.cityEvent).toBe(false)
-    expect(textsOf(result)).toContain('Swap the two A cards for the two B cards of the same name (hand of 6)')
-  })
-
-  it('pays 2 gold per token in scenario 2 and lists the shop reward', () => {
-    const result = summary({ scenarioId: 2, moneyTokens: 3 })
-    expect(result.goldPerToken).toBe(2)
-    expect(result.goldFromTokens).toBe(6)
-    expect(result.bonusXp).toBe(0)
-    expect(textsOf(result).some((text) => text.includes('25 gold each'))).toBe(true)
-  })
-
-  it('awards chart bonus experience and a city event from scenario 3 on', () => {
-    const result = summary({ scenarioId: 3, scenarioLevel: 1 })
-    expect(result.bonusXp).toBe(6)
-    expect(result.cityEvent).toBe(true)
-    expect(result.battleGoals).toBe(false)
-  })
-
-  it('checks battle goals from scenario 4 on (LtP p.25)', () => {
-    expect(summary({ scenarioId: 3 }).battleGoals).toBe(false)
-    expect(summary({ scenarioId: 4 }).battleGoals).toBe(true)
-  })
-
-  it('uses the scenario level chart from scenario 6 on and names the closed alternative', () => {
-    const result = summary({ scenarioId: 7, scenarioLevel: 3, moneyTokens: 4 })
-    expect(result.goldPerToken).toBe(3)
-    expect(result.goldFromTokens).toBe(12)
-    expect(result.bonusXp).toBe(10)
-    const closed = result.steps.find((step) => step.text.startsWith('Closed scenario(s):'))
-    expect(closed?.text).toContain('8 (Hidden Tumor)')
-    expect(closed?.source).toBe('GHS, Glossary p.18')
-  })
-
-  it('closes scenario 11 when scenario 12 is completed', () => {
-    const result = summary({ scenarioId: 12, scenarioLevel: 1 })
-    expect(textsOf(result).some((text) => text.includes('11 (Defiled Sewers)'))).toBe(true)
-  })
-
-  it('keeps the gold of looted tokens on a failure but nothing else (LtP p.16)', () => {
-    const result = summary({ scenarioId: 3, success: false, moneyTokens: 2 })
-    expect(result.goldFromTokens).toBe(4)
-    expect(result.bonusXp).toBe(0)
-    expect(result.cityEvent).toBe(false)
-    expect(result.battleGoals).toBe(false)
-  })
-})
-
 // Completing a scenario closes its not-completed alternatives (Glossary p.18).
 describe('scenariosClosedByCompleting', () => {
   it('lists only the blocks that are not completed', () => {

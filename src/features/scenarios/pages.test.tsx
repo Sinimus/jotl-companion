@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { scenarios } from '@/data'
 import { CampaignSchema, type Campaign, type ScenarioStatus } from '@/shared/schemas'
 import { LearningGuide } from './LearningGuidePage'
+import { FinishScenario } from './PostScenarioChecklist'
 
 // First render of the S5 campaign pages for a loaded campaign, as a reader or
 // a view-source would see it.
@@ -66,5 +67,28 @@ describe('LearningGuidePage', () => {
     const markup = html(<LearningGuide campaign={campaignAt([1, 2, 3, 4, 5], [6])} />)
     expect(markup).toContain('finished the learning scenarios')
     expect(markup).not.toContain('Up next')
+  })
+})
+
+describe('FinishScenario', () => {
+  it('offers only unlocked scenarios and keeps the names of what it unlocks out of the page', () => {
+    const markup = html(<FinishScenario campaign={campaignAt([1, 2, 3, 4, 5, 6], [7, 8])} />)
+    expect(markup).toContain('1. Scenario and outcome')
+    expect(markup).toContain('2. What each character collected')
+    expect(markup).toContain('Experience from the dial')
+    expect(markup).toContain('Battle goal met')
+    expect(markup).toContain('Unlocks scenario 9')
+    expect(markup).toContain('Closes scenario 8')
+    const scenarioNine = scenarios.find((s) => s.id === 9)?.name ?? ''
+    expect(markup).not.toContain(scenarioNine)
+    expect(markup).not.toContain('>1 Roadside Ambush<')
+  })
+
+  it('asks for no experience before Scenario 3 and no battle goal before Scenario 4', () => {
+    const markup = html(<FinishScenario campaign={campaignAt([1], [2])} />)
+    expect(markup).toContain('Money tokens')
+    expect(markup).not.toContain('Experience from the dial')
+    expect(markup).not.toContain('Battle goal met')
+    expect(markup).toContain('25 gold each')
   })
 })

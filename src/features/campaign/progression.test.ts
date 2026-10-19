@@ -7,6 +7,7 @@ import {
   canUnlockCard,
   cardPool,
   computeScenarioResult,
+  followUpSteps,
   handCheck,
   handSize,
   isValidUnlockSet,
@@ -377,5 +378,56 @@ describe('learning guide', () => {
         expect([...before].sort()).toEqual(ids(cardPool(type, stage, [])).sort())
       }
     }
+  })
+})
+
+describe('followUpSteps', () => {
+  const run = (before: Campaign, input: Parameters<typeof computeScenarioResult>[1]) => {
+    const result = computeScenarioResult(before, input)
+    const checkmarks = Object.fromEntries(before.characters.map((c) => [c.id, c.checkmarks]))
+    return followUpSteps(result, checkmarks).map((step) => step.text)
+  }
+
+  it('lists the stickers, the shop items, the cards and the refresh after Scenario 2', () => {
+    const texts = run(campaign([hero()], statusAfter([1], [2])), {
+      scenarioId: 2,
+      success: true,
+      scenarioLevel: 1,
+      characters: [played(HATCHET_ID)],
+      itemRecipients: {},
+    })
+    expect(texts).toEqual([
+      'Place the stickers of the new locations: scenario 3',
+      'Move items 01-13 to the available side of the item deck',
+      'Change the ability cards as listed below',
+      'Full refresh: all cards and items back, conditions removed, Bless and Curse cards removed, HP to maximum',
+      'Buy, sell (half the price, rounded up) or trade items; gold cannot be traded',
+    ])
+  })
+
+  it('names the level-up, the checkmark perk and the city event after Scenario 5', () => {
+    const texts = run(campaign([hero({ experience: 20, checkmarks: 2 })], statusAfter([1, 2, 3, 4], [5])), {
+      scenarioId: 5,
+      success: true,
+      scenarioLevel: 1,
+      characters: [played(HATCHET_ID, { actionXp: 5, battleGoalMet: true })],
+      itemRecipients: {},
+    })
+    expect(texts).toContain('Hatchet: three checkmarks complete a perk; take it')
+    expect(texts).toContain('Hatchet reaches level 2: add one card of level 2 or lower, take one perk, maximum HP 9')
+    expect(texts).toContain('Draw a city event, choose option A or B together and apply the outcome')
+    expect(texts).not.toContain('Change the ability cards as listed below')
+  })
+
+  it('tells the party to replay a lost scenario, with no event', () => {
+    const texts = run(campaign([hero()], statusAfter([1, 2, 3, 4, 5], [6])), {
+      scenarioId: 6,
+      success: false,
+      scenarioLevel: 1,
+      characters: [played(HATCHET_ID)],
+      itemRecipients: {},
+    })
+    expect(texts[0]).toContain('retry')
+    expect(texts.some((t) => t.includes('city event'))).toBe(false)
   })
 })
