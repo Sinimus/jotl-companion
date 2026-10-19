@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { abilities, scenarios } from '@/data'
+import { abilities, items, scenarios } from '@/data'
+import { itemAvailability } from './rules'
 import { CampaignSchema, type Campaign, type CharacterProgress, type ScenarioStatus } from '@/shared/schemas'
 import {
   FIRST_LEVEL_1_CARDS,
@@ -485,5 +486,48 @@ describe('followUpSteps', () => {
     })
     expect(texts[0]).toContain('retry')
     expect(texts.some((t) => t.includes('city event'))).toBe(false)
+  })
+})
+
+describe('rewards open the shop and close branches (item 7)', () => {
+  const meta = { logId: '44444444-5555-4666-8777-888888888888', now: new Date('2026-10-19T21:00:00.000Z') }
+
+  it('puts items 15-20 in the shop after Scenario 9 and nothing of 21-26', () => {
+    const before = campaign([hero()], statusAfter([1, 2, 3, 4, 5, 6, 7], [9]))
+    const result = computeScenarioResult(before, {
+      scenarioId: 9,
+      success: true,
+      scenarioLevel: 1,
+      characters: [played(HATCHET_ID)],
+      itemRecipients: {},
+    })
+    const after = applyScenarioResult(before, result, meta)
+    const availability = (state: Campaign) => (id: number) => {
+      const item = items.find((i) => i.id === id)
+      if (!item) throw new Error(`no item ${id}`)
+      return itemAvailability(item, state)
+    }
+    expect([15, 16, 17, 18, 19, 20].map(availability(after))).toEqual(Array(6).fill('shop'))
+    expect([21, 22, 23, 24, 25, 26].map(availability(after))).toEqual(Array(6).fill('locked'))
+    expect([15, 20].map(availability(before))).toEqual(['locked', 'locked'])
+  })
+
+  it('closes 12 and hands Flea-Bitten Shawl out when Scenario 11 is recorded', () => {
+    const before = campaign([hero()], statusAfter([1, 2, 3, 4, 5, 6, 7, 9, 10], [11, 12]))
+    const result = computeScenarioResult(before, {
+      scenarioId: 11,
+      success: true,
+      scenarioLevel: 1,
+      characters: [played(HATCHET_ID)],
+      itemRecipients: { 28: HATCHET_ID },
+    })
+    const after = applyScenarioResult(before, result, meta)
+    expect(after.scenarioStatus[12]).toBe('closed')
+    expect(after.scenarioStatus[13]).toBe('unlocked')
+    expect(after.scenarioStatus[19]).toBe('unlocked')
+    expect(after.characters[0].itemIds).toEqual([28])
+    // Completing 12 is no longer possible.
+    const again = { scenarioId: 12, success: true, scenarioLevel: 1, characters: [], itemRecipients: {} }
+    expect(computeScenarioResult(after, again).errors).toEqual(['Scenario 12 is closed'])
   })
 })

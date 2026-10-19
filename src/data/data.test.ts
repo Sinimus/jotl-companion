@@ -190,3 +190,43 @@ describe('scenarios', () => {
     }
   })
 })
+
+// The structured rewards (GHS `rewards`) and the item unlocks must tell the
+// same story: what a scenario puts in the shop or hands out is what unlocks
+// the item, and the readable reward lines name the same things.
+describe('scenario rewards and item unlocks agree', () => {
+  it('lists the shop items of a scenario exactly where the items say they unlock', () => {
+    for (const scenario of scenarios) {
+      const fromItems = items
+        .filter((item) => item.unlock.some((u) => u.type === 'shop' && u.scenario === scenario.id))
+        .map((item) => item.id)
+      expect(scenario.reward.shopItems, `scenario ${scenario.id}`).toEqual(fromItems)
+    }
+  })
+
+  it('gives as reward items only items that unlock through that scenario', () => {
+    for (const scenario of scenarios) {
+      for (const itemId of scenario.reward.items) {
+        const item = items.find((i) => i.id === itemId)
+        expect(item?.unlock.some((u) => u.type === 'scenario' && u.scenario === scenario.id), `item ${itemId}`).toBe(true)
+        expect(scenario.rewards.join(' '), `scenario ${scenario.id}`).toContain(item?.name ?? '?')
+      }
+    }
+  })
+
+  it('matches the "each" amounts of the reward lines', () => {
+    for (const scenario of scenarios) {
+      const text = scenario.rewards.join('; ')
+      const amount = (unit: string) => Number(new RegExp(`(\\d+) ${unit} each`).exec(text)?.[1] ?? 0)
+      expect(scenario.reward.goldEach, `scenario ${scenario.id}`).toBe(amount('gold'))
+      expect(scenario.reward.experienceEach, `scenario ${scenario.id}`).toBe(amount('experience'))
+      expect(scenario.reward.checkmarksEach, `scenario ${scenario.id}`).toBe(amount('checkmark'))
+      expect(scenario.reward.perksEach, `scenario ${scenario.id}`).toBe(amount('perk'))
+    }
+  })
+
+  it('pays no token gold in Scenario 1 and no bonus experience in Scenarios 1 and 2 only', () => {
+    expect(scenarios.filter((s) => !s.reward.tokenGold).map((s) => s.id)).toEqual([1])
+    expect(scenarios.filter((s) => !s.reward.bonusExperience).map((s) => s.id)).toEqual([1, 2])
+  })
+})
