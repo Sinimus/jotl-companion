@@ -7,7 +7,7 @@
 function formatSourcePart(part: string): string {
   if (part === 'GHS') return 'GHS (community data)'
   if (part === 'card') return 'card'
-  const book = /^(LtP|SB|Glossary) (p\.\d+)$/.exec(part)
+  const book = /^(LtP|SB|Glossary) (p\.\d+(?:-\d+)?)$/.exec(part)
   if (book) {
     const name =
       book[1] === 'LtP' ? 'Learn to Play' : book[1] === 'SB' ? 'Scenario Book' : 'Rules Glossary'
@@ -19,7 +19,8 @@ function formatSourcePart(part: string): string {
 /**
  * Expand the source codes of the data files for display:
  * "SB p.12" → "Scenario Book p.12", "LtP p.24" → "Learn to Play p.24",
- * "Glossary p.18" → "Rules Glossary p.18", "GHS" → "GHS (community data)",
+ * "Glossary p.18" → "Rules Glossary p.18", "LtP p.3-12" → "Learn to Play p.3-12",
+ * "GHS" → "GHS (community data)",
  * "card" stays as it is; comma-separated lists keep their commas.
  */
 export function formatSource(source: string): string {

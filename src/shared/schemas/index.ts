@@ -14,6 +14,8 @@ export {
 export {
   CampaignSchema,
   CreateCampaignSchema,
+  ScenarioLogEntrySchema,
   type Campaign,
   type CreateCampaign,
+  type ScenarioLogEntry,
 } from './campaign.schema.ts'

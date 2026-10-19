@@ -8,6 +8,10 @@ describe('formatSource', () => {
     expect(formatSource('Glossary p.18')).toBe('Rules Glossary p.18')
   })
 
+  it('expands a page range', () => {
+    expect(formatSource('LtP p.3-12')).toBe('Learn to Play p.3-12')
+  })
+
   it('marks the community data and keeps card as it is', () => {
     expect(formatSource('GHS')).toBe('GHS (community data)')
     expect(formatSource('card')).toBe('card')

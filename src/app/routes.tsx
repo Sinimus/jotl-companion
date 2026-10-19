@@ -10,6 +10,9 @@ import { AppLayout } from '@/shared/components/layout/AppLayout'
 const PostScenarioChecklist = lazy(() =>
   import('@/features/scenarios/PostScenarioChecklist').then((m) => ({ default: m.PostScenarioChecklist })),
 )
+const LearningGuidePage = lazy(() =>
+  import('@/features/scenarios/LearningGuidePage').then((m) => ({ default: m.LearningGuidePage })),
+)
 const CalculatorPage = lazy(() =>
   import('@/features/calculators/CalculatorPage').then((m) => ({ default: m.CalculatorPage })),
 )
@@ -21,6 +24,9 @@ const GlossaryPage = lazy(() =>
 )
 const ReferencePage = lazy(() =>
   import('@/features/rules/ReferencePage').then((m) => ({ default: m.ReferencePage })),
+)
+const RoundCardPage = lazy(() =>
+  import('@/features/rules/RoundCardPage').then((m) => ({ default: m.RoundCardPage })),
 )
 const MonsterTurnPage = lazy(() =>
   import('@/features/rules/MonsterTurnPage').then((m) => ({ default: m.MonsterTurnPage })),
@@ -41,10 +47,12 @@ export function AppRoutes() {
         <Route path="/campaign/:campaignId/character/:characterId" element={<CharacterDetail />} />
         <Route path="/campaign/:campaignId/checklist" element={<PostScenarioChecklist />} />
         <Route path="/campaign/:campaignId/calculators" element={<CalculatorPage />} />
+        <Route path="/campaign/:campaignId/learning" element={<LearningGuidePage />} />
         
         <Route path="/rules" element={<RulesLayout />}>
           <Route index element={<GlossaryPage />} />
           <Route path="glossary" element={<GlossaryPage />} />
+          <Route path="round" element={<RoundCardPage />} />
           <Route path="reference" element={<ReferencePage />} />
           <Route path="monster-turn" element={<MonsterTurnPage />} />
           {/* Bookmarks to the removed focus calculator land on its successor. */}

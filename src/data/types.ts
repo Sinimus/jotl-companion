@@ -60,12 +60,35 @@ export interface Scenario {
   treasures: number[]
   /** Rewards of the conclusion (spoiler). */
   rewards: string[]
+  /** The same rewards in a form the app can apply (spoiler); source: rewardsSource. */
+  reward: ScenarioReward
   /** Source of name, location, goal and monsters. */
   source: string
   unlocksSource: string
   blocksSource: string
   rewardsSource: string
   treasuresSource: string
+}
+
+/**
+ * Structured scenario rewards, generated from the GHS scenario files (`rewards`).
+ * "Each" rewards go to every participating character, items to one character the
+ * players choose (Glossary p.18).
+ */
+export interface ScenarioReward {
+  goldEach: number
+  experienceEach: number
+  /** Battle-goal checkmarks granted to each character as a reward. */
+  checkmarksEach: number
+  perksEach: number
+  /** Item ids given to one character each. */
+  items: number[]
+  /** Item ids that join the shop. */
+  shopItems: number[]
+  /** false: money tokens of this scenario are worth nothing (scenario 1). */
+  tokenGold: boolean
+  /** false: no bonus experience for completing this scenario (scenarios 1 and 2). */
+  bonusExperience: boolean
 }
 
 export type ItemSlot = 'head' | 'body' | 'feet' | 'hand' | 'small'

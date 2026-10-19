@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { useCampaignStore, type UpdateCharacterInput } from './store'
 import { computeLevelFromXp, handLimitFor } from './rules'
+import { learningStage } from './progression'
 import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { characters, tables } from '@/data'
 import { PerkList } from './PerkList'
@@ -27,6 +28,8 @@ export function CharacterDetail() {
   const gainItem = useCampaignStore((s) => s.gainItem)
   const sellItem = useCampaignStore((s) => s.sellItem)
   const setEquippedItems = useCampaignStore((s) => s.setEquippedItems)
+  const unlockAbility = useCampaignStore((s) => s.unlockAbility)
+  const removeUnlockedAbility = useCampaignStore((s) => s.removeUnlockedAbility)
 
   const character = campaign?.characters.find((c) => c.id === characterId)
 
@@ -135,6 +138,14 @@ export function CharacterDetail() {
       await sellItem(campaignId, characterId, itemId)
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Failed to sell item')
+    }
+  }
+
+  const runAction = async (action: () => Promise<void>) => {
+    try {
+      await action()
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Failed to update cards')
     }
   }
 
@@ -289,7 +300,13 @@ export function CharacterDetail() {
               <p className="mt-2 text-center text-xs text-zinc-500">Max 18 checkmarks</p>
             </div>
 
-            <AbilityManager character={character} onUpdateAbilities={handleUpdateAbilities} />
+            <AbilityManager
+              character={character}
+              stage={learningStage(campaign.scenarioStatus)}
+              onSetHand={handleUpdateAbilities}
+              onUnlock={(cardId) => void runAction(() => unlockAbility(campaign.id, character.id, cardId))}
+              onRemoveUnlocked={(cardId) => void runAction(() => removeUnlockedAbility(campaign.id, character.id, cardId))}
+            />
           </div>
         )}
 

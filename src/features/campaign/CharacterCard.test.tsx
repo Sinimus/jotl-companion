@@ -15,6 +15,7 @@ const hero: CharacterProgress = {
   itemIds: [1, 2],
   equippedItemIds: [],
   selectedAbilityIds: [],
+  unlockedAbilityIds: [],
   bonusPerks: 0,
 }
 

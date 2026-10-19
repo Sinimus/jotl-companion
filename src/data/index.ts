@@ -44,6 +44,7 @@ export type {
   ConditionRemoval,
   Element,
   Scenario,
+  ScenarioReward,
   Item,
   ItemSlot,
   ItemUsageType,

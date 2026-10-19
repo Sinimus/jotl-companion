@@ -4,6 +4,7 @@ import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { characters } from '@/data'
 import { computeLevelFromXp, computeScenarioLevel, scenarioLevelRow, type Difficulty } from '@/features/campaign/rules'
 import { useDocumentTitle } from '@/shared/hooks/useDocumentTitle'
+import { ScenarioBriefing } from './ScenarioBriefing'
 
 export function CalculatorPage() {
   const { campaignId } = useParams<{ campaignId: string }>()
@@ -65,7 +66,9 @@ export function CalculatorPage() {
         </Link>
 
         {/* Header */}
-        <h1 className="mt-4 text-2xl font-bold text-amber-500">Game Calculators</h1>
+        <h1 className="mt-4 text-2xl font-bold text-amber-500">Set Up Scenario</h1>
+
+        <ScenarioBriefing campaign={campaign} partyScenarioLevel={finalLevel} />
 
         {/* Party Overview */}
         <div className="mt-6 rounded-lg border border-zinc-700 bg-zinc-800 p-4">

@@ -3,7 +3,9 @@ import type { Item, ItemSlot } from '@/data'
 import { computeLevelFromXp, itemSlotLimits } from '@/features/campaign/rules'
 
 // ---------------------------------------------------------------------------
-// Pure content migration of a stored campaign record to the S3 data model.
+// Pure content migration of a stored campaign record to the current data
+// model: the S3 content fixes (database version 2) and the S5 card pool and
+// scenario log (database version 3).
 // No Dexie, no clock, no mutation of the input — new objects are built and
 // every change is reported as a MigrationNote.  Works on any input: a
 // version-1 record, an already migrated record, or garbage (returned
@@ -20,6 +22,7 @@ export type MigrationNoteKind =
   | 'ability_dropped'
   | 'scenario_closed'
   | 'scenario_conflict'
+  | 'ability_unlocked'
 
 export interface MigrationNote {
   campaignName: string
@@ -57,6 +60,11 @@ for (const perk of perks) {
   }
   ids.add(perk.id)
 }
+
+/** Cards of level 2+ — the ones a character can only have gained at level-up. */
+const levelUpCardIds = new Set(
+  abilities.filter((card) => Number.parseInt(card.level, 10) >= 2).map((card) => card.id)
+)
 
 const abilityIdsByCharacter = new Map<string, Set<string>>()
 // Version 1 stored card names; names map only to the level 1-9 / X cards,
@@ -210,6 +218,25 @@ function migrateCharacter(
   }
   migrated.selectedAbilityIds = keptAbilityIds
 
+  // --- Cards gained at level-up (version 3).  Before it, the app kept one
+  // card list; a level 2+ card in it can only have come from a level-up, so it
+  // moves into the pool.  The hand list itself stays as it is.
+  if (Array.isArray(character.unlockedAbilityIds)) {
+    const kept: string[] = []
+    for (const entry of character.unlockedAbilityIds) {
+      if (typeof entry === 'string' && validAbilityIds.has(entry) && levelUpCardIds.has(entry) && !kept.includes(entry)) {
+        kept.push(entry)
+      }
+    }
+    migrated.unlockedAbilityIds = kept
+  } else {
+    const gained = keptAbilityIds.filter((id) => levelUpCardIds.has(id))
+    if (gained.length > 0) {
+      note('ability_unlocked', `${gained.join(', ')}: kept as cards gained at level-up`)
+    }
+    migrated.unlockedAbilityIds = gained
+  }
+
   return migrated
 }
 
@@ -260,6 +287,7 @@ export function migrateCampaignRecord(raw: unknown): { record: unknown; notes: M
   const migrated: Record<string, unknown> = { ...raw }
   if (!Array.isArray(migrated.lootedTreasureIds)) migrated.lootedTreasureIds = []
   if (!Array.isArray(migrated.cityEventsDrawn)) migrated.cityEventsDrawn = []
+  if (!Array.isArray(migrated.scenarioLog)) migrated.scenarioLog = []
   migrated.characters = Array.isArray(raw.characters)
     ? raw.characters.filter(isRecord).map((character) => migrateCharacter(character, campaignName, notes))
     : []

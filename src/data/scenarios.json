@@ -13,6 +13,16 @@
     ],
     "treasures": [],
     "rewards": [],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [],
+      "tokenGold": false,
+      "bonusExperience": false
+    },
     "source": "SB p.2",
     "unlocksSource": "SB p.2",
     "blocksSource": "GHS",
@@ -38,6 +48,30 @@
       "25 gold each",
       "Items 01-13 added to the shop"
     ],
+    "reward": {
+      "goldEach": 25,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "tokenGold": true,
+      "bonusExperience": false
+    },
     "source": "SB p.4",
     "unlocksSource": "SB p.4",
     "blocksSource": "GHS",
@@ -63,6 +97,16 @@
     "rewards": [
       "1 perk each"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 1,
+      "items": [],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.6",
     "unlocksSource": "LtP p.23",
     "blocksSource": "GHS",
@@ -88,6 +132,18 @@
     "rewards": [
       "Mana Potion (Item 14) to one character"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [
+        14
+      ],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.8",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -114,6 +170,16 @@
     "rewards": [
       "25 experience each"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 25,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.10",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -138,6 +204,16 @@
     "rewards": [
       "1 checkmark each"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 0,
+      "checkmarksEach": 1,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.12",
     "unlocksSource": "SB p.12",
     "blocksSource": "GHS",
@@ -166,6 +242,16 @@
     "rewards": [
       "20 experience each"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 20,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.14",
     "unlocksSource": "SB p.18",
     "blocksSource": "GHS",
@@ -194,6 +280,16 @@
     "rewards": [
       "20 experience each"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 20,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.16",
     "unlocksSource": "SB p.18",
     "blocksSource": "GHS",
@@ -221,6 +317,23 @@
       "20 experience each",
       "Items 15-20 added to the shop"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 20,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.18",
     "unlocksSource": "SB p.19",
     "blocksSource": "GHS",
@@ -248,6 +361,16 @@
     "rewards": [
       "15 experience each"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 15,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.20",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -275,6 +398,18 @@
     "rewards": [
       "Flea-Bitten Shawl (Item 28)"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [
+        28
+      ],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.22",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -301,6 +436,18 @@
     "rewards": [
       "Flea-Bitten Shawl (Item 28)"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [
+        28
+      ],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.24",
     "unlocksSource": "SB p.25",
     "blocksSource": "SB p.25",
@@ -327,6 +474,16 @@
     "rewards": [
       "1 checkmark each"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 0,
+      "checkmarksEach": 1,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.26",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -353,6 +510,16 @@
     "rewards": [
       "1 checkmark each"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 0,
+      "checkmarksEach": 1,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.28",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -378,6 +545,23 @@
       "10 gold each",
       "Items 21-26 added to the shop"
     ],
+    "reward": {
+      "goldEach": 10,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
+      ],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.30",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -403,6 +587,18 @@
       "15 experience each",
       "Tower Shield (Item 29)"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 15,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [
+        29
+      ],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.32",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -428,6 +624,16 @@
       "30 gold each",
       "25 experience each"
     ],
+    "reward": {
+      "goldEach": 30,
+      "experienceEach": 25,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.34",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -453,6 +659,16 @@
     "rewards": [
       "10 experience each"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 10,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.36",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -475,6 +691,18 @@
     "rewards": [
       "Ring of Strength (Item 31)"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [
+        31
+      ],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.38",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -498,6 +726,16 @@
     "rewards": [
       "10 gold each"
     ],
+    "reward": {
+      "goldEach": 10,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.40",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -521,6 +759,16 @@
     "rewards": [
       "15 gold each"
     ],
+    "reward": {
+      "goldEach": 15,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.42",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -543,6 +791,18 @@
     "rewards": [
       "Steel Ring (Item 33)"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [
+        33
+      ],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.44",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -566,6 +826,18 @@
     "rewards": [
       "Barbed Axe (Item 34)"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [
+        34
+      ],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.46",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -587,6 +859,18 @@
     "rewards": [
       "Robes of Command (Item 35)"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [
+        35
+      ],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.48",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
@@ -609,6 +893,18 @@
     "rewards": [
       "Jet Boots (Item 36)"
     ],
+    "reward": {
+      "goldEach": 0,
+      "experienceEach": 0,
+      "checkmarksEach": 0,
+      "perksEach": 0,
+      "items": [
+        36
+      ],
+      "shopItems": [],
+      "tokenGold": true,
+      "bonusExperience": true
+    },
     "source": "SB p.50",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",

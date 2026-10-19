@@ -1,18 +1,28 @@
 import { useState } from 'react'
 
 interface MigrationGateProps {
-  /** Raw campaign records as they sit in the version-1 database. */
+  /** Database version on disk (1 or 2). */
+  fromVersion: number
+  /** Raw campaign records as they sit in the old database. */
   records: unknown[]
   /** Opens the database, runs the upgrade and continues into the app. */
   onUpdate: () => void
 }
 
+/** What the update changes, by the version found on disk. */
+function updateSummary(fromVersion: number): string {
+  if (fromVersion >= 2) {
+    return 'This version separates the cards you gained when levelling up from the hand you bring into the next scenario, and keeps a log of recorded scenarios. Ability cards of level 2 and above in your card list are kept as cards gained at level-up; nothing is removed. Download a backup first; you can import it again at any time from Settings.'
+  }
+  return 'This version fixes the item list, the perks and the ability cards to match the printed game. Your campaigns will be converted: items 37 to 52, which the game does not have, are removed and their full price is refunded; ability cards are stored by card instead of by name. Download a backup first; you can import it again at any time from Settings.'
+}
+
 /**
- * Shown before anything touches the `db` singleton when a version-1 database
+ * Shown before anything touches the `db` singleton when an older database
  * is waiting: the upgrade runs the moment the database opens, so the player
  * is offered a backup of the raw records first.
  */
-export function MigrationGate({ records, onUpdate }: MigrationGateProps) {
+export function MigrationGate({ fromVersion, records, onUpdate }: MigrationGateProps) {
   const [downloaded, setDownloaded] = useState(false)
   const [skipBackup, setSkipBackup] = useState(false)
 
@@ -34,12 +44,7 @@ export function MigrationGate({ records, onUpdate }: MigrationGateProps) {
     <div className="flex min-h-screen items-center justify-center bg-zinc-950 p-4">
       <div className="w-full max-w-lg rounded-xl border border-zinc-700 bg-zinc-900 p-6">
         <h1 className="text-xl font-bold text-amber-500">Your saved campaigns need an update</h1>
-        <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-          This version fixes the item list, the perks and the ability cards to match the printed
-          game. Your campaigns will be converted: items 37 to 52, which the game does not have,
-          are removed and their full price is refunded; ability cards are stored by card instead
-          of by name. Download a backup first; you can import it again at any time from Settings.
-        </p>
+        <p className="mt-3 text-sm leading-relaxed text-zinc-300">{updateSummary(fromVersion)}</p>
 
         <button
           onClick={handleDownload}

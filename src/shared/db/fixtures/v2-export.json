@@ -1,0 +1,72 @@
+[
+  {
+    "id": "ce5e7f09-a24e-49e1-a712-fcfa7df806cb",
+    "name": "Friday group",
+    "createdAt": "2026-10-19T18:17:58.759Z",
+    "updatedAt": "2026-10-19T18:18:02.325Z",
+    "characters": [
+      {
+        "id": "3e23af5a-f000-4790-8a8b-c8fa66e821bf",
+        "type": "hatchet",
+        "name": "Axe",
+        "experience": 100,
+        "gold": 30,
+        "checkmarks": 2,
+        "perkIds": [
+          "hatchet_1a"
+        ],
+        "itemIds": [
+          1
+        ],
+        "equippedItemIds": [],
+        "selectedAbilityIds": [
+          "hatchet-1-retrieval",
+          "hatchet-2-repeat-shot"
+        ],
+        "bonusPerks": 0
+      },
+      {
+        "id": "f83de004-6d3e-4254-89f2-6e2856735c74",
+        "type": "red_guard",
+        "name": "Guard",
+        "experience": 0,
+        "gold": 0,
+        "checkmarks": 0,
+        "perkIds": [],
+        "itemIds": [],
+        "equippedItemIds": [],
+        "selectedAbilityIds": [],
+        "bonusPerks": 0
+      }
+    ],
+    "scenarioStatus": {
+      "1": "completed",
+      "2": "completed",
+      "3": "completed",
+      "4": "completed",
+      "5": "completed",
+      "6": "completed",
+      "7": "completed",
+      "8": "closed",
+      "9": "unlocked",
+      "10": "locked",
+      "11": "locked",
+      "12": "locked",
+      "13": "locked",
+      "14": "locked",
+      "15": "locked",
+      "16": "locked",
+      "17": "locked",
+      "18": "locked",
+      "19": "locked",
+      "20": "locked",
+      "21": "locked",
+      "22": "locked",
+      "23": "locked",
+      "24": "locked",
+      "25": "locked"
+    },
+    "cityEventsDrawn": [],
+    "lootedTreasureIds": []
+  }
+]
