@@ -5,6 +5,7 @@ import { scenarios } from '@/data'
 import { CampaignSchema, type Campaign, type ScenarioStatus } from '@/shared/schemas'
 import { LearningGuide } from './LearningGuidePage'
 import { FinishScenario } from './PostScenarioChecklist'
+import { ScenarioBriefing } from '@/features/calculators/ScenarioBriefing'
 
 // First render of the S5 campaign pages for a loaded campaign, as a reader or
 // a view-source would see it.
@@ -90,5 +91,31 @@ describe('FinishScenario', () => {
     expect(markup).not.toContain('Experience from the dial')
     expect(markup).not.toContain('Battle goal met')
     expect(markup).toContain('25 gold each')
+  })
+})
+
+describe('ScenarioBriefing', () => {
+  it('shows level, traps and hands but keeps monsters and rewards out of the page until revealed (r193)', () => {
+    const markup = html(<ScenarioBriefing campaign={campaignAt([1, 2, 3, 4, 5, 6], [7, 8])} partyScenarioLevel={3} />)
+    const seven = scenarios.find((s) => s.id === 7)
+    expect(markup).toContain('Sunken Tumor')
+    expect(markup).toContain('Trap damage')
+    expect(markup).toContain('>5<') // trap damage at level 3 (LtP p.29)
+    expect(markup).toContain('hand 0 / 10')
+    expect(markup).toContain('Deal two battle goals')
+    expect(markup).toContain('Reveal monsters and rewards')
+    // The goal is shown openly (as in the scenario list) and may name a boss.
+    const hidden = [...(seven?.monsters ?? []), ...(seven?.rewards ?? [])].filter((text) => !seven?.goal.includes(text))
+    expect(hidden.length).toBeGreaterThan(1)
+    for (const text of hidden) {
+      expect(markup).not.toContain(text)
+    }
+    expect(markup).not.toContain('Explosive Evolution') // what 7 unlocks
+  })
+
+  it('uses level 1 for the learning scenarios whatever the party level', () => {
+    const markup = html(<ScenarioBriefing campaign={campaignAt([1, 2], [3])} partyScenarioLevel={4} />)
+    expect(markup).toContain('Scenarios 1–5 are played at level 1')
+    expect(markup).toContain('hand 0 / 8')
   })
 })
