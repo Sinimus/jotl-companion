@@ -4,7 +4,7 @@ import { DB_VERSION } from './migrations.ts'
 import { migrateCampaignRecord, type MigrationNote } from './migrate.ts'
 
 /** Keys of the `meta` rows that hold the notes of a content migration. */
-export const MIGRATION_NOTE_KEYS = ['migration-v2', 'migration-v3'] as const
+export const MIGRATION_NOTE_KEYS = ['migration-v2', 'migration-v3', 'migration-v4'] as const
 
 /** Run the pure content migration over every stored campaign; keep its notes under `key`. */
 async function migrateStoredCampaigns(tx: Transaction, key: (typeof MIGRATION_NOTE_KEYS)[number]): Promise<void> {
@@ -32,7 +32,7 @@ export interface MetaRow {
 /**
  * Dexie database class for JotL companion.
  *
- * Table layout (v3):
+ * Table layout (v4):
  *   campaigns — primary key `id` (uuid string)
  *                 secondary indices: name, updatedAt
  *   meta      — primary key `key`; notes of the last content migration
@@ -62,11 +62,19 @@ export class JotlDatabase extends Dexie {
       .upgrade((tx) => migrateStoredCampaigns(tx, 'migration-v2'))
 
     // v3 — S5: cards gained at level-up split from the hand, scenario log.
-    this.version(DB_VERSION)
+    this.version(3)
       .stores({
         campaigns: 'id, name, updatedAt',
         meta: 'key',
       })
       .upgrade((tx) => migrateStoredCampaigns(tx, 'migration-v3'))
+
+    // v4 — S6: items sold to the shop.
+    this.version(DB_VERSION)
+      .stores({
+        campaigns: 'id, name, updatedAt',
+        meta: 'key',
+      })
+      .upgrade((tx) => migrateStoredCampaigns(tx, 'migration-v4'))
   }
 }

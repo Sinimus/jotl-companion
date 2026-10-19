@@ -75,7 +75,7 @@ export function HandbookPage() {
           <h3 className="mb-2 text-lg font-semibold text-zinc-200">The "Scenarios" Tab</h3>
           <p className="mb-4 text-zinc-400">This tab tracks the state of all {scenarios.length} scenarios in the game.</p>
           <ul className="list-disc space-y-2 pl-5 text-zinc-400">
-            <li><strong className="font-semibold text-zinc-500">Locked (Gray):</strong> You cannot play this yet. Tap to manually unlock (e.g. from a City Event).</li>
+            <li><strong className="font-semibold text-zinc-500">Locked (Gray):</strong> You cannot play this yet. Tap to manually unlock (e.g. from a City Event). Scenarios 20 to 25 are unlocked only by city events: the card shows the number of the event, and you tap when that event unlocks it.</li>
             <li><strong className="font-semibold text-amber-500">Unlocked (Amber):</strong> Available to play. Tap to mark as completed by hand; to record gold, experience and rewards as well, use Finish Scenario.</li>
             <li><strong className="font-semibold text-emerald-500">Completed (Green):</strong> Already finished. Tap to revert if needed.</li>
             <li><strong className="font-semibold text-zinc-200">Goals:</strong> Each card displays the scenario's objective (e.g., "Kill all enemies").</li>
@@ -92,7 +92,7 @@ export function HandbookPage() {
             <li><strong className="font-semibold text-zinc-200">Checkmarks:</strong> Track battle goal checkmarks. Every 3 checkmarks grant a Perk.</li>
             <li><strong className="font-semibold text-zinc-200">Perks:</strong> Select perks as you earn them. The app validates that you don't exceed your earned perks.</li>
             <li><strong className="font-semibold text-zinc-200">Ability Cards:</strong> Choose the hand for the next scenario from the cards available at this point of the campaign, within the hand size. After a level-up, add one card of that level or lower; the panel opens by itself when a card is waiting.</li>
-            <li><strong className="font-semibold text-zinc-200">Items:</strong> Browse the Shop to buy items or manage your Inventory. Slot limits are enforced.</li>
+            <li><strong className="font-semibold text-zinc-200">Items:</strong> Browse the Shop to buy items or manage your Inventory. Slot limits are enforced. A sold item goes into the shop and can be bought there again, a reward item too (Rules Glossary p.19).</li>
           </ul>
         </section>
 

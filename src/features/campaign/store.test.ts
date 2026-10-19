@@ -4,7 +4,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { db, readPendingMigration } from '@/shared/db'
 import type { Campaign, CharacterProgress } from '@/shared/schemas'
 import { useCampaignStore } from './store'
+import { itemAvailability } from './rules'
+import { items } from '@/data'
 import v2Export from '@/shared/db/fixtures/v2-export.json'
+import v3Export from '@/shared/db/fixtures/v3-export.json'
 
 // Records are written straight into IndexedDB in the shape of database version 1
 // (the schema before any content migration), so that a change of Dexie or Zod
@@ -56,6 +59,7 @@ const migratedV1Campaign = {
       unlockedAbilityIds: [],
     },
   ],
+  soldItemIds: [],
   scenarioLog: [],
 }
 
@@ -382,6 +386,28 @@ describe('item actions', () => {
     expect(character.equippedItemIds).toEqual([])
   })
 
+  it('puts a sold reward item into the shop, where it can be bought back (Glossary p.19)', async () => {
+    const store = useCampaignStore.getState()
+    await store.setScenarioStatus(campaignId, 4, 'completed') // item 14 becomes a reward
+    await store.updateCharacter(campaignId, characterId, { gold: 20 })
+    await store.gainItem(campaignId, characterId, 14)
+    await store.sellItem(campaignId, characterId, 14)
+
+    const [stored] = await db.campaigns.toArray()
+    expect(stored.soldItemIds).toEqual([14])
+    expect(useCampaignStore.getState().campaigns[0].soldItemIds).toEqual([14])
+    const potion = items.find((i) => i.id === 14)
+    expect(potion && itemAvailability(potion, stored)).toBe('shop')
+
+    const gold = getCharacter().gold
+    await store.buyItem(campaignId, characterId, 14)
+    expect(getCharacter()).toMatchObject({ itemIds: [14], gold: gold - (potion?.cost ?? 0) })
+
+    // Selling it again keeps one entry.
+    await store.sellItem(campaignId, characterId, 14)
+    expect(useCampaignStore.getState().campaigns[0].soldItemIds).toEqual([14])
+  })
+
   it('gains an item without paying', async () => {
     await useCampaignStore.getState().gainItem(campaignId, characterId, 27)
 
@@ -541,5 +567,147 @@ describe('cards gained at level-up', () => {
     const [character] = useCampaignStore.getState().campaigns[0].characters
     expect(character.unlockedAbilityIds).toEqual([])
     expect(character.selectedAbilityIds).toEqual([])
+  })
+})
+
+describe('writes in quick succession', () => {
+  let campaignId: string
+  let characterId: string
+
+  beforeEach(async () => {
+    await useCampaignStore.getState().createCampaign({ name: 'Quick hands' })
+    campaignId = useCampaignStore.getState().campaigns[0].id
+    await useCampaignStore.getState().addCharacter(campaignId, { type: 'hatchet', name: 'Axe' })
+    characterId = useCampaignStore.getState().campaigns[0].characters[0].id
+  })
+
+  it('keeps both of two character edits confirmed before the first one is saved', async () => {
+    // Experience confirmed with Enter, gold confirmed right after: neither call
+    // waits for the other, as on the character sheet (S4 finding).
+    const store = useCampaignStore.getState()
+    await Promise.all([
+      store.updateCharacter(campaignId, characterId, { experience: 100 }),
+      store.updateCharacter(campaignId, characterId, { gold: 25 }),
+    ])
+
+    const [inState] = useCampaignStore.getState().campaigns[0].characters
+    expect(inState).toMatchObject({ experience: 100, gold: 25 })
+    const [stored] = await db.campaigns.toArray()
+    expect(stored.characters[0]).toMatchObject({ experience: 100, gold: 25 })
+  })
+
+  it('applies a sale, a scenario change and a perk toggle issued together', async () => {
+    const store = useCampaignStore.getState()
+    await store.updateCharacter(campaignId, characterId, { gold: 30, experience: 45 })
+    await store.gainItem(campaignId, characterId, 1)
+    await Promise.all([
+      store.sellItem(campaignId, characterId, 1),
+      store.setScenarioStatus(campaignId, 2, 'unlocked'),
+      store.setPerk(campaignId, characterId, 'hatchet_1a', true),
+      store.setPerk(campaignId, characterId, 'hatchet_2', true),
+    ])
+
+    const [campaign] = await db.campaigns.toArray()
+    expect(campaign.characters[0]).toMatchObject({ gold: 45, itemIds: [], perkIds: ['hatchet_1a', 'hatchet_2'] })
+    expect(campaign.scenarioStatus[2]).toBe('unlocked')
+    expect(useCampaignStore.getState().campaigns[0]).toEqual(campaign)
+  })
+
+  it('keeps the queue running after a refused write', async () => {
+    const store = useCampaignStore.getState()
+    const results = await Promise.allSettled([
+      store.buyItem(campaignId, characterId, 1), // no gold yet
+      store.updateCharacter(campaignId, characterId, { gold: 40 }),
+    ])
+    expect(results.map((r) => r.status)).toEqual(['rejected', 'fulfilled'])
+    expect(useCampaignStore.getState().campaigns[0].characters[0].gold).toBe(40)
+  })
+})
+
+/** Stored rows of the S5 export, with Date objects as Dexie keeps them. */
+function v3Rows(): Record<string, unknown>[] {
+  return (v3Export as Record<string, unknown>[]).map((row) => ({
+    ...row,
+    createdAt: new Date(String(row.createdAt)),
+    updatedAt: new Date(String(row.updatedAt)),
+    scenarioLog: (row.scenarioLog as Record<string, unknown>[]).map((entry) => ({
+      ...entry,
+      recordedAt: new Date(String(entry.recordedAt)),
+    })),
+  }))
+}
+
+/** Recreate the database at version 3, as the S5 build left it. */
+async function writeV3Database(rows: unknown[]): Promise<void> {
+  await db.delete({ disableAutoOpen: false })
+  const v3 = new Dexie('jotl-companion')
+  v3.version(1).stores({ campaigns: 'id, name, updatedAt' })
+  v3.version(2).stores({ campaigns: 'id, name, updatedAt', meta: 'key' })
+  v3.version(3).stores({ campaigns: 'id, name, updatedAt', meta: 'key' })
+  await v3.open()
+  await v3.table('campaigns').bulkPut(rows as never)
+  v3.close()
+}
+
+describe('the version 4 database upgrade over S5 data', () => {
+  it('keeps every field of the stored campaign and adds an empty list of sold items', async () => {
+    const [before] = v3Rows() as unknown as Campaign[]
+    await writeV3Database([before])
+
+    expect(await readPendingMigration()).toMatchObject({ fromVersion: 3 })
+
+    await useCampaignStore.getState().initStore()
+    const { campaigns, corruptedCampaigns, migrationNotes } = useCampaignStore.getState()
+    expect(corruptedCampaigns).toEqual([])
+    expect(migrationNotes).toEqual([])
+    expect(campaigns).toHaveLength(1)
+    expect(campaigns[0]).toEqual({
+      ...before,
+      scenarioStatus: Object.fromEntries(
+        Object.entries(before.scenarioStatus).map(([id, status]) => [Number(id), status])
+      ),
+      soldItemIds: [],
+    })
+
+    // Written back, and the database no longer waits for a migration.
+    const [stored] = await db.campaigns.toArray()
+    expect(stored.soldItemIds).toEqual([])
+    expect(stored.characters).toEqual(before.characters)
+    expect(stored.scenarioLog).toEqual(before.scenarioLog)
+    expect(await readPendingMigration()).toBeNull()
+    expect(await db.meta.get('migration-v4')).toBeUndefined()
+  })
+
+  it('lets the migrated party sell its reward item into the shop', async () => {
+    await writeV3Database(v3Rows())
+    await useCampaignStore.getState().initStore()
+    const [campaign] = useCampaignStore.getState().campaigns
+    const axe = campaign.characters[0]
+    expect(axe.itemIds).toEqual([14])
+
+    await useCampaignStore.getState().sellItem(campaign.id, axe.id, 14)
+    const [after] = useCampaignStore.getState().campaigns
+    expect(after.soldItemIds).toEqual([14])
+    const potion = items.find((i) => i.id === 14)
+    expect(potion && itemAvailability(potion, after)).toBe('shop')
+  })
+
+  it('imports the S5 export file itself', async () => {
+    const result = await useCampaignStore.getState().importData(JSON.stringify(v3Export))
+    expect(result).toMatchObject({ success: true, count: 1, notes: [] })
+    const [campaign] = useCampaignStore.getState().campaigns
+    expect(campaign.soldItemIds).toEqual([])
+    expect(campaign.scenarioLog).toHaveLength(1)
+    expect(campaign.characters[0].unlockedAbilityIds).toEqual(['hatchet-2-repeat-shot'])
+  })
+
+  it('runs the upgrades 2, 3 and 4 in one go from a version 1 database', async () => {
+    await writeV1Database([currentV1Campaign, legacyV1Campaign])
+    await useCampaignStore.getState().initStore()
+    const { campaigns, corruptedCampaigns } = useCampaignStore.getState()
+    expect(corruptedCampaigns).toEqual([])
+    const stored = await db.campaigns.toArray()
+    expect(stored.every((c) => Array.isArray(c.soldItemIds))).toBe(true)
+    expect(campaigns).toHaveLength(2)
   })
 })

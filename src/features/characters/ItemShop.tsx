@@ -12,6 +12,8 @@ interface ItemShopProps {
   scenarioStatus: Record<number, ScenarioStatus>
   /** Treasures the party has looted — some items enter the game through them. */
   lootedTreasureIds: number[]
+  /** Items sold to the shop — they stay available there (Glossary p.19). */
+  soldItemIds: number[]
   onBuy: (itemId: number) => void
   onGain: (itemId: number) => void
   onClose: () => void
@@ -42,6 +44,7 @@ export function ItemShop({
   party,
   scenarioStatus,
   lootedTreasureIds,
+  soldItemIds,
   onBuy,
   onGain,
   onClose,
@@ -51,7 +54,7 @@ export function ItemShop({
   // Spoiler reveals live per session only (locked names stay out of the DOM).
   const [revealedIds, setRevealedIds] = useState<Set<number>>(new Set())
 
-  const campaign = { scenarioStatus, lootedTreasureIds }
+  const campaign = { scenarioStatus, lootedTreasureIds, soldItemIds }
   const titleId = useId()
 
   // Escape closes the dialog, as the close button does.
@@ -195,6 +198,10 @@ export function ItemShop({
                   return false
                 })
                 .map((unlock) => rewardOrigin(unlock))
+              // In the shop only because a copy was sold there (Glossary p.19).
+              const soldIntoShop =
+                soldItemIds.includes(item.id) &&
+                !item.unlock.some((unlock) => unlock.type === 'shop' && scenarioStatus[unlock.scenario] === 'completed')
 
               return (
                 <div
@@ -217,6 +224,9 @@ export function ItemShop({
                           <span className="text-[10px] uppercase text-zinc-500">{item.slot}</span>
                           {availability === 'reward' && (
                             <span className="text-[10px] font-bold uppercase text-amber-500">Reward</span>
+                          )}
+                          {soldIntoShop && (
+                            <span className="text-[10px] font-bold uppercase text-zinc-400">Sold to shop</span>
                           )}
                           {availability === 'locked' && (
                             <span className="text-[10px] font-bold uppercase text-zinc-500">Locked</span>

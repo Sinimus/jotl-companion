@@ -26,6 +26,8 @@
     "source": "SB p.2",
     "unlocksSource": "SB p.2",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "SB p.2",
     "treasuresSource": "SB p.2"
   },
@@ -75,6 +77,8 @@
     "source": "SB p.4",
     "unlocksSource": "SB p.4",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "SB p.4",
     "treasuresSource": "SB p.5"
   },
@@ -110,6 +114,8 @@
     "source": "SB p.6",
     "unlocksSource": "LtP p.23",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "LtP p.24",
     "treasuresSource": "SB p.7"
   },
@@ -147,6 +153,8 @@
     "source": "SB p.8",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "LtP p.27",
     "treasuresSource": "SB p.8"
   },
@@ -183,6 +191,8 @@
     "source": "SB p.10",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.11"
   },
@@ -217,6 +227,8 @@
     "source": "SB p.12",
     "unlocksSource": "SB p.12",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "SB p.12",
     "treasuresSource": "SB p.12"
   },
@@ -255,6 +267,8 @@
     "source": "SB p.14",
     "unlocksSource": "SB p.18",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.15"
   },
@@ -293,6 +307,8 @@
     "source": "SB p.16",
     "unlocksSource": "SB p.18",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.17"
   },
@@ -337,6 +353,8 @@
     "source": "SB p.18",
     "unlocksSource": "SB p.19",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "SB p.19",
     "treasuresSource": "SB p.19"
   },
@@ -374,6 +392,8 @@
     "source": "SB p.20",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "GHS"
   },
@@ -413,6 +433,8 @@
     "source": "SB p.22",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.22"
   },
@@ -451,6 +473,8 @@
     "source": "SB p.24",
     "unlocksSource": "SB p.25",
     "blocksSource": "SB p.25",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "SB p.25",
     "treasuresSource": "SB p.24"
   },
@@ -487,6 +511,8 @@
     "source": "SB p.26",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.27"
   },
@@ -523,6 +549,8 @@
     "source": "SB p.28",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.29"
   },
@@ -565,6 +593,8 @@
     "source": "SB p.30",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.30"
   },
@@ -602,6 +632,8 @@
     "source": "SB p.32",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.32"
   },
@@ -637,6 +669,8 @@
     "source": "SB p.34",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.35"
   },
@@ -672,6 +706,8 @@
     "source": "SB p.36",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.36, SB p.37, GHS"
   },
@@ -706,6 +742,8 @@
     "source": "SB p.38",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": null,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.38"
   },
@@ -739,6 +777,8 @@
     "source": "SB p.40",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": 17,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.40"
   },
@@ -772,6 +812,8 @@
     "source": "SB p.42",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": 18,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "GHS"
   },
@@ -806,6 +848,8 @@
     "source": "SB p.44",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": 19,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "SB p.44",
     "treasuresSource": "SB p.44"
   },
@@ -841,6 +885,8 @@
     "source": "SB p.46",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": 20,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.46"
   },
@@ -874,6 +920,8 @@
     "source": "SB p.48",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": 21,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "GHS",
     "treasuresSource": "SB p.48"
   },
@@ -908,6 +956,8 @@
     "source": "SB p.50",
     "unlocksSource": "GHS",
     "blocksSource": "GHS",
+    "unlockedByCityEvent": 22,
+    "unlockedByCityEventSource": "GHS",
     "rewardsSource": "SB p.50",
     "treasuresSource": "SB p.50"
   }

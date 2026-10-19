@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { useCampaignStore, type UpdateCharacterInput } from './store'
 import { computeLevelFromXp, handLimitFor } from './rules'
 import { learningStage } from './progression'
+import { changedStats } from './statSync'
 import { useLoadedCampaign } from '@/shared/hooks/useLoadedCampaign'
 import { characters, tables } from '@/data'
 import { PerkList } from './PerkList'
@@ -24,6 +25,7 @@ export function CharacterDetail() {
 
   const { isLoaded, campaign } = useLoadedCampaign(campaignId)
   const updateCharacter = useCampaignStore((s) => s.updateCharacter)
+  const setPerk = useCampaignStore((s) => s.setPerk)
   const buyItem = useCampaignStore((s) => s.buyItem)
   const gainItem = useCampaignStore((s) => s.gainItem)
   const sellItem = useCampaignStore((s) => s.sellItem)
@@ -45,19 +47,19 @@ export function CharacterDetail() {
   )
 
   // ---------------------------------------------------------------------------
-  // Sync local input state when the store-backed character changes externally
-  // (e.g. after update or navigation).
+  // Sync local input state when the store-backed character changes (after a
+  // save or navigation) — only the fields whose stored value changed, so a
+  // field still being typed in survives the save of another one.
   // ---------------------------------------------------------------------------
-  const [syncedCharacterId, setSyncedCharacterId] = useState<string | undefined>(character?.id)
   const [syncedCharacterRef, setSyncedCharacterRef] = useState(character)
 
-  if (character?.id !== syncedCharacterId || character !== syncedCharacterRef) {
-    setSyncedCharacterId(character?.id)
+  if (character !== syncedCharacterRef) {
     setSyncedCharacterRef(character)
     if (character) {
-      setXp(character.experience)
-      setGold(character.gold)
-      setCheckmarks(character.checkmarks)
+      const changed = changedStats(syncedCharacterRef, character)
+      if (changed.experience !== undefined) setXp(changed.experience)
+      if (changed.gold !== undefined) setGold(changed.gold)
+      if (changed.checkmarks !== undefined) setCheckmarks(changed.checkmarks)
     }
   }
 
@@ -158,16 +160,9 @@ export function CharacterDetail() {
   }
 
   const handleTogglePerk = async (perkId: string, isSelected: boolean) => {
-    const currentIds = new Set(character.perkIds)
-    if (isSelected) {
-      currentIds.add(perkId)
-    } else {
-      currentIds.delete(perkId)
-    }
     try {
-      await updateCharacter(campaignId!, characterId!, {
-        perkIds: Array.from(currentIds),
-      })
+      // The store applies the toggle to the saved perks, so two quick taps both count.
+      await setPerk(campaignId!, characterId!, perkId, isSelected)
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Failed to update perk')
     }
@@ -320,6 +315,7 @@ export function CharacterDetail() {
             party={campaign.characters}
             scenarioStatus={campaign.scenarioStatus}
             lootedTreasureIds={campaign.lootedTreasureIds}
+            soldItemIds={campaign.soldItemIds}
             onBuy={handleBuyItem}
             onGain={handleGainItem}
             onSell={handleSellItem}

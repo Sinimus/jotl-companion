@@ -54,6 +54,12 @@ export interface Scenario {
   unlocks: number[]
   /** Scenario IDs this one blocks: completing this scenario closes them (Glossary p.18). */
   blocks: number[]
+  /**
+   * City event card whose outcome unlocks this scenario (GHS events.json), for the
+   * scenarios no other scenario unlocks (20-25); null otherwise. City events are not
+   * tracked (r191), so the player unlocks the scenario by hand when the card says so.
+   */
+  unlockedByCityEvent: number | null
   /** Monster sets of the scenario key (spoiler). */
   monsters: string[]
   /** Numbers of the treasure tiles on the map (spoiler). */
@@ -66,6 +72,7 @@ export interface Scenario {
   source: string
   unlocksSource: string
   blocksSource: string
+  unlockedByCityEventSource: string
   rewardsSource: string
   treasuresSource: string
 }

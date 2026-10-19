@@ -4,7 +4,7 @@ import { itemAvailability } from '@/features/campaign/rules'
 import { filterShopItems } from './shopFilter'
 
 // Fresh campaign: only scenario 1 is done, so some items are locked.
-const campaign = { scenarioStatus: { 1: 'completed' as const }, lootedTreasureIds: [] }
+const campaign = { scenarioStatus: { 1: 'completed' as const }, lootedTreasureIds: [], soldItemIds: [] }
 const isLocked = (id: number) => {
   const item = items.find((candidate) => candidate.id === id)
   return item !== undefined && itemAvailability(item, campaign) === 'locked'

@@ -64,6 +64,8 @@ interface CampaignActions {
   removeCharacter: (campaignId: string, characterId: string) => Promise<void>
   /** Update character stats.  Auto-recomputes level when XP changes. */
   updateCharacter: (campaignId: string, characterId: string, updates: UpdateCharacterInput) => Promise<void>
+  /** Take or drop one perk, computed from the stored perks at the time of the write. */
+  setPerk: (campaignId: string, characterId: string, perkId: string, selected: boolean) => Promise<void>
   /** Update status of a scenario. If 'completed', auto-unlocks child scenarios and closes alternatives. */
   setScenarioStatus: (campaignId: string, scenarioId: number, status: 'unlocked' | 'completed') => Promise<void>
   /** Mark a treasure chest as looted or not. */
@@ -72,7 +74,7 @@ interface CampaignActions {
   buyItem: (campaignId: string, characterId: string, itemId: number) => Promise<void>
   /** Gain an item without paying (scenario or treasure reward). */
   gainItem: (campaignId: string, characterId: string, itemId: number) => Promise<void>
-  /** Sell an owned item for half its gold value, rounded up (LtP p.19). */
+  /** Sell an owned item for half its gold value, rounded up (LtP p.19); it goes into the shop (Glossary p.19). */
   sellItem: (campaignId: string, characterId: string, itemId: number) => Promise<void>
   /** Record a scenario result on the campaign sheet (Finish Scenario). Throws on an invalid result. */
   recordScenarioResult: (campaignId: string, input: ScenarioResultInput) => Promise<ScenarioResult>
@@ -148,6 +150,25 @@ async function commitCharacter(
   await persistCampaign({ ...campaign, characters, updatedAt: new Date() }, set)
 }
 
+/**
+ * A queue that runs async tasks one after another. Every write reads the campaign
+ * from state when its turn comes, so a write issued before the previous one is
+ * saved builds on it instead of on the state both started from (S4 finding: gold
+ * confirmed right after experience overwrote the experience). A failed task does
+ * not stop the queue; its caller still gets the rejection.
+ */
+export function createSerialQueue(): <T>(task: () => Promise<T>) => Promise<T> {
+  let tail: Promise<unknown> = Promise.resolve()
+  return <T>(task: () => Promise<T>): Promise<T> => {
+    const run = tail.then(task)
+    tail = run.then(
+      () => undefined,
+      () => undefined
+    )
+    return run
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Store
 // ---------------------------------------------------------------------------
@@ -185,53 +206,59 @@ export const useCampaignStore = create<CampaignStore>((set, get) => {
     return item
   }
 
-  return {
+  // Every write to campaigns goes through this one queue (see createSerialQueue).
+  const queued = createSerialQueue()
+
+  /** Read every stored campaign, migrate it and validate it; also the migration notes. */
+  const loadCampaigns = async (): Promise<void> => {
+    try {
+      const rows = await db.campaigns.toArray()
+      // Migrate the stored content, then re-parse through Zod; capture any
+      // row that still fails validation.
+      const campaigns: Campaign[] = []
+      const corruptedCampaigns: CampaignState['corruptedCampaigns'] = []
+
+      for (const row of rows) {
+        const { record } = migrateCampaignRecord(row)
+        const result = CampaignSchema.safeParse(record)
+        if (result.success) {
+          campaigns.push(result.data)
+        } else {
+          console.error('Validation failed for campaign record:', result.error)
+          corruptedCampaigns.push({
+            localId: crypto.randomUUID(),
+            id: typeof row.id === 'string' ? row.id : null,
+            name: typeof row.name === 'string' ? row.name : 'Unknown',
+            error: result.error.message,
+            rawData: row,
+          })
+        }
+      }
+      const migrationRows = await db.meta.bulkGet([...MIGRATION_NOTE_KEYS])
+      const activeCampaignId = localStorage.getItem(ACTIVE_KEY)
+      set({
+        campaigns,
+        corruptedCampaigns,
+        migrationNotes: migrationRows.flatMap((row) => row?.notes ?? []),
+        activeCampaignId,
+        isLoaded: true,
+      })
+    } catch (error) {
+      console.error('Failed to load campaigns from IndexedDB:', error)
+      toast.error('Failed to load campaign data. Please refresh the page.')
+      // Ensure app marks as loaded even on failure to avoid infinite spinner
+      set({ isLoaded: true })
+    }
+  }
+
+  const store: CampaignStore = {
     campaigns: [],
     corruptedCampaigns: [],
     migrationNotes: [],
     activeCampaignId: null,
     isLoaded: false,
 
-    async initStore() {
-      try {
-        const rows = await db.campaigns.toArray()
-        // Migrate the stored content, then re-parse through Zod; capture any
-        // row that still fails validation.
-        const campaigns: Campaign[] = []
-        const corruptedCampaigns: CampaignState['corruptedCampaigns'] = []
-
-        for (const row of rows) {
-          const { record } = migrateCampaignRecord(row)
-          const result = CampaignSchema.safeParse(record)
-          if (result.success) {
-            campaigns.push(result.data)
-          } else {
-            console.error('Validation failed for campaign record:', result.error)
-            corruptedCampaigns.push({
-              localId: crypto.randomUUID(),
-              id: typeof row.id === 'string' ? row.id : null,
-              name: typeof row.name === 'string' ? row.name : 'Unknown',
-              error: result.error.message,
-              rawData: row,
-            })
-          }
-        }
-        const migrationRows = await db.meta.bulkGet([...MIGRATION_NOTE_KEYS])
-        const activeCampaignId = localStorage.getItem(ACTIVE_KEY)
-        set({
-          campaigns,
-          corruptedCampaigns,
-          migrationNotes: migrationRows.flatMap((row) => row?.notes ?? []),
-          activeCampaignId,
-          isLoaded: true,
-        })
-      } catch (error) {
-        console.error('Failed to load campaigns from IndexedDB:', error)
-        toast.error('Failed to load campaign data. Please refresh the page.')
-        // Ensure app marks as loaded even on failure to avoid infinite spinner
-        set({ isLoaded: true })
-      }
-    },
+    initStore: () => queued(loadCampaigns),
 
     async createCampaign(input: CreateCampaign) {
       const { name } = CreateCampaignSchema.parse(input)
@@ -246,6 +273,7 @@ export const useCampaignStore = create<CampaignStore>((set, get) => {
         scenarioStatus: buildInitialScenarioStatus(),
         cityEventsDrawn: [],
         lootedTreasureIds: [],
+        soldItemIds: [],
         scenarioLog: [],
       })
 
@@ -356,6 +384,13 @@ export const useCampaignStore = create<CampaignStore>((set, get) => {
       await commitCharacter(campaign, characterId, changes, set)
     },
 
+    async setPerk(campaignId: string, characterId: string, perkId: string, selected: boolean) {
+      await updateCharacterItems(campaignId, characterId, (_campaign, character) => {
+        const others = character.perkIds.filter((id) => id !== perkId)
+        return { perkIds: selected ? [...others, perkId] : others }
+      })
+    },
+
     async setScenarioStatus(campaignId: string, scenarioId: number, status: 'unlocked' | 'completed') {
       const { campaigns } = get()
       const campaign = campaigns.find((c) => c.id === campaignId)
@@ -435,17 +470,24 @@ export const useCampaignStore = create<CampaignStore>((set, get) => {
     },
 
     async sellItem(campaignId: string, characterId: string, itemId: number) {
-      await updateCharacterItems(campaignId, characterId, (_campaign, character) => {
-        const item = requireItem(itemId)
-        if (!character.itemIds.includes(itemId)) {
-          throw new Error(`${item.name} is not owned by this character`)
-        }
-        return {
-          itemIds: character.itemIds.filter((id) => id !== itemId),
-          equippedItemIds: character.equippedItemIds.filter((id) => id !== itemId),
-          gold: character.gold + Math.ceil(item.cost / 2),
-        }
-      })
+      const campaign = get().campaigns.find((c) => c.id === campaignId)
+      if (!campaign) throw new Error('Campaign not found')
+      const character = campaign.characters.find((c) => c.id === characterId)
+      if (!character) throw new Error('Character not found')
+      const item = requireItem(itemId)
+      if (!character.itemIds.includes(itemId)) {
+        throw new Error(`${item.name} is not owned by this character`)
+      }
+      // The sold copy goes into the available item deck (Glossary p.19), so a
+      // reward item can be bought from the shop afterwards.
+      const soldItemIds = campaign.soldItemIds.includes(itemId)
+        ? campaign.soldItemIds
+        : [...campaign.soldItemIds, itemId]
+      await commitCharacter({ ...campaign, soldItemIds }, characterId, {
+        itemIds: character.itemIds.filter((id) => id !== itemId),
+        equippedItemIds: character.equippedItemIds.filter((id) => id !== itemId),
+        gold: character.gold + Math.ceil(item.cost / 2),
+      }, set)
     },
 
     async recordScenarioResult(campaignId: string, input: ScenarioResultInput) {
@@ -508,8 +550,8 @@ export const useCampaignStore = create<CampaignStore>((set, get) => {
         // Use bulkPut to overwrite existing IDs or add new ones
         await db.campaigns.bulkPut(campaigns)
 
-        // Refresh store state
-        await get().initStore()
+        // Refresh store state (already inside the queue)
+        await loadCampaigns()
 
         return { success: true, count: campaigns.length, notes }
       } catch (e) {
@@ -526,5 +568,27 @@ export const useCampaignStore = create<CampaignStore>((set, get) => {
       localStorage.removeItem(ACTIVE_KEY)
       set({ campaigns: [], activeCampaignId: null })
     },
+  }
+
+  return {
+    ...store,
+    createCampaign: (...args) => queued(() => store.createCampaign(...args)),
+    deleteCampaign: (...args) => queued(() => store.deleteCampaign(...args)),
+    dismissMigrationNotes: () => queued(() => store.dismissMigrationNotes()),
+    addCharacter: (...args) => queued(() => store.addCharacter(...args)),
+    removeCharacter: (...args) => queued(() => store.removeCharacter(...args)),
+    updateCharacter: (...args) => queued(() => store.updateCharacter(...args)),
+    setPerk: (...args) => queued(() => store.setPerk(...args)),
+    setScenarioStatus: (...args) => queued(() => store.setScenarioStatus(...args)),
+    setTreasureLooted: (...args) => queued(() => store.setTreasureLooted(...args)),
+    buyItem: (...args) => queued(() => store.buyItem(...args)),
+    gainItem: (...args) => queued(() => store.gainItem(...args)),
+    sellItem: (...args) => queued(() => store.sellItem(...args)),
+    recordScenarioResult: (...args) => queued(() => store.recordScenarioResult(...args)),
+    unlockAbility: (...args) => queued(() => store.unlockAbility(...args)),
+    removeUnlockedAbility: (...args) => queued(() => store.removeUnlockedAbility(...args)),
+    setEquippedItems: (...args) => queued(() => store.setEquippedItems(...args)),
+    importData: (...args) => queued(() => store.importData(...args)),
+    clearAllCampaigns: () => queued(() => store.clearAllCampaigns()),
   }
 })

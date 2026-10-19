@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 interface MigrationGateProps {
-  /** Database version on disk (1 or 2). */
+  /** Database version on disk (1 to 3). */
   fromVersion: number
   /** Raw campaign records as they sit in the old database. */
   records: unknown[]
@@ -11,6 +11,9 @@ interface MigrationGateProps {
 
 /** What the update changes, by the version found on disk. */
 function updateSummary(fromVersion: number): string {
+  if (fromVersion >= 3) {
+    return 'This version remembers the items you sell to the shop: a sold item stays in the shop and can be bought there again, a reward item too. Your campaigns get an empty list of sold items; nothing else changes and nothing is removed. Download a backup first; you can import it again at any time from Settings.'
+  }
   if (fromVersion >= 2) {
     return 'This version separates the cards you gained when levelling up from the hand you bring into the next scenario, and keeps a log of recorded scenarios. Ability cards of level 2 and above in your card list are kept as cards gained at level-up; nothing is removed. Download a backup first; you can import it again at any time from Settings.'
   }

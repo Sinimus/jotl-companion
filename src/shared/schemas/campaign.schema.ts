@@ -46,6 +46,8 @@ export const CampaignSchema = z.object({
   cityEventsDrawn: z.array(z.int()),
   /** IDs of treasure chests looted (1-16). */
   lootedTreasureIds: z.array(z.int()),
+  /** Items sold to the shop: they stay in the available item deck (Glossary p.19), even a reward item. */
+  soldItemIds: z._default(z.array(z.int()), []),
   /** Scenario results recorded through Finish Scenario, oldest first. */
   scenarioLog: z._default(z.array(ScenarioLogEntrySchema), []),
 })
