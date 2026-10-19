@@ -3,6 +3,32 @@ import { UuidSchema, ScenarioStatusSchema, TimestampSchema } from './common.sche
 import { CharacterProgressSchema } from './character.schema.ts'
 import { TOTAL_SCENARIOS } from '@/data'
 
+/** What one character gained when a scenario result was recorded. */
+export const ScenarioLogCharacterSchema = z.object({
+  characterId: UuidSchema,
+  /** Name at the time, kept so the log reads well after a character leaves. */
+  name: z.string(),
+  gold: z.int(),
+  experience: z.int(),
+  checkmarks: z.int(),
+  perks: z.int(),
+  itemIds: z.array(z.int()),
+  levelBefore: z.int(),
+  levelAfter: z.int(),
+})
+
+/** One recorded scenario attempt (Finish Scenario). */
+export const ScenarioLogEntrySchema = z.object({
+  id: UuidSchema,
+  scenarioId: z.int().check(z.minimum(1), z.maximum(TOTAL_SCENARIOS)),
+  success: z.boolean(),
+  scenarioLevel: z.int().check(z.minimum(0), z.maximum(7)),
+  recordedAt: TimestampSchema,
+  characters: z.array(ScenarioLogCharacterSchema),
+})
+
+export type ScenarioLogEntry = z.infer<typeof ScenarioLogEntrySchema>
+
 export const CampaignSchema = z.object({
   id: UuidSchema,
   /** Player-given campaign name (1-100 chars). */
@@ -20,6 +46,8 @@ export const CampaignSchema = z.object({
   cityEventsDrawn: z.array(z.int()),
   /** IDs of treasure chests looted (1-16). */
   lootedTreasureIds: z.array(z.int()),
+  /** Scenario results recorded through Finish Scenario, oldest first. */
+  scenarioLog: z._default(z.array(ScenarioLogEntrySchema), []),
 })
 
 export type Campaign = z.infer<typeof CampaignSchema>

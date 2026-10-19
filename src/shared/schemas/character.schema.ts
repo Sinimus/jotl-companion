@@ -18,8 +18,10 @@ export const CharacterProgressSchema = z.object({
   itemIds: z.array(z.int()),
   /** Items brought into the next scenario — a subset of itemIds. */
   equippedItemIds: z._default(z.array(z.int()), []),
-  /** IDs of selected ability cards — references abilities.json. */
+  /** The hand brought into the next scenario — card ids from abilities.json. */
   selectedAbilityIds: z.array(z.string()),
+  /** Cards of level 2+ added to the pool when levelling up, one per level gained (LtP p.29). */
+  unlockedAbilityIds: z._default(z.array(z.string()), []),
   /** Bonus perks earned from scenario rewards or other sources. */
   bonusPerks: z._default(z.int().check(z.minimum(0)), 0),
 })

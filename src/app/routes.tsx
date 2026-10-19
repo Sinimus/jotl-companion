@@ -10,6 +10,9 @@ import { AppLayout } from '@/shared/components/layout/AppLayout'
 const PostScenarioChecklist = lazy(() =>
   import('@/features/scenarios/PostScenarioChecklist').then((m) => ({ default: m.PostScenarioChecklist })),
 )
+const LearningGuidePage = lazy(() =>
+  import('@/features/scenarios/LearningGuidePage').then((m) => ({ default: m.LearningGuidePage })),
+)
 const CalculatorPage = lazy(() =>
   import('@/features/calculators/CalculatorPage').then((m) => ({ default: m.CalculatorPage })),
 )
@@ -41,6 +44,7 @@ export function AppRoutes() {
         <Route path="/campaign/:campaignId/character/:characterId" element={<CharacterDetail />} />
         <Route path="/campaign/:campaignId/checklist" element={<PostScenarioChecklist />} />
         <Route path="/campaign/:campaignId/calculators" element={<CalculatorPage />} />
+        <Route path="/campaign/:campaignId/learning" element={<LearningGuidePage />} />
         
         <Route path="/rules" element={<RulesLayout />}>
           <Route index element={<GlossaryPage />} />

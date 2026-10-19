@@ -1,0 +1,70 @@
+import { renderToStaticMarkup } from 'react-dom/server'
+import { MemoryRouter } from 'react-router-dom'
+import { describe, expect, it } from 'vitest'
+import { scenarios } from '@/data'
+import { CampaignSchema, type Campaign, type ScenarioStatus } from '@/shared/schemas'
+import { LearningGuide } from './LearningGuidePage'
+
+// First render of the S5 campaign pages for a loaded campaign, as a reader or
+// a view-source would see it.
+
+const CAMPAIGN_ID = '6f1c2f3e-5a6b-4c7d-8e9f-0a1b2c3d4e5f'
+
+function campaignAt(completed: number[], unlocked: number[]): Campaign {
+  const status: Record<number, ScenarioStatus> = {}
+  for (const s of scenarios) status[s.id] = 'locked'
+  for (const id of completed) status[id] = 'completed'
+  for (const id of unlocked) status[id] = 'unlocked'
+  return CampaignSchema.parse({
+    id: CAMPAIGN_ID,
+    name: 'Friday group',
+    createdAt: '2026-04-01T10:00:00.000Z',
+    updatedAt: '2026-04-01T10:00:00.000Z',
+    characters: [
+      {
+        id: '11111111-2222-4333-8444-555555555555',
+        type: 'hatchet',
+        name: 'Axe',
+        experience: 0,
+        gold: 0,
+        checkmarks: 0,
+        perkIds: [],
+        itemIds: [],
+        selectedAbilityIds: [],
+      },
+    ],
+    scenarioStatus: status,
+    cityEventsDrawn: [],
+    lootedTreasureIds: [],
+  })
+}
+
+const html = (node: React.ReactNode) => renderToStaticMarkup(<MemoryRouter>{node}</MemoryRouter>)
+
+describe('LearningGuidePage', () => {
+  it('marks the next learning scenario and names the party cards that change', () => {
+    const markup = html(<LearningGuide campaign={campaignAt([1], [2])} />)
+    expect(markup).toContain('Your party has completed 1 of 5')
+    expect(markup).toContain('6 cards')
+    expect(markup).toContain('Up next')
+    // After Scenario 2 the Hatchet adds The Favorite and Retrieval (LtP p.19).
+    expect(markup).toContain('The Favorite (1)')
+    expect(markup).toContain('Retrieval (1)')
+    expect(markup).toContain('Learn to Play p.14-18')
+  })
+
+  it('keeps the names of locked learning scenarios out of the page (r193)', () => {
+    const markup = html(<LearningGuide campaign={campaignAt([1], [2])} />)
+    for (const id of [3, 4, 5]) {
+      const name = scenarios.find((s) => s.id === id)?.name ?? ''
+      expect(markup).not.toContain(name)
+    }
+    expect(markup).toContain(scenarios[1].name)
+  })
+
+  it('says when the learning scenarios are behind the party', () => {
+    const markup = html(<LearningGuide campaign={campaignAt([1, 2, 3, 4, 5], [6])} />)
+    expect(markup).toContain('finished the learning scenarios')
+    expect(markup).not.toContain('Up next')
+  })
+})

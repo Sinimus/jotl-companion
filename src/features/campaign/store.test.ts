@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { db, readPendingMigration } from '@/shared/db'
 import type { Campaign, CharacterProgress } from '@/shared/schemas'
 import { useCampaignStore } from './store'
+import v2Export from '@/shared/db/fixtures/v2-export.json'
 
 // Records are written straight into IndexedDB in the shape of database version 1
 // (the schema before any content migration), so that a change of Dexie or Zod
@@ -52,8 +53,10 @@ const migratedV1Campaign = {
       itemIds: [1],
       equippedItemIds: [1],
       selectedAbilityIds: [],
+      unlockedAbilityIds: [],
     },
   ],
+  scenarioLog: [],
 }
 
 // An early record: no lootedTreasureIds, no selectedAbilityIds, no bonusPerks,
@@ -260,7 +263,7 @@ describe('readPendingMigration', () => {
     expect(pending?.records).toHaveLength(1)
   })
 
-  it('returns null once the app has opened the database at version 2', async () => {
+  it('returns null once the app has opened the database at the current version', async () => {
     await writeV1Database([currentV1Campaign])
     await useCampaignStore.getState().initStore()
 
@@ -405,5 +408,84 @@ describe('item actions', () => {
     await expect(
       useCampaignStore.getState().setEquippedItems(campaignId, characterId, [1])
     ).rejects.toThrow('not owned')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// Database version 3 (S5) over data stored by the S4 build.  The fixture is a
+// real export of the S4 app (database version 2), made by clicking through it:
+// a level 3 Hatchet with a level 1 and a level 2 card in its one card list,
+// a perk, an item, two checkmarks; scenarios 1-7 completed and 8 closed.
+// ---------------------------------------------------------------------------
+
+/** Stored rows hold Date objects, the export ISO strings. */
+function v2Rows(): Record<string, unknown>[] {
+  return (v2Export as Record<string, unknown>[]).map((row) => ({
+    ...row,
+    createdAt: new Date(String(row.createdAt)),
+    updatedAt: new Date(String(row.updatedAt)),
+  }))
+}
+
+/** Recreate the database at version 2, as the S4 build left it. */
+async function writeV2Database(rows: unknown[]): Promise<void> {
+  await db.delete({ disableAutoOpen: false })
+  const v2 = new Dexie('jotl-companion')
+  v2.version(1).stores({ campaigns: 'id, name, updatedAt' })
+  v2.version(2).stores({ campaigns: 'id, name, updatedAt', meta: 'key' })
+  await v2.open()
+  await v2.table('campaigns').bulkPut(rows as never)
+  v2.close()
+}
+
+describe('the version 3 database upgrade over S4 data', () => {
+  it('keeps every field of the stored campaign and splits the cards gained at level-up', async () => {
+    const [before] = v2Rows() as unknown as Campaign[]
+    await writeV2Database([before])
+
+    expect(await readPendingMigration()).toMatchObject({ fromVersion: 2 })
+
+    await useCampaignStore.getState().initStore()
+    const { campaigns, corruptedCampaigns, migrationNotes } = useCampaignStore.getState()
+    expect(corruptedCampaigns).toEqual([])
+    expect(campaigns).toHaveLength(1)
+    const [after] = campaigns
+
+    expect(after.scenarioStatus).toEqual(
+      Object.fromEntries(Object.entries(before.scenarioStatus).map(([id, status]) => [Number(id), status]))
+    )
+    expect(after.scenarioLog).toEqual([])
+    expect(after.createdAt).toEqual(before.createdAt)
+    const [axe, guard] = after.characters
+    expect(axe).toEqual({
+      ...before.characters[0],
+      selectedAbilityIds: ['hatchet-1-retrieval', 'hatchet-2-repeat-shot'],
+      unlockedAbilityIds: ['hatchet-2-repeat-shot'],
+    })
+    expect(guard).toEqual({ ...before.characters[1], unlockedAbilityIds: [] })
+    expect(migrationNotes.map((note) => note.kind)).toEqual(['ability_unlocked'])
+
+    // Written back, and the database no longer waits for a migration.
+    const stored = await db.campaigns.toArray()
+    expect(stored[0].characters[0].unlockedAbilityIds).toEqual(['hatchet-2-repeat-shot'])
+    expect(await readPendingMigration()).toBeNull()
+    expect(await db.meta.get('migration-v3')).toBeDefined()
+  })
+
+  it('imports the S4 export file itself', async () => {
+    const result = await useCampaignStore.getState().importData(JSON.stringify(v2Export))
+    expect(result).toMatchObject({ success: true, count: 1 })
+    const [campaign] = useCampaignStore.getState().campaigns
+    expect(campaign.characters[0].unlockedAbilityIds).toEqual(['hatchet-2-repeat-shot'])
+    expect(campaign.characters[0].gold).toBe(30)
+  })
+
+  it('runs the version 2 and 3 upgrades in one go from a version 1 database', async () => {
+    await writeV1Database([currentV1Campaign, legacyV1Campaign])
+    await useCampaignStore.getState().initStore()
+    const { campaigns, corruptedCampaigns } = useCampaignStore.getState()
+    expect(corruptedCampaigns).toEqual([])
+    expect(campaigns.every((c) => Array.isArray(c.scenarioLog))).toBe(true)
+    expect(campaigns.flatMap((c) => c.characters).every((ch) => Array.isArray(ch.unlockedAbilityIds))).toBe(true)
   })
 })

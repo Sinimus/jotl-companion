@@ -7,7 +7,7 @@ import { useCampaignStore } from '@/features/campaign'
 import { readPendingMigration } from '@/shared/db'
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary'
 
-/** checking → gate (version-1 records found) or starting → ready. */
+/** checking → gate (records of an older database version found) or starting → ready. */
 type Phase = 'checking' | 'gate' | 'starting'
 
 export function App() {
@@ -15,7 +15,7 @@ export function App() {
   const isLoaded = useCampaignStore((s) => s.isLoaded)
 
   const [phase, setPhase] = useState<Phase>('checking')
-  const [pendingRecords, setPendingRecords] = useState<unknown[]>([])
+  const [pending, setPending] = useState<{ fromVersion: number; records: unknown[] }>({ fromVersion: 1, records: [] })
 
   useEffect(() => {
     let cancelled = false
@@ -23,10 +23,10 @@ export function App() {
       try {
         // Peek before anything touches the `db` singleton: opening it runs
         // the upgrade at once, so the backup prompt must come first.
-        const pending = await readPendingMigration()
+        const found = await readPendingMigration()
         if (cancelled) return
-        if (pending && pending.records.length > 0) {
-          setPendingRecords(pending.records)
+        if (found && found.records.length > 0) {
+          setPending(found)
           setPhase('gate')
           return
         }
@@ -47,7 +47,8 @@ export function App() {
   if (phase === 'gate') {
     return (
       <MigrationGate
-        records={pendingRecords}
+        fromVersion={pending.fromVersion}
+        records={pending.records}
         onUpdate={() => {
           setPhase('starting')
           void initStore()

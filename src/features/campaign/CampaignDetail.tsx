@@ -156,6 +156,11 @@ export function CampaignDetail() {
             <section>
               <h3 className="mb-2 text-sm font-semibold text-zinc-400">Tools</h3>
               <div className="flex flex-col gap-2">
+                <Link to={`/campaign/${campaign.id}/learning`}
+                  className="rounded-lg border border-zinc-700 bg-zinc-800 p-3 transition-colors hover:border-zinc-500">
+                  <p className="text-sm font-semibold text-zinc-200">Learning Scenarios 1–5</p>
+                  <p className="text-xs text-zinc-400">What each learning scenario adds and what changes after it</p>
+                </Link>
                 <Link to={`/campaign/${campaign.id}/calculators`}
                   className="rounded-lg border border-zinc-700 bg-zinc-800 p-3 transition-colors hover:border-zinc-500">
                   <p className="text-sm font-semibold text-zinc-200">Set Up Scenario</p>

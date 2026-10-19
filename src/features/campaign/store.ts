@@ -1,8 +1,15 @@
 import { create } from 'zustand'
 import { toast } from 'sonner'
-import { db, migrateCampaignRecord, type MigrationNote } from '@/shared/db'
+import { db, migrateCampaignRecord, MIGRATION_NOTE_KEYS, type MigrationNote } from '@/shared/db'
 import { scenarios, items, type Item } from '@/data'
 import { computeLevelFromXp, equipmentViolations, getUnlockedScenarios } from './rules'
+import {
+  applyScenarioResult,
+  canUnlockCard,
+  computeScenarioResult,
+  type ScenarioResult,
+  type ScenarioResultInput,
+} from './progression'
 import {
   CampaignSchema,
   CreateCampaignSchema,
@@ -31,7 +38,7 @@ interface CampaignState {
     error: string
     rawData: unknown
   }>
-  /** Notes of the last content migration (database version 2), if any. */
+  /** Notes of the content migrations (database versions 2 and 3), if any. */
   migrationNotes: MigrationNote[]
   activeCampaignId: string | null
   /** false until the first Dexie hydration resolves */
@@ -67,6 +74,12 @@ interface CampaignActions {
   gainItem: (campaignId: string, characterId: string, itemId: number) => Promise<void>
   /** Sell an owned item for half its gold value, rounded up (LtP p.19). */
   sellItem: (campaignId: string, characterId: string, itemId: number) => Promise<void>
+  /** Record a scenario result on the campaign sheet (Finish Scenario). Throws on an invalid result. */
+  recordScenarioResult: (campaignId: string, input: ScenarioResultInput) => Promise<ScenarioResult>
+  /** Add a card gained at level-up (LtP p.29); refuses a card the level does not allow. */
+  unlockAbility: (campaignId: string, characterId: string, cardId: string) => Promise<void>
+  /** Remove a card gained at level-up; it also leaves the hand. */
+  removeUnlockedAbility: (campaignId: string, characterId: string, cardId: string) => Promise<void>
   /** Set the equipped items — a subset of the owned items within the slot limits. */
   setEquippedItems: (campaignId: string, characterId: string, itemIds: number[]) => Promise<void>
   /** Export all campaigns as JSON string. */
@@ -203,12 +216,12 @@ export const useCampaignStore = create<CampaignStore>((set, get) => {
             })
           }
         }
-        const migration = await db.meta.get('migration-v2')
+        const migrationRows = await db.meta.bulkGet([...MIGRATION_NOTE_KEYS])
         const activeCampaignId = localStorage.getItem(ACTIVE_KEY)
         set({
           campaigns,
           corruptedCampaigns,
-          migrationNotes: migration?.notes ?? [],
+          migrationNotes: migrationRows.flatMap((row) => row?.notes ?? []),
           activeCampaignId,
           isLoaded: true,
         })
@@ -233,6 +246,7 @@ export const useCampaignStore = create<CampaignStore>((set, get) => {
         scenarioStatus: buildInitialScenarioStatus(),
         cityEventsDrawn: [],
         lootedTreasureIds: [],
+        scenarioLog: [],
       })
 
       await db.campaigns.add(campaign)
@@ -259,7 +273,7 @@ export const useCampaignStore = create<CampaignStore>((set, get) => {
     },
 
     async dismissMigrationNotes() {
-      await db.meta.delete('migration-v2')
+      await db.meta.bulkDelete([...MIGRATION_NOTE_KEYS])
       set({ migrationNotes: [] })
     },
 
@@ -286,6 +300,7 @@ export const useCampaignStore = create<CampaignStore>((set, get) => {
         itemIds: [],
         equippedItemIds: [],
         selectedAbilityIds: [],
+        unlockedAbilityIds: [],
       })
 
       const updated = {
@@ -431,6 +446,33 @@ export const useCampaignStore = create<CampaignStore>((set, get) => {
           gold: character.gold + Math.ceil(item.cost / 2),
         }
       })
+    },
+
+    async recordScenarioResult(campaignId: string, input: ScenarioResultInput) {
+      const campaign = get().campaigns.find((c) => c.id === campaignId)
+      if (!campaign) throw new Error('Campaign not found')
+      const result = computeScenarioResult(campaign, input)
+      const updated = CampaignSchema.parse(
+        applyScenarioResult(campaign, result, { logId: crypto.randomUUID(), now: new Date() })
+      )
+      await persistCampaign(updated, set)
+      return result
+    },
+
+    async unlockAbility(campaignId: string, characterId: string, cardId: string) {
+      await updateCharacterItems(campaignId, characterId, (_campaign, character) => {
+        if (!canUnlockCard(character, cardId)) {
+          throw new Error('That card is not available at this level')
+        }
+        return { unlockedAbilityIds: [...character.unlockedAbilityIds, cardId] }
+      })
+    },
+
+    async removeUnlockedAbility(campaignId: string, characterId: string, cardId: string) {
+      await updateCharacterItems(campaignId, characterId, (_campaign, character) => ({
+        unlockedAbilityIds: character.unlockedAbilityIds.filter((id) => id !== cardId),
+        selectedAbilityIds: character.selectedAbilityIds.filter((id) => id !== cardId),
+      }))
     },
 
     async setEquippedItems(campaignId: string, characterId: string, itemIds: number[]) {
