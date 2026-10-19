@@ -51,6 +51,16 @@ describe('spoilers stay out of the DOM', () => {
     }
   })
 
+  it('a locked scenario 20-25 names the city event that unlocks it and nothing more', () => {
+    const markup = html(<ScenarioTracker campaignId="c1" scenarioStatus={status} />)
+    for (const event of [17, 18, 19, 20, 21, 22]) {
+      expect(markup).toContain(`City event ${event} unlocks it`)
+    }
+    expect(markup.match(/City event \d+ unlocks it/g)).toHaveLength(6)
+    const unlocked = html(<ScenarioTracker campaignId="c1" scenarioStatus={{ ...status, 20: 'unlocked' }} />)
+    expect(unlocked).not.toContain('City event 17 unlocks it')
+  })
+
   it('an open scenario keeps its goal, monsters and rewards behind the buttons', () => {
     const markup = html(<ScenarioTracker campaignId="c1" scenarioStatus={status} />)
     const open = scenarios.find((scenario) => status[scenario.id] === 'unlocked')

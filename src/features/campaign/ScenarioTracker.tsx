@@ -122,7 +122,14 @@ function ScenarioCard({ campaignId, scenario, scenarioStatus }: ScenarioCardProp
               Scenario {scenario.id}
             </span>
             {isLocked ? (
-              <span className="text-sm font-medium text-zinc-500">Locked</span>
+              <>
+                <span className="text-sm font-medium text-zinc-500">Locked</span>
+                {scenario.unlockedByCityEvent !== null && (
+                  <span className="mt-0.5 text-xs text-zinc-500">
+                    City event {scenario.unlockedByCityEvent} unlocks it: tap when it does
+                  </span>
+                )}
+              </>
             ) : (
               <>
                 <span

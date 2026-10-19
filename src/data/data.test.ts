@@ -29,6 +29,7 @@ const SOURCE_TABLE: [string, () => string[]][] = [
         s.source,
         s.unlocksSource,
         s.blocksSource,
+        s.unlockedByCityEventSource,
         s.rewardsSource,
         s.treasuresSource,
       ]),
@@ -194,6 +195,33 @@ describe('scenarios', () => {
 // The structured rewards (GHS `rewards`) and the item unlocks must tell the
 // same story: what a scenario puts in the shop or hands out is what unlocks
 // the item, and the readable reward lines name the same things.
+// Scenarios 20-25 have no scenario that unlocks them; in GHS the city event cards
+// 17-22 do (an unlockScenario outcome). City events are not tracked (r191), so the
+// tracker names the card and the player unlocks the scenario by hand.
+describe('scenarios unlocked by a city event', () => {
+  it('maps scenarios 20-25 to the city events 17-22 and no other scenario to one', () => {
+    const mapped = scenarios
+      .filter((s) => s.unlockedByCityEvent !== null)
+      .map((s) => [s.id, s.unlockedByCityEvent])
+    expect(mapped).toEqual([
+      [20, 17],
+      [21, 18],
+      [22, 19],
+      [23, 20],
+      [24, 21],
+      [25, 22],
+    ])
+  })
+
+  it('names a city event exactly for the scenarios no scenario unlocks (besides scenario 1)', () => {
+    const reachable = new Set(scenarios.flatMap((s) => s.unlocks))
+    for (const scenario of scenarios) {
+      if (scenario.id === 1) continue
+      expect(scenario.unlockedByCityEvent !== null, `scenario ${scenario.id}`).toBe(!reachable.has(scenario.id))
+    }
+  })
+})
+
 describe('scenario rewards and item unlocks agree', () => {
   it('lists the shop items of a scenario exactly where the items say they unlock', () => {
     for (const scenario of scenarios) {
