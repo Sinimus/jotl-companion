@@ -193,29 +193,6 @@ export function handLimitFor(characterType: string): number {
   return character.handLimit
 }
 
-/**
- * Warnings for a card selection: `overHandLimit` when more cards are selected
- * than the hand limit allows (LtP p.25), `tooHighLevel` the ids of selected
- * cards whose numeric level is above the character's level (LtP p.29).
- */
-export function abilityWarnings(c: {
-  type: string
-  experience: number
-  selectedAbilityIds: string[]
-}): { overHandLimit: boolean; tooHighLevel: string[] } {
-  const level = computeLevelFromXp(c.experience)
-  const tooHighLevel = c.selectedAbilityIds.filter((id) => {
-    const card = abilities.find((a) => a.id === id)
-    if (!card) return false
-    const numericLevel = Number.parseInt(card.level, 10)
-    return Number.isInteger(numericLevel) && numericLevel > level
-  })
-  return {
-    overHandLimit: c.selectedAbilityIds.length > handLimitFor(c.type),
-    tooHighLevel,
-  }
-}
-
 // ---------------------------------------------------------------------------
 // Scenario labels
 // ---------------------------------------------------------------------------

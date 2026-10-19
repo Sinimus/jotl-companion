@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest'
 import { items } from '@/data'
 import {
   abilityCardsFor,
-  abilityWarnings,
   closingConfirmText,
   computeLevelFromXp,
   computeScenarioLevel,
@@ -226,51 +225,6 @@ describe('handLimitFor', () => {
   })
 })
 
-describe('abilityWarnings', () => {
-  const hatchetLevel1 = [
-    'hatchet-1-the-favorite',
-    'hatchet-1-second-wind',
-    'hatchet-1-center-mass',
-    'hatchet-1-close-cuts',
-    'hatchet-1-stopping-power',
-    'hatchet-1-follow-through',
-    'hatchet-1-retrieval',
-    'hatchet-1-disorienting-barrage',
-    'hatchet-1-power-pitch',
-    'hatchet-1-double-throw',
-  ]
-
-  it('flags a selection over the hand limit (LtP p.25)', () => {
-    const warnings = abilityWarnings({
-      type: 'hatchet',
-      experience: 0,
-      selectedAbilityIds: [...hatchetLevel1, 'hatchet-x-fancy-hat'],
-    })
-    expect(warnings.overHandLimit).toBe(true)
-    expect(warnings.tooHighLevel).toEqual([])
-  })
-
-  it('accepts a selection within the hand limit', () => {
-    expect(
-      abilityWarnings({ type: 'hatchet', experience: 0, selectedAbilityIds: hatchetLevel1 })
-        .overHandLimit
-    ).toBe(false)
-  })
-
-  it('lists selected cards above the character level (LtP p.29)', () => {
-    const warnings = abilityWarnings({
-      type: 'hatchet',
-      experience: 0,
-      selectedAbilityIds: ['hatchet-1-the-favorite', 'hatchet-2-repeat-shot'],
-    })
-    expect(warnings.overHandLimit).toBe(false)
-    expect(warnings.tooHighLevel).toEqual(['hatchet-2-repeat-shot'])
-  })
-})
-
-// Post-scenario checklist: scenario 1 rewards nothing (SB p.2, LtP p.13),
-// scenarios 2-5 pay a fixed 2 gold per money token (LtP pp.18, p.29), from
-// scenario 6 on the scenario level chart applies (LtP p.29).
 // Completing a scenario closes its not-completed alternatives (Glossary p.18).
 describe('scenariosClosedByCompleting', () => {
   it('lists only the blocks that are not completed', () => {
