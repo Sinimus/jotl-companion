@@ -47,6 +47,7 @@ pnpm dev
 | `pnpm test` | vitest, one run |
 | `pnpm build` | type check and production build into `dist/` |
 | `pnpm preview` | serves the production build locally |
+| `pnpm test:e2e` | Playwright browser test against a running image on `localhost:8080` (`E2E_BASE_URL` overrides); `pnpm exec playwright install chromium` once before the first run |
 
 ## Icons and install
 
@@ -63,8 +64,8 @@ docker run --rm -p 8080:80 jotl-companion
 
 ## Continuous integration and deployment
 
-- **Pull requests to `main`** (`.github/workflows/pull-request.yml`): `pnpm lint`, `pnpm test`, `pnpm build`, then a Docker build without push and a smoke test of the container (HTTP 200, page title, cache and security headers, manifest type, a hashed bundle, the healthcheck command).
-- **Push to `main` and manual runs** (`.github/workflows/docker-publish.yml`): builds the image, pushes it to GitHub Container Registry and triggers the redeploy of the hosting platform. The deploy call answers 200 even when the rollout fails afterwards, so a deployment is verified by the hash of `assets/index-*.js` in the served `index.html`, which must match the build of the merged `main`.
+- **Pull requests to `main`** (`.github/workflows/pull-request.yml`): `pnpm lint`, `pnpm test`, `pnpm build`, then a Docker build without push, a smoke test of the container (HTTP 200, page title, cache and security headers, manifest type, a hashed bundle, the healthcheck command) and a Playwright browser test of the same container: every page in `e2e/routes.json` must render its heading from the bundle without a JavaScript or console error, and a new campaign must open its dashboard. Character detail, checklist, calculators and learning guide are not opened yet.
+- **Push to `main` and manual runs** (`.github/workflows/docker-publish.yml`): first runs the pull request workflow above as a called workflow; only when it passes it builds the image, pushes it to GitHub Container Registry and triggers the redeploy of the hosting platform. The deploy call answers 200 even when the rollout fails afterwards, so a deployment is verified by the hash of `assets/index-*.js` in the served `index.html`, which must match the build of the merged `main`.
 
 ## License
 

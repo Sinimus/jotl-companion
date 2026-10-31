@@ -1,0 +1,11 @@
+[
+  { "path": "/", "heading": "Gloomhaven: Jaws of the Lion" },
+  { "path": "/rules", "heading": "Rules Glossary" },
+  { "path": "/rules/glossary", "heading": "Rules Glossary" },
+  { "path": "/rules/round", "heading": "Round" },
+  { "path": "/rules/reference", "heading": "Quick Reference" },
+  { "path": "/rules/monster-turn", "heading": "Monster Turn" },
+  { "path": "/rules/focus-helper", "heading": "Monster Turn" },
+  { "path": "/settings", "heading": "Settings" },
+  { "path": "/settings/handbook", "heading": "User Handbook" }
+]
