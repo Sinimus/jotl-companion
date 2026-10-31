@@ -40,3 +40,7 @@ AGENTS.md
 docs/
 BLUEPRINT.md
 USER_HANDBOOK.md
+
+# Playwright
+/test-results/
+/playwright-report/

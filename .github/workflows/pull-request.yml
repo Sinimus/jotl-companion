@@ -3,6 +3,9 @@ name: Pull request
 on:
   pull_request:
     branches: ["main"]
+  # docker-publish.yml calls this workflow, so a push to main deploys only
+  # after the same checks a pull request has to pass
+  workflow_call:
 
 permissions:
   contents: read
@@ -63,7 +66,6 @@ jobs:
             sleep 2
           done
           set -e
-          trap 'docker logs smoke; docker rm --force smoke' EXIT
           curl --silent --fail --output page.html http://localhost:8080/
           grep --quiet '<title>Gloomhaven: Jaws of the Lion: Unofficial Companion App</title>' page.html
           curl --silent --fail --head http://localhost:8080/ | grep --quiet --ignore-case '^cache-control: no-cache'
@@ -76,3 +78,39 @@ jobs:
           # the shell must reference a content-hashed bundle, the version marker of the deploy check
           test -n "${asset}"
           echo "Smoke test passed"
+
+      # Browser test against the same running container: every page in
+      # e2e/routes.json must render from the bundle without a JavaScript error
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Browser test the image
+        run: pnpm test:e2e
+        env:
+          E2E_BASE_URL: http://localhost:8080
+
+      - name: Upload Playwright traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7
+
+      - name: Container logs and cleanup
+        if: always()
+        run: |
+          docker logs smoke || true
+          docker rm --force smoke || true

@@ -10,7 +10,15 @@ env:
   IMAGE_NAME: sinimus/jotl-companion
 
 jobs:
+  # Lint, unit tests, image smoke test and browser test; nothing is pushed
+  # or deployed unless they pass
+  checks:
+    uses: ./.github/workflows/pull-request.yml
+    permissions:
+      contents: read
+
   build-and-push:
+    needs: checks
     runs-on: ubuntu-latest
     permissions:
       contents: read
